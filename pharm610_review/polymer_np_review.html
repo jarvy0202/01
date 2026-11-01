@@ -1,0 +1,739 @@
+<title>Pharm 610 Characterization Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,750&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column with a sticky topic bar; each topic = big-picture diagram, then key facts, then traps. */
+:root{
+  --bg:#f6f8f9; --surface:#ffffff; --ink:#18232b; --muted:#56656f; --line:#d5dde2;
+  --accent:#0b6e79; --accent-soft:#dcefF1; --amber:#b86e00; --amber-soft:#fbefd9;
+  --rose:#b33a4a; --rose-soft:#f8e1e4; --violet:#5b4bb0; --green:#2d7d3a; --blue:#2f63b8;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#10171b; --surface:#172127; --ink:#e3eaee; --muted:#9aaab4; --line:#2c3a42;
+  --accent:#4cc3cf; --accent-soft:#16363b; --amber:#f0a740; --amber-soft:#3a2c14;
+  --rose:#f07c8b; --rose-soft:#3c1d23; --violet:#a596ff; --green:#6cc77a; --blue:#7fa8f0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10171b; --surface:#172127; --ink:#e3eaee; --muted:#9aaab4; --line:#2c3a42;
+  --accent:#4cc3cf; --accent-soft:#16363b; --amber:#f0a740; --amber-soft:#3a2c14;
+  --rose:#f07c8b; --rose-soft:#3c1d23; --violet:#a596ff; --green:#6cc77a; --blue:#7fa8f0; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:860px;margin:0 auto;padding-block:28px 80px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(30px,6vw,46px);font-weight:750;letter-spacing:-.01em}
+h2{font-size:clamp(24px,4.4vw,32px);font-weight:750;padding-top:8px}
+h3{font-size:20px;font-weight:600;margin-top:26px}
+p{margin:10px 0}
+.lede{color:var(--muted);max-width:62ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+code,.mono{font-family:var(--mono);font-size:.86em}
+nav.topics{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  margin:18px 0 8px;padding-block:10px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+nav.topics a{flex:none;font-family:var(--display);font-size:14px;font-weight:600;color:var(--ink);text-decoration:none;
+  border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px}
+nav.topics a:hover,nav.topics a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+section{padding-top:34px;scroll-margin-top:64px}
+section+section{border-top:1px solid var(--line);margin-top:34px}
+ul{padding-left:1.2em;margin:8px 0}
+li{margin:4px 0}
+li::marker{color:var(--accent)}
+strong{font-weight:600}
+figure{margin:18px 0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;overflow-x:auto}
+figure svg{display:block;width:100%;height:auto;min-width:520px;max-width:100%}
+figcaption{font-size:14px;color:var(--muted);margin-top:8px;font-style:italic}
+.eq{font-family:var(--mono);font-size:15px;background:var(--accent-soft);border-radius:8px;padding:10px 14px;margin:12px 0;overflow-x:auto;white-space:nowrap}
+.trap{background:var(--rose-soft);border-left:4px solid var(--rose);border-radius:0 8px 8px 0;padding:10px 14px;margin:16px 0}
+.trap b{font-family:var(--display);color:var(--rose)}
+.key{background:var(--amber-soft);border-left:4px solid var(--amber);border-radius:0 8px 8px 0;padding:10px 14px;margin:16px 0}
+.key b.lab{font-family:var(--display);color:var(--amber)}
+.tbl{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:560px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);font-weight:600;font-size:14px;background:var(--accent-soft)}
+tr:last-child td{border-bottom:none}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.work{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:14px 0}
+.work ol{margin:6px 0;padding-left:1.3em}
+.work .ans{font-family:var(--display);font-weight:600;color:var(--accent)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-family:var(--display);font-weight:600}
+details summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+details[open] summary{margin-bottom:6px;color:var(--accent)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:14px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.card h4{margin:0 0 4px;font-family:var(--display);font-size:16px}
+.card p,.card ul{margin:4px 0;font-size:15px}
+/* SVG palette */
+svg text{font-family:var(--mono);font-size:12px;fill:var(--ink)}
+svg .t-muted{fill:var(--muted)} svg .t-acc{fill:var(--accent)} svg .t-amb{fill:var(--amber)} svg .t-rose{fill:var(--rose)}
+svg .t-vio{fill:var(--violet)} svg .t-blue{fill:var(--blue)} svg .t-green{fill:var(--green)} svg .t-b{font-weight:600}
+svg .ln{stroke:var(--ink);fill:none;stroke-width:1.5} svg .ln-m{stroke:var(--muted);fill:none;stroke-width:1.2}
+svg .dash{stroke-dasharray:5 4}
+svg .s-acc{stroke:var(--accent);fill:none;stroke-width:2.2} svg .s-amb{stroke:var(--amber);fill:none;stroke-width:2.2}
+svg .s-rose{stroke:var(--rose);fill:none;stroke-width:2.2} svg .s-vio{stroke:var(--violet);fill:none;stroke-width:2.2}
+svg .s-blue{stroke:var(--blue);fill:none;stroke-width:2.2} svg .s-green{stroke:var(--green);fill:none;stroke-width:2.2}
+svg .f-acc{fill:var(--accent)} svg .f-amb{fill:var(--amber)} svg .f-rose{fill:var(--rose)} svg .f-vio{fill:var(--violet)}
+svg .f-blue{fill:var(--blue)} svg .f-green{fill:var(--green)}
+svg .f-soft{fill:var(--accent-soft)} svg .f-ambsoft{fill:var(--amber-soft)} svg .f-rosesoft{fill:var(--rose-soft)}
+svg .f-surf{fill:var(--surface)} svg .f-bg{fill:var(--bg)} svg .f-line{fill:var(--line)} svg .f-ink{fill:var(--ink)}
+@media (max-width:560px){body{font-size:16px} .eq{font-size:13.5px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="f-ink"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="f-acc"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="f-rose"/></marker>
+  </defs>
+</svg>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Pharm 610 · Advanced Drug Delivery · Fall 2026</div>
+  <h1>Polymer &amp; Nanoparticle Characterization</h1>
+  <p class="lede">Review notes built from lecture decks P3 (Polymer Characterization) and P4 (Nanoparticle Characterization). Each topic opens with a picture of how the method works, then the facts you need, then the traps examiners like. Worked calculations and a self-test are at the end.</p>
+</header>
+
+<nav class="topics" aria-label="Topics">
+  <a href="#map">Big picture</a><a href="#mw">MW averages</a><a href="#gpc">GPC</a><a href="#mh">Mark–Houwink</a><a href="#ms">MALDI-ToF</a><a href="#nmr">NMR</a><a href="#tit">Titration</a><a href="#np">Nanoparticles</a><a href="#dls">DLS</a><a href="#sls">SLS</a><a href="#em">TEM/SEM/Cryo</a><a href="#afm">AFM</a><a href="#cmp">Size compare</a><a href="#zeta">Zeta</a><a href="#formulas">Formulas</a><a href="#practice">Practice</a><a href="#quiz">Self-test</a>
+</nav>
+
+<!-- ============ MAP ============ -->
+<section id="map">
+  <div class="eyebrow">Start here</div>
+  <h2>Which technique gives what</h2>
+  <p>Most exam questions are "which method would you use and why". Learn this table first; everything below explains it.</p>
+  <div class="tbl"><table>
+    <tr><th>Technique</th><th>What it gives you</th><th>Type of answer</th></tr>
+    <tr><td><strong>GPC / SEC</strong></td><td>MW distribution, M<sub>n</sub>, M<sub>w</sub>, PDI; branching (with viscometer)</td><td>Relative (conventional calibration) or absolute (light scattering detector)</td></tr>
+    <tr><td><strong>MALDI-ToF</strong></td><td>MW distribution, M<sub>n</sub>, M<sub>w</sub>, PDI, repeat unit, end groups</td><td>Absolute, each chain seen as its own peak</td></tr>
+    <tr><td><strong>¹H NMR</strong></td><td>M<sub>n</sub> by end-group analysis; copolymer ratio</td><td>Average (M<sub>n</sub>)</td></tr>
+    <tr><td><strong>Titration</strong></td><td>M<sub>n</sub> from acidic end groups; % acidic units in a copolymer</td><td>Average (M<sub>n</sub>)</td></tr>
+    <tr><td><strong>SLS</strong></td><td>M<sub>w</sub>, R<sub>g</sub>, A<sub>2</sub>, micelle aggregation number</td><td>Average (M<sub>w</sub>), absolute</td></tr>
+    <tr><td><strong>Viscometry</strong></td><td>Intrinsic viscosity [η] → M<sub>v</sub> (Mark–Houwink)</td><td>Average (M<sub>v</sub>)</td></tr>
+    <tr><td><strong>DLS</strong></td><td>Hydrodynamic size R<sub>h</sub> in liquid, size distribution, PDI</td><td>Intensity-weighted</td></tr>
+    <tr><td><strong>TEM / SEM / Cryo-TEM</strong></td><td>Size, shape, internal structure (TEM), surface (SEM), hydrated state (Cryo)</td><td>Number-weighted, individual particles</td></tr>
+    <tr><td><strong>AFM</strong></td><td>3D surface topography; height with &lt;1 nm vertical resolution</td><td>Number-weighted</td></tr>
+    <tr><td><strong>Zeta potential (ELS)</strong></td><td>Charge at the slipping plane → colloidal stability</td><td>mV</td></tr>
+  </table></div>
+  <div class="key"><b class="lab">Memory hook.</b> Distribution + MW: <strong>GPC, MALDI</strong>. Average MW only: <strong>NMR (M<sub>n</sub>), titration (M<sub>n</sub>), SLS (M<sub>w</sub>), viscometry (M<sub>v</sub>)</strong>. Anything that counts ends (NMR, titration) gives M<sub>n</sub>. Anything that uses scattered light intensity gives M<sub>w</sub>.</div>
+</section>
+
+<!-- ============ MW AVERAGES ============ -->
+<section id="mw">
+  <div class="eyebrow">P3 · Molecular weight</div>
+  <h2>Molecular weight averages</h2>
+  <p>A polymer sample is a mix of chains of different lengths, so "molecular weight" is always an average. Different averages weight the big chains differently.</p>
+  <figure>
+    <svg viewBox="0 0 640 230" role="img" aria-label="Skewed molecular weight distribution with Mn, Mv, Mw, Mz marked in increasing order">
+      <line x1="50" y1="190" x2="610" y2="190" class="ln" marker-end="url(#arr)"/>
+      <line x1="50" y1="190" x2="50" y2="20" class="ln" marker-end="url(#arr)"/>
+      <text x="560" y="212">MW →</text>
+      <text x="14" y="30" transform="rotate(-90 14 30)" text-anchor="end">amount of chains</text>
+      <path d="M70 188 C150 186 190 40 250 40 C320 40 360 150 470 178 C520 186 570 188 600 188" class="s-acc" />
+      <path d="M70 188 C150 186 190 40 250 40 C320 40 360 150 470 178 C520 186 570 188 600 188 Z" class="f-soft" opacity=".6"/>
+      <line x1="250" y1="190" x2="250" y2="34" class="ln-m dash"/><text x="250" y="28" text-anchor="middle" class="t-muted">peak</text>
+      <line x1="270" y1="190" x2="270" y2="60" class="s-blue"/><text x="270" y="56" text-anchor="middle" class="t-blue t-b">Mn</text>
+      <line x1="300" y1="190" x2="300" y2="80" class="s-green"/><text x="300" y="76" text-anchor="middle" class="t-green t-b">Mv</text>
+      <line x1="322" y1="190" x2="322" y2="98" class="s-amb"/><text x="322" y="94" text-anchor="middle" class="t-amb t-b">Mw</text>
+      <line x1="370" y1="190" x2="370" y2="132" class="s-rose"/><text x="370" y="128" text-anchor="middle" class="t-rose t-b">Mz</text>
+      <text x="420" y="60">Mn &lt; Mv &lt; Mw &lt; Mz</text>
+      <text x="420" y="80" class="t-muted">(equal only if every chain</text>
+      <text x="420" y="96" class="t-muted"> is the same length: PDI = 1)</text>
+    </svg>
+    <figcaption>Big chains pull the weight-average to the right. The longer the high-MW tail, the bigger the gap between M<sub>n</sub> and M<sub>w</sub>.</figcaption>
+  </figure>
+  <div class="eq">Mn = ΣNᵢMᵢ / ΣNᵢ &nbsp;&nbsp;&nbsp; Mw = ΣNᵢMᵢ² / ΣNᵢMᵢ &nbsp;&nbsp;&nbsp; PDI (Đ) = Mw / Mn ≥ 1</div>
+  <ul>
+    <li><strong>M<sub>n</sub></strong> (number-average): every chain counts once. Methods that <em>count molecules</em> (end groups by NMR or titration) give M<sub>n</sub>.</li>
+    <li><strong>M<sub>w</sub></strong> (weight-average): heavier chains count more. Light scattering gives M<sub>w</sub> because scattered intensity ∝ M.</li>
+    <li><strong>M<sub>v</sub></strong> (viscosity-average): from intrinsic viscosity; sits between M<sub>n</sub> and M<sub>w</sub>.</li>
+    <li><strong>PDI</strong>: 1.0 = perfectly uniform. The MALDI example in the slides: M<sub>n</sub> 2310, M<sub>w</sub> 2360, Đ = 1.02 (very narrow).</li>
+  </ul>
+</section>
+
+<!-- ============ GPC ============ -->
+<section id="gpc">
+  <div class="eyebrow">P3 · Slides 3–20</div>
+  <h2>GPC / SEC</h2>
+  <p>Gel permeation (size exclusion) chromatography separates polymer chains by their <strong>size in solution</strong> (hydrodynamic volume), not by chemistry. The polymer must <strong>not interact</strong> with the column packing (no adsorption or partition, unlike normal HPLC).</p>
+  <figure>
+    <svg viewBox="0 0 640 260" role="img" aria-label="GPC column: large molecules are excluded from pores and elute first; small molecules enter pores and elute last">
+      <rect x="40" y="20" width="150" height="210" rx="8" class="f-surf" stroke="var(--line)" stroke-width="2"/>
+      <g class="f-line">
+        <circle cx="75" cy="60" r="20"/><circle cx="150" cy="60" r="20"/><circle cx="112" cy="105" r="20"/>
+        <circle cx="72" cy="150" r="20"/><circle cx="152" cy="150" r="20"/><circle cx="112" cy="195" r="20"/>
+      </g>
+      <g fill="none" stroke="var(--muted)" stroke-dasharray="2 3"><circle cx="75" cy="60" r="12"/><circle cx="150" cy="60" r="12"/><circle cx="112" cy="105" r="12"/><circle cx="72" cy="150" r="12"/><circle cx="152" cy="150" r="12"/><circle cx="112" cy="195" r="12"/></g>
+      <circle cx="112" cy="40" r="11" class="f-rose"/><circle cx="112" cy="150" r="11" class="f-rose"/>
+      <circle cx="75" cy="60" r="4" class="f-acc"/><circle cx="150" cy="60" r="4" class="f-acc"/><circle cx="112" cy="105" r="4" class="f-acc"/><circle cx="150" cy="150" r="4" class="f-acc"/>
+      <line x1="210" y1="30" x2="210" y2="220" class="ln" marker-end="url(#arr)"/><text x="218" y="130" class="t-muted">flow</text>
+      <text x="40" y="250" class="t-muted">porous beads (pores dashed)</text>
+      <!-- chromatogram -->
+      <line x1="300" y1="210" x2="620" y2="210" class="ln" marker-end="url(#arr)"/>
+      <line x1="300" y1="210" x2="300" y2="30" class="ln" marker-end="url(#arr)"/>
+      <text x="470" y="236" text-anchor="middle">elution volume / time →</text>
+      <text x="290" y="40" text-anchor="end" class="t-muted">signal</text>
+      <path d="M330 208 C370 208 370 60 400 60 C430 60 430 208 470 208" class="s-rose"/>
+      <path d="M470 208 C510 208 510 100 540 100 C570 100 570 208 610 208" class="s-acc"/>
+      <text x="400" y="50" text-anchor="middle" class="t-rose t-b">large chains</text>
+      <text x="400" y="34" text-anchor="middle" class="t-rose">excluded → elute FIRST</text>
+      <text x="540" y="90" text-anchor="middle" class="t-acc t-b">small chains</text>
+      <text x="540" y="74" text-anchor="middle" class="t-acc">enter pores → elute LAST</text>
+    </svg>
+    <figcaption>Large coils can't fit in the pores, take the short path, and come out first. Small coils wander through the pores and come out last.</figcaption>
+  </figure>
+
+  <h3>Detectors</h3>
+  <div class="grid2">
+    <div class="card"><h4>1 · Concentration: RI, UV-Vis</h4><p>RI detects the refractive-index difference between solvent and solvent + sample (split reference/sample cell). Tells you <em>how much</em> polymer elutes, not its MW.</p></div>
+    <div class="card"><h4>2 · Light scattering (LS)</h4><p>Scattered intensity ∝ MW, so it measures MW directly (absolute). Bigger M → more scattered light.</p></div>
+    <div class="card"><h4>3 · Viscometer</h4><p>Bridge design (DP / IP pressure transducers) measures intrinsic viscosity [η] (IV). Used for universal calibration, Mark–Houwink and branching.</p></div>
+  </div>
+  <div class="eq">RI ∝ (dn/dc)·c &nbsp;·&nbsp; UV ∝ (dA/dc)·c &nbsp;·&nbsp; LS ∝ Mw·(dn/dc)²·c &nbsp;·&nbsp; Visc ∝ IV·c</div>
+  <p class="mono" style="color:var(--muted)">dn/dc = refractive index increment. LS signal depends on (dn/dc)², so dn/dc must be known for absolute MW.</p>
+
+  <h3>Light scattering angles</h3>
+  <figure>
+    <svg viewBox="0 0 640 220" role="img" aria-label="Laser through a flow cell with detectors at 7 degrees (LALS), 90 degrees (RALS), and an array of angles (MALS)">
+      <line x1="20" y1="150" x2="600" y2="150" class="s-rose" marker-end="url(#arrR)"/><text x="30" y="140" class="t-rose">laser</text>
+      <rect x="250" y="130" width="60" height="40" rx="4" class="f-soft" stroke="var(--accent)"/><text x="280" y="190" text-anchor="middle" class="t-muted">sample</text>
+      <path d="M280 150 A170 170 0 0 1 450 150" class="ln-m dash" transform="translate(0,0)"/>
+      <!-- RALS at 90 -->
+      <line x1="280" y1="150" x2="280" y2="40" class="ln dash"/><rect x="262" y="18" width="36" height="22" rx="4" class="f-green"/>
+      <text x="306" y="34" class="t-green t-b">RALS 90°</text>
+      <!-- LALS at 7 -->
+      <line x1="280" y1="150" x2="540" y2="118" class="ln dash"/><rect x="540" y="104" width="36" height="22" rx="4" class="f-amb" transform="rotate(-7 558 115)"/>
+      <text x="500" y="98" class="t-amb t-b">LALS ~7°</text>
+      <!-- MALS ticks -->
+      <g class="f-vio"><circle cx="150" cy="70" r="7"/><circle cx="190" cy="48" r="7"/><circle cx="370" cy="48" r="7"/><circle cx="420" cy="70" r="7"/><circle cx="452" cy="104" r="7"/></g>
+      <text x="20" y="100" class="t-vio t-b">MALS: many angles</text>
+      <text x="20" y="116" class="t-vio">(7°, 30°, 45°, 90°, 135°…)</text>
+    </svg>
+  </figure>
+  <div class="tbl"><table>
+    <tr><th>Detector</th><th>Angle</th><th>Best for</th><th>Catch</th></tr>
+    <tr><td><strong>RALS</strong></td><td class="n">90°</td><td>Small molecules (≤ 20–30 nm)</td><td>Large molecules scatter unevenly with angle (intramolecular interference), so it needs correction / extrapolation to 0°. Not for large or asymmetric molecules.</td></tr>
+    <tr><td><strong>LALS</strong></td><td class="n">~7°</td><td>Large molecules (&gt; 20–30 nm)</td><td>Already close to 0°, so no extrapolation needed. But low signal-to-noise.</td></tr>
+    <tr><td><strong>MALS</strong></td><td class="n">many</td><td>Absolute MW <em>and</em> size (R<sub>g</sub>)</td><td>Angular dependence gives conformation and branching information.</td></tr>
+  </table></div>
+
+  <h3>Three ways to calibrate</h3>
+  <div class="tbl"><table>
+    <tr><th>Calibration</th><th>Detectors</th><th>Standards</th><th>Result</th></tr>
+    <tr><td><strong>1 · Conventional</strong></td><td>One concentration detector (RI or UV)</td><td>A series of standards → log M vs elution volume curve</td><td><strong>Relative</strong>. Depends on standard type. Accurate only if standards and sample have the same chemistry; otherwise comparative only.</td></tr>
+    <tr><td><strong>2 · Universal</strong></td><td>Viscometer + concentration</td><td>Series of standards + one narrow standard to align detectors</td><td><strong>Independent of standard type</strong>, because separation is by hydrodynamic volume ∝ M × [η]</td></tr>
+    <tr><td><strong>3 · Triple / tetra detection</strong></td><td>LS + viscometer + RI (+ UV)</td><td>Only a single narrow standard</td><td><strong>No calibration curve</strong>. Absolute, independent of standard.</td></tr>
+  </table></div>
+  <div class="trap"><b>Trap.</b> Polyethylene and polystyrene with the <em>same MW</em> have different coil sizes in the same solvent, so they elute at different times. That is why conventional calibration with polystyrene standards gives only a <em>relative</em> MW for a different polymer.</div>
+
+  <h3>Branching and shape</h3>
+  <figure>
+    <svg viewBox="0 0 640 170" role="img" aria-label="Linear chain occupies a bigger volume than a branched chain of equal molecular weight">
+      <circle cx="160" cy="85" r="68" class="ln-m dash"/>
+      <path d="M110 60 C140 20 200 30 190 70 C180 110 120 90 130 120 C140 150 200 140 210 110 C220 80 180 60 150 75" class="s-acc"/>
+      <text x="160" y="166" text-anchor="middle" class="t-acc t-b">linear</text>
+      <circle cx="420" cy="85" r="44" class="ln-m dash"/>
+      <path d="M420 85 l-22 -18 m22 18 l25 -14 m-25 14 l-6 30 m6 -30 l20 18 m-42 -36 l-8 -14 m33 4 l10 -12 m-41 52 l-14 8 m34 -16 l14 10" class="s-amb"/>
+      <text x="420" y="166" text-anchor="middle" class="t-amb t-b">branched</text>
+      <text x="510" y="50">At equal MW:</text>
+      <text x="510" y="72" class="t-muted">volume:   L &gt; B</text>
+      <text x="510" y="92" class="t-muted">density:  L &lt; B</text>
+      <text x="510" y="112" class="t-muted">[η]:      L &gt; B</text>
+    </svg>
+    <figcaption>A branched chain packs more mass into a smaller volume, so its intrinsic viscosity is lower. On a Mark–Houwink plot, more branching bends the line downward.</figcaption>
+  </figure>
+  <p><strong>Multi-detector GPC</strong> measures directly: LS intensity, refractive index, UV absorbance, viscosity. It calculates directly: MW (from SLS), R<sub>g</sub>, concentration, composition, [η]. It derives indirectly: R<sub>h</sub>, Mark–Houwink parameters, branching.</p>
+  <div class="eq">Shape factor ρ = R<sub>g</sub> / R<sub>h</sub></div>
+  <div class="tbl"><table>
+    <tr><th>ρ</th><th>Shape</th><th>Why</th></tr>
+    <tr><td class="n">≈ 0.77</td><td>Solid uniform sphere</td><td>Dense; solvent can't get into the core (latex, folded globular protein)</td></tr>
+    <tr><td class="n">≈ 1.5–1.8</td><td>Flexible random coil</td><td>Loose, solvent flows through (typical polymer in good/theta solvent)</td></tr>
+    <tr><td class="n">≥ 2.0</td><td>Rigid rod / extended chain</td><td>Mass far from centre (DNA, Kevlar)</td></tr>
+  </table></div>
+  <p><strong>R<sub>g</sub></strong> = how mass is spread around the centre (static; from SLS/MALS). <strong>R<sub>h</sub></strong> = how the molecule moves through liquid (dynamic; from DLS/viscometry).</p>
+</section>
+
+<!-- ============ MARK-HOUWINK ============ -->
+<section id="mh">
+  <div class="eyebrow">P3 · Slide 11</div>
+  <h2>Mark–Houwink equation</h2>
+  <div class="eq">[η] = K·M<sub>v</sub><sup>a</sup> &nbsp;&nbsp;⇒&nbsp;&nbsp; log[η] = log K + a·log M<sub>v</sub></div>
+  <figure>
+    <svg viewBox="0 0 640 250" role="img" aria-label="log intrinsic viscosity versus log M: slope a is about 2 for rigid rods, 0.7 for coils in good solvent, 0.5 in theta solvent, below 0.5 for hard spheres">
+      <line x1="60" y1="215" x2="400" y2="215" class="ln" marker-end="url(#arr)"/>
+      <line x1="60" y1="215" x2="60" y2="20" class="ln" marker-end="url(#arr)"/>
+      <text x="330" y="238">log M</text><text x="22" y="40" transform="rotate(-90 22 40)" text-anchor="end">log [η]</text>
+      <line x1="80" y1="190" x2="190" y2="30" class="s-rose"/><text x="200" y="36" class="t-rose t-b">a ≈ 2  rigid rod</text>
+      <line x1="80" y1="190" x2="380" y2="85" class="s-amb"/><text x="386" y="86" class="t-amb t-b">a ≈ 0.7  coil, good solvent</text>
+      <line x1="80" y1="190" x2="380" y2="125" class="s-acc"/><text x="386" y="128" class="t-acc t-b">a = 0.5  theta solvent</text>
+      <line x1="80" y1="190" x2="380" y2="178" class="s-vio"/><text x="386" y="180" class="t-vio t-b">a &lt; 0.5  hard sphere</text>
+      <text x="70" y="208" class="t-muted">intercept = log K</text>
+    </svg>
+    <figcaption>Slope = a (shape/solvent quality). Intercept = log K. Most polymers: a = 0.5–0.8.</figcaption>
+  </figure>
+  <div class="key"><b class="lab">Read a value of a.</b> 0.5 → theta solvent (coil just unperturbed). 0.5–0.8 → random coil, higher = better solvent (more swollen). ~2 → rigid rod. Below 0.5 → compact sphere.</div>
+</section>
+
+<!-- ============ MS ============ -->
+<section id="ms">
+  <div class="eyebrow">P3 · Slides 21–29</div>
+  <h2>Mass spectrometry &amp; MALDI-ToF</h2>
+  <figure>
+    <svg viewBox="0 0 640 120" role="img" aria-label="Mass spectrometer: inlet, ion source, mass analyzer, detector, data system, under vacuum">
+      <rect x="150" y="18" width="350" height="84" rx="10" class="f-rosesoft"/>
+      <text x="325" y="114" text-anchor="middle" class="t-rose">under vacuum</text>
+      <g>
+        <rect x="20" y="40" width="100" height="40" rx="6" class="f-surf" stroke="var(--line)"/><text x="70" y="65" text-anchor="middle">Inlet</text>
+        <rect x="165" y="30" width="100" height="58" rx="6" class="f-acc"/><text x="215" y="56" text-anchor="middle" style="fill:var(--surface)" class="t-b">Source</text><text x="215" y="74" text-anchor="middle" style="fill:var(--surface)">ionize</text>
+        <rect x="280" y="30" width="100" height="58" rx="6" class="f-acc"/><text x="330" y="56" text-anchor="middle" style="fill:var(--surface)" class="t-b">Analyzer</text><text x="330" y="74" text-anchor="middle" style="fill:var(--surface)">sort by m/z</text>
+        <rect x="395" y="30" width="100" height="58" rx="6" class="f-acc"/><text x="445" y="56" text-anchor="middle" style="fill:var(--surface)" class="t-b">Detector</text><text x="445" y="74" text-anchor="middle" style="fill:var(--surface)">count ions</text>
+        <rect x="525" y="40" width="100" height="40" rx="6" class="f-surf" stroke="var(--line)"/><text x="575" y="65" text-anchor="middle">Spectrum</text>
+      </g>
+      <g class="ln" marker-end="url(#arr)"><line x1="120" y1="60" x2="162" y2="60"/><line x1="265" y1="60" x2="277" y2="60"/><line x1="380" y1="60" x2="392" y2="60"/><line x1="495" y1="60" x2="522" y2="60"/></g>
+    </svg>
+  </figure>
+  <ul>
+    <li><strong>Spectrum peaks</strong>: molecular ion M<sup>+•</sup>; base peak = the tallest; fragment peaks = more stable cations; isotope peaks M+1, M+2…</li>
+    <li><strong>Hard ionization</strong> (molecule can break apart): <strong>EI</strong> (electron ionization, high-energy electron beam on gas-phase molecules) and <strong>CI</strong> (chemical ionization with a reagent gas such as methane).</li>
+    <li><strong>Soft ionization</strong> (keeps big molecules intact, so it is used for polymers): <strong>ESI</strong> and <strong>MALDI</strong>.</li>
+    <li><strong>ESI, 3 steps</strong>: (1) spray of fine charged droplets → (2) solvent evaporates → (3) ions ejected from the highly charged droplets.</li>
+    <li><strong>MALDI</strong>: laser is fired at a <em>matrix</em> mixed with the sample. The matrix absorbs most of the laser energy and ionizes, then passes charge gently to the analyte.</li>
+  </ul>
+  <figure>
+    <svg viewBox="0 0 640 190" role="img" aria-label="MALDI-ToF: laser hits matrix plate, ions fly down a 1 to 2 metre tube, lighter ions reach the detector first">
+      <rect x="20" y="70" width="18" height="80" class="f-ink"/><text x="10" y="168" class="t-muted">matrix + sample</text>
+      <line x1="80" y1="20" x2="40" y2="78" class="s-rose" marker-end="url(#arrR)"/><text x="86" y="26" class="t-rose t-b">laser</text>
+      <rect x="60" y="80" width="480" height="60" rx="8" class="f-surf" stroke="var(--line)" stroke-width="2"/>
+      <text x="300" y="70" text-anchor="middle" class="t-muted">field-free flight tube (1–2 m)</text>
+      <circle cx="420" cy="110" r="7" class="f-acc"/><text x="420" y="132" text-anchor="middle" class="t-acc">A1 light</text>
+      <circle cx="230" cy="110" r="13" class="f-amb"/><text x="230" y="153" text-anchor="middle" class="t-amb">A2 heavy</text>
+      <line x1="430" y1="110" x2="520" y2="110" class="s-acc" marker-end="url(#arrA)"/>
+      <line x1="246" y1="110" x2="300" y2="110" class="ln" marker-end="url(#arr)"/>
+      <rect x="548" y="80" width="18" height="60" class="f-vio"/><text x="580" y="115" class="t-vio t-b">detector</text>
+      <text x="300" y="182" text-anchor="middle">same charge, same start → lighter ion arrives FIRST</text>
+    </svg>
+  </figure>
+  <figure>
+    <svg viewBox="0 0 640 200" role="img" aria-label="MALDI spectrum of a polymer: a comb of peaks under a bell envelope; spacing between peaks equals the repeat unit mass">
+      <line x1="40" y1="170" x2="620" y2="170" class="ln" marker-end="url(#arr)"/><text x="580" y="192">m/z</text>
+      <path d="M70 168 C180 168 230 40 320 40 C410 40 460 168 590 168" class="ln-m dash"/>
+      <g class="s-blue" stroke-width="3">
+        <line x1="110" y1="170" x2="110" y2="160"/><line x1="150" y1="170" x2="150" y2="135"/><line x1="190" y1="170" x2="190" y2="96"/><line x1="230" y1="170" x2="230" y2="64"/><line x1="270" y1="170" x2="270" y2="46"/><line x1="310" y1="170" x2="310" y2="40"/><line x1="350" y1="170" x2="350" y2="44"/><line x1="390" y1="170" x2="390" y2="60"/><line x1="430" y1="170" x2="430" y2="90"/><line x1="470" y1="170" x2="470" y2="128"/><line x1="510" y1="170" x2="510" y2="152"/><line x1="550" y1="170" x2="550" y2="164"/>
+      </g>
+      <line x1="390" y1="26" x2="430" y2="26" class="ln" marker-start="url(#arr)" marker-end="url(#arr)"/>
+      <text x="440" y="30" class="t-b">Δm/z = one repeat unit</text>
+      <text x="440" y="48" class="t-muted">(44 Da = PEG, 58 Da = PPG)</text>
+    </svg>
+    <figcaption>Each peak is one chain length. From the peak heights you get M<sub>n</sub>, M<sub>w</sub> and PDI. Shift of the whole comb after a reaction (the slide's "240 Da" shift) tells you the <strong>end group</strong> changed.</figcaption>
+  </figure>
+  <div class="key"><b class="lab">Why MALDI-ToF for polymers.</b> Soft ionization keeps chains intact; ToF works for very heavy ions. Used for DNA, lipids, proteins, polymers. Gives M<sub>n</sub>, M<sub>w</sub>, PDI and end-group analysis.</div>
+</section>
+
+<!-- ============ NMR ============ -->
+<section id="nmr">
+  <div class="eyebrow">P3 · Slides 30–41</div>
+  <h2>¹H NMR: M<sub>n</sub> and copolymer ratio</h2>
+  <p>Four things you read from a ¹H spectrum: <strong>chemical shift</strong> (environment), <strong>integration</strong> (area ∝ number of H), <strong>splitting</strong> (N+1 rule: N neighbouring H give N+1 lines), <strong>coupling constant J</strong> (line spacing, Hz).</p>
+  <p>The whole method is just this: <strong>area under a peak ∝ number of protons</strong>. Divide each area by how many H that group has, and you get relative moles.</p>
+
+  <h3>End-group analysis → M<sub>n</sub> (PEG diacrylate example)</h3>
+  <p class="mono">H₂C=CH–CO–(OCH₂CH₂)ₙ–O–CO–CH=CH₂ &nbsp; FW: 55.06 | (44.05)ₙ | 71.06</p>
+  <figure>
+    <svg viewBox="0 0 640 200" role="img" aria-label="NMR spectrum: vinyl end-group peaks at 5.8 to 6.4 ppm with integrals 10.00, 9.66, 10.17; repeat-unit methylene peaks at 3.6 to 4.3 ppm with integrals 20.79 and 151.87">
+      <line x1="30" y1="160" x2="620" y2="160" class="ln"/>
+      <g class="t-muted"><text x="40" y="180">6.5</text><text x="130" y="180">6.0</text><text x="230" y="180">5.0</text><text x="330" y="180">4.5</text><text x="430" y="180">4.0</text><text x="530" y="180">3.5 ppm</text></g>
+      <g class="s-amb"><line x1="70" y1="160" x2="70" y2="110"/><line x1="76" y1="160" x2="76" y2="118"/><line x1="115" y1="160" x2="115" y2="108"/><line x1="122" y1="160" x2="122" y2="115"/><line x1="160" y1="160" x2="160" y2="110"/><line x1="166" y1="160" x2="166" y2="118"/></g>
+      <text x="118" y="96" text-anchor="middle" class="t-amb t-b">vinyl end groups (6 H)</text>
+      <text x="118" y="80" text-anchor="middle" class="t-amb">10.00 + 9.66 + 10.17</text>
+      <g class="s-acc"><line x1="395" y1="160" x2="395" y2="105"/><line x1="401" y1="160" x2="401" y2="112"/><line x1="495" y1="160" x2="495" y2="20"/><line x1="502" y1="160" x2="502" y2="30"/></g>
+      <text x="440" y="70" text-anchor="middle" class="t-acc t-b">repeat unit –OCH₂CH₂– (4 H)</text>
+      <text x="440" y="88" text-anchor="middle" class="t-acc">20.79 + 151.87</text>
+    </svg>
+  </figure>
+  <div class="work"><ol>
+    <li><strong>Integral per proton</strong> (from the end groups, which you know there are 2 of): (10.00 + 9.66 + 10.17) / 6 = <strong>4.97</strong></li>
+    <li><strong>Repeat units n</strong>: (20.79 + 151.87) / 4 H = 43.17 → 43.17 / 4.97 = <strong>8.69</strong> (≈ 9)</li>
+    <li><strong>M<sub>n</sub></strong> = end groups + n × repeat unit = (55.06 + 71.06) + 44.05 × 8.69 ≈ 126.1 + 382.8 = <span class="ans">≈ 509 g/mol</span></li>
+  </ol>
+  <p style="font-size:14px;color:var(--muted)">One-line version: 6 / (DP × 4) = I<sub>end</sub> / I<sub>repeat</sub> → DP = 6 × 172.66 / (4 × 29.83) = 8.69. (The slide writes 71.60 for one end group in the final sum; the structure gives 71.06. Either way M<sub>n</sub> ≈ 509.)</p></div>
+
+  <h3>Copolymer ratio (PEG-b-PPG-b-PEG example)</h3>
+  <p>PPG has a unique CH₃ signal (~1.0 ppm, 3 H). Both blocks overlap at 3.0–4.0 ppm: EG gives 4 H (–CH₂CH₂–), PG gives 3 H (–CH– + –CH₂–).</p>
+  <div class="work"><ol>
+    <li><strong>PG</strong>: methyl integral 30 / 3 H = <strong>10</strong></li>
+    <li><strong>EG</strong>: backbone 3.0–4.0 ppm = 31.50 + 18.76 + 13.10 = 63.36. Remove the PG part: PG has 3 backbone H, the same as its 3 methyl H, so subtract 30. (63.36 − 30) / 4 = <strong>8.34</strong></li>
+    <li><strong>mol % EG</strong> = 8.34 / (8.34 + 10) × 100 = <span class="ans">45.5 %</span> (PG = 54.5 %)</li>
+  </ol></div>
+  <div class="trap"><b>Trap.</b> Always divide by the number of H in that group <em>before</em> comparing. And when two signals overlap, subtract the known contribution first (here the PG backbone = PG methyl integral, because both are 3 H).</div>
+</section>
+
+<!-- ============ TITRATION ============ -->
+<section id="tit">
+  <div class="eyebrow">P3 · Slides 42–43</div>
+  <h2>Titration</h2>
+  <div class="grid2">
+    <div class="work" style="margin:0"><strong>% acidic units (copolymer)</strong><ol>
+      <li>0.5 g copolymer used 5 mL of 1 M NaOH → 5 mmol = 0.005 mol COOH</li>
+      <li>Mass of acrylic acid = 0.005 × 72 = 0.36 g</li>
+      <li>0.36 / 0.5 × 100 = <span class="ans">72 % w/w PAA</span></li></ol></div>
+    <div class="work" style="margin:0"><strong>M<sub>n</sub> by end-group assay</strong><p class="mono" style="margin:4px 0">HOOC~~~~COOH + 2 NaOH</p><ol>
+      <li>12 g polymer used 6 mL of 1 M NaOH → 0.006 mol COOH</li>
+      <li>2 COOH per chain → 0.006 / 2 = 0.003 mol chains</li>
+      <li>M<sub>n</sub> = 12 / 0.003 = <span class="ans">4000 g/mol</span></li></ol></div>
+  </div>
+  <div class="key"><b class="lab">Pattern.</b> mol NaOH = M × V(L) = mol acid groups. For M<sub>n</sub>: divide by acid groups per chain, then M<sub>n</sub> = mass / mol chains. For composition: mol × FW of the acid monomer = mass of acidic units.</div>
+  <div class="trap"><b>Trap.</b> Forgetting to divide by 2 for a chain with two COOH ends doubles your mol of chains and halves M<sub>n</sub>.</div>
+</section>
+
+<!-- ============ NP ============ -->
+<section id="np">
+  <div class="eyebrow">P4 · Slide 2</div>
+  <h2>Nanoparticles: what matters</h2>
+  <p><strong>Definition</strong>: at least 50 % of particles have one or more external dimensions between <strong>1 and 100 nm</strong>.</p>
+  <div class="grid2">
+    <div class="card"><h4>Size</h4><p>Functionalization capacity, fluid drag and diffusion, optical properties, uptake into cells.</p></div>
+    <div class="card"><h4>Shape (morphology)</h4><p>Surface binding, cellular uptake and release.</p></div>
+    <div class="card"><h4>Surface charge</h4><p>Colloidal stability, aggregation, interactions with the environment.</p></div>
+    <div class="card"><h4>Porosity</h4><p>Large internal surface area.</p></div>
+  </div>
+</section>
+
+<!-- ============ DLS ============ -->
+<section id="dls">
+  <div class="eyebrow">P4 · DLS</div>
+  <h2>Dynamic light scattering (DLS)</h2>
+  <p>Particles in liquid jiggle by <strong>Brownian motion</strong>. Small particles move fast; big ones move slowly. A laser shines through; the scattered light flickers as particles move. DLS measures <em>how fast the flicker changes</em> → diffusion coefficient D → size.</p>
+  <div class="eq">Stokes–Einstein: &nbsp; D = k<sub>B</sub>T / (6πηR<sub>h</sub>) &nbsp;&nbsp;⇒&nbsp;&nbsp; R<sub>h</sub> = k<sub>B</sub>T / (6πηD)</div>
+  <p class="mono" style="color:var(--muted)">D diffusion coeff. (m²/s) · k<sub>B</sub> Boltzmann · T temperature (K) · η viscosity (Pa·s) · R<sub>h</sub> hydrodynamic radius (m)</p>
+  <figure>
+    <svg viewBox="0 0 640 300" role="img" aria-label="Small particles give fast low-amplitude intensity fluctuations and an early-decaying correlation function; large particles give slow high-amplitude fluctuations and a delayed decay">
+      <text x="20" y="22" class="t-acc t-b">small particles: fast, low amplitude</text>
+      <path d="M20 70 l8 -10 l8 14 l8 -12 l8 10 l8 -14 l8 12 l8 -8 l8 12 l8 -14 l8 10 l8 -10 l8 12 l8 -12 l8 10 l8 -12 l8 14 l8 -10 l8 8 l8 -12 l8 12 l8 -8 l8 10 l8 -12 l8 10 l8 -6 l8 10 l8 -12" class="s-acc"/>
+      <text x="20" y="122" class="t-amb t-b">large particles: slow, high amplitude</text>
+      <path d="M20 170 C45 130 70 130 90 170 C110 205 130 205 155 160 C175 125 200 130 220 175 C240 205 260 200 280 155" class="s-amb"/>
+      <text x="150" y="222" text-anchor="middle" class="t-muted">scattered intensity vs time</text>
+      <!-- correlogram -->
+      <line x1="340" y1="250" x2="620" y2="250" class="ln" marker-end="url(#arr)"/>
+      <line x1="340" y1="250" x2="340" y2="30" class="ln" marker-end="url(#arr)"/>
+      <text x="480" y="275">log delay time τ</text>
+      <text x="326" y="40" transform="rotate(-90 326 40)" text-anchor="end">correlation g₂−1</text>
+      <path d="M345 60 C400 60 420 62 440 110 C455 160 470 245 520 247 L615 247" class="s-acc"/>
+      <path d="M345 60 C450 60 480 62 505 110 C520 160 540 245 585 247 L615 247" class="s-amb"/>
+      <line x1="340" y1="60" x2="352" y2="60" class="ln"/><text x="358" y="52" class="t-b">intercept</text>
+            <text x="360" y="215" class="t-acc">small: early</text>
+      <text x="525" y="120" class="t-amb">large: later</text>
+    </svg>
+    <figcaption>Flat start near the intercept = particles have barely moved; the curve then drops to the baseline. The decay time gives D. A smooth single drop = monodisperse; a stretched tail = polydisperse.</figcaption>
+  </figure>
+  <div class="grid2">
+    <div class="card"><h4>DLS facts</h4><ul>
+      <li>Suspension measurement, fast</li><li>Size = <strong>hydrodynamic</strong> radius, ≈ 5 nm to ≈ 10 µm</li><li>Distribution is <strong>intensity-based</strong></li><li><strong>Strongly biased to large particles</strong></li><li>No shape information</li></ul></div>
+    <div class="card"><h4>Why biased to big particles</h4><p>Scattered intensity ∝ d⁶ (Rayleigh). One 3 µm particle out-shines many 1 µm ones.</p></div>
+  </div>
+  <figure>
+    <svg viewBox="0 0 640 210" role="img" aria-label="Three particles of 1, 2 and 3 micrometres: number-weighted 33 percent each; volume-weighted 2.8, 22.2, 75 percent; intensity-weighted 0.1, 8.1, 91.8 percent">
+      <line x1="30" y1="170" x2="620" y2="170" class="ln-m"/>
+      <g>
+        <text x="110" y="198" text-anchor="middle" class="t-b">Number (∝ N)</text>
+        <rect x="60" y="120" width="28" height="50" class="f-blue"/><rect x="96" y="120" width="28" height="50" class="f-acc"/><rect x="132" y="120" width="28" height="50" class="f-rose"/>
+        <text x="110" y="112" text-anchor="middle">33 / 33 / 33 %</text>
+        <text x="310" y="198" text-anchor="middle" class="t-b">Volume (∝ d³)</text>
+        <rect x="260" y="166" width="28" height="4" class="f-blue"/><rect x="296" y="137" width="28" height="33" class="f-acc"/><rect x="332" y="57" width="28" height="113" class="f-rose"/>
+        <text x="310" y="49" text-anchor="middle">2.8 / 22 / 75 %</text>
+        <text x="510" y="198" text-anchor="middle" class="t-b">Intensity (∝ d⁶)</text>
+        <rect x="460" y="169" width="28" height="1" class="f-blue"/><rect x="496" y="158" width="28" height="12" class="f-acc"/><rect x="532" y="32" width="28" height="138" class="f-rose"/>
+        <text x="510" y="24" text-anchor="middle">0.1 / 8 / 92 %</text>
+      </g>
+      <g><rect x="40" y="10" width="10" height="10" class="f-blue"/><text x="56" y="19">1 µm</text><rect x="100" y="10" width="10" height="10" class="f-acc"/><text x="116" y="19">2 µm</text><rect x="160" y="10" width="10" height="10" class="f-rose"/><text x="176" y="19">3 µm</text></g>
+    </svg>
+    <figcaption>Same three particles, three weightings. This is why DLS (intensity) gives a bigger "average size" than TEM (number).</figcaption>
+  </figure>
+  <h3>Reading correlation-function quality (Assignment III)</h3>
+  <div class="tbl"><table>
+    <tr><th>What you see</th><th>Means</th></tr>
+    <tr><td>Smooth single decay, intercept ≈ 0.8–0.95, clean baseline</td><td><strong>Good measurement</strong></td></tr>
+    <tr><td>Lower intercept + decay shifted to <em>shorter</em> times</td><td><strong>Multiple scattering</strong> (too concentrated / turbid; size looks too small)</td></tr>
+    <tr><td>Very low intercept (near 0), uncorrelated background light</td><td><strong>Fluorescence</strong></td></tr>
+    <tr><td>Intercept &gt; 1, noisy bumpy tail</td><td><strong>Number fluctuations</strong> (too few particles, or a few big aggregates)</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ SLS ============ -->
+<section id="sls">
+  <div class="eyebrow">P4 · SLS</div>
+  <h2>Static light scattering (SLS)</h2>
+  <p>SLS looks at the <em>average</em> scattered intensity (not its flicker). Intensity ∝ M × c, so it gives <strong>M<sub>w</sub></strong>, R<sub>g</sub> (≈ 5 nm to ≈ 1 µm), A<sub>2</sub>, and the <strong>aggregation number of micelles</strong>. Also biased to large particles.</p>
+  <div class="eq">Rayleigh: &nbsp; Kc / R<sub>θ</sub> = (1/M<sub>w</sub> + 2A<sub>2</sub>c) · P(θ) &nbsp;&nbsp;&nbsp; K = 4π²/(λ₀⁴N<sub>A</sub>) · (n₀ dn/dc)²</div>
+  <ul>
+    <li><strong>R<sub>θ</sub></strong> Rayleigh ratio (scattered / incident light) · <strong>A<sub>2</sub></strong> second virial coefficient · <strong>P(θ)</strong> form factor (angle dependence; depends on size and shape vs wavelength)</li>
+    <li>Small particles (λ ≫ size): P(θ) = 1 → <strong>Debye equation</strong>: Kc/R = 1/M<sub>w</sub> + 2A<sub>2</sub>c</li>
+  </ul>
+  <figure>
+    <svg viewBox="0 0 640 240" role="img" aria-label="Debye plot: Kc/R versus concentration is a straight line; intercept equals 1 over Mw; slope equals 2 A2">
+      <line x1="70" y1="200" x2="420" y2="200" class="ln" marker-end="url(#arr)"/>
+      <line x1="70" y1="200" x2="70" y2="20" class="ln" marker-end="url(#arr)"/>
+      <text x="360" y="224">concentration c</text><text x="30" y="40" transform="rotate(-90 30 40)" text-anchor="end">Kc / R</text>
+      <line x1="70" y1="150" x2="400" y2="50" class="s-acc"/>
+      <g class="f-rose"><circle cx="130" cy="132" r="5"/><circle cx="190" cy="114" r="5"/><circle cx="250" cy="96" r="5"/><circle cx="310" cy="77" r="5"/><circle cx="370" cy="59" r="5"/></g>
+      <circle cx="70" cy="150" r="6" class="f-amb"/>
+      <text x="80" y="174" class="t-amb t-b">intercept = 1/Mw</text>
+      <path d="M300 80 L360 80 L360 62" class="ln-m"/><text x="366" y="90" class="t-muted">slope = 2A₂</text>
+      <text x="440" y="60" class="t-b">Then:</text>
+      <text x="440" y="82">Mw = 1 / intercept</text>
+      <text x="440" y="104">Nagg = Mw(micelle)</text>
+      <text x="476" y="122">/ M(unimer)</text>
+      <text x="440" y="148" class="t-muted">A₂ &gt; 0 → good solvent,</text>
+      <text x="440" y="166" class="t-muted">particles repel, stable</text>
+    </svg>
+  </figure>
+  <div class="trap"><b>Trap.</b> SLS gives R<sub>g</sub> (mass distribution) and M<sub>w</sub>. DLS gives R<sub>h</sub> (motion). Don't swap them.</div>
+</section>
+
+<!-- ============ EM ============ -->
+<section id="em">
+  <div class="eyebrow">P4 · Electron microscopy</div>
+  <h2>TEM, SEM and Cryo-TEM</h2>
+  <figure>
+    <svg viewBox="0 0 640 276" role="img" aria-label="TEM: beam passes through a thin sample to a detector below. SEM: focused beam scans the surface and secondary electrons are collected by a side detector">
+      <text x="160" y="18" text-anchor="middle" class="t-b">TEM: electrons go THROUGH</text>
+      <rect x="140" y="28" width="40" height="22" class="f-ink"/><text x="190" y="44" class="t-muted">gun</text>
+      <path d="M160 50 L130 120 L190 120 Z" class="f-soft"/>
+      <rect x="110" y="120" width="100" height="8" class="f-amb"/><text x="216" y="128" class="t-amb">thin sample (&lt;200 nm)</text>
+      <path d="M130 128 L100 230 L220 230 L190 128 Z" class="f-soft"/>
+      <rect x="90" y="230" width="140" height="10" class="f-vio"/><text x="160" y="254" text-anchor="middle" class="t-vio">detector BELOW → 2D projection,</text><text x="160" y="268" text-anchor="middle" class="t-vio">internal structure</text>
+      <text x="480" y="18" text-anchor="middle" class="t-b">SEM: beam SCANS the surface</text>
+      <rect x="460" y="28" width="40" height="22" class="f-ink"/>
+      <path d="M480 50 L470 180 L490 180 Z" class="f-soft"/>
+      <path d="M440 120 h80" class="ln-m dash" marker-end="url(#arr)"/><text x="528" y="124" class="t-muted">scan</text>
+      <g class="f-amb"><circle cx="440" cy="196" r="14"/><circle cx="472" cy="192" r="16"/><circle cx="506" cy="196" r="13"/></g>
+      <rect x="410" y="210" width="130" height="8" class="f-line"/>
+      <rect x="560" y="150" width="40" height="22" rx="4" class="f-vio"/><text x="580" y="144" text-anchor="middle" class="t-vio">SE det.</text>
+      <path d="M478 184 C510 160 535 160 556 160" class="s-vio dash" marker-end="url(#arr)"/>
+      <text x="480" y="244" text-anchor="middle" class="t-vio">secondary electrons → surface topography</text>
+    </svg>
+  </figure>
+  <div class="tbl"><table>
+    <tr><th></th><th>TEM</th><th>SEM</th><th>Cryo-TEM (Cryo-EM)</th></tr>
+    <tr><td><strong>Sample state</strong></td><td>Dry, high vacuum</td><td>Dry, high vacuum or low pressure</td><td>Flash-frozen solution (vitrified ice), <strong>no drying or staining</strong></td></tr>
+    <tr><td><strong>Size range</strong></td><td class="n">&lt; 1 nm – &lt; 1 µm</td><td class="n">≈ 2–3 nm – &gt; 10 µm</td><td class="n">&lt; 1 – ≈ 100 nm</td></tr>
+    <tr><td><strong>Shows</strong></td><td>2D projection, sub-nm morphology, <strong>internal structure</strong>. Resolution 0.05–0.1 nm.</td><td>2D image of <strong>surface</strong>, single particles</td><td>2D projection + <strong>3D reconstruction</strong> (tomography); native hydrated state</td></tr>
+    <tr><td><strong>Beam</strong></td><td>High energy</td><td>Lower energy than TEM; limited penetration depth</td><td>OK for beam-sensitive materials</td></tr>
+    <tr><td><strong>Downsides</strong></td><td>Very expensive</td><td>Surface only</td><td>Very low S/N (blurry), high cost, highly trained users</td></tr>
+    <tr><td><strong>Weighting</strong></td><td colspan="3">Number-based size distribution (you count individual particles)</td></tr>
+  </table></div>
+  <div class="grid2">
+    <div class="card"><h4>Cryo-TEM sample prep</h4><p>(I) Apply sample to grid and blot to a thin film → (II) plunge-freeze in liquid ethane (≈ −160 °C) → (III) particles trapped in vitrified (glassy) ice.</p></div>
+    <div class="card"><h4>Electron tomography</h4><p>Tilt the sample through many angles, take an image at each, rebuild a 3D model (e.g. iron oxide NPs sitting inside liposome bilayers).</p></div>
+  </div>
+  <div class="key"><b class="lab">Choosing (Assignment III style).</b> Dried surface shape → <strong>SEM</strong>. Size + internal structure → <strong>TEM</strong>. Hydrated, near-native, aggregation state → <strong>Cryo-TEM</strong>. Does shape survive drying → <strong>Cryo-TEM vs SEM</strong>, compare.</div>
+</section>
+
+<!-- ============ AFM ============ -->
+<section id="afm">
+  <div class="eyebrow">P4 · AFM</div>
+  <h2>Atomic force microscopy (AFM)</h2>
+  <figure>
+    <svg viewBox="0 0 640 210" role="img" aria-label="AFM: a sharp tip on a cantilever traces the surface; a laser reflects off the cantilever onto a photodiode to record height">
+      <rect x="40" y="170" width="560" height="14" class="f-line"/><text x="320" y="202" text-anchor="middle" class="t-muted">hard substrate (sample must be deposited on it)</text>
+      <path d="M40 170 L120 170 C130 170 135 140 160 140 C185 140 190 170 200 170 L300 170 C310 170 316 130 345 130 C374 130 380 170 390 170 L600 170" class="f-ambsoft" stroke="var(--amber)" stroke-width="2"/>
+      <path d="M150 70 L330 70" class="ln" stroke-width="5"/>
+      <path d="M318 70 L330 112 L342 70 Z" class="f-ink"/>
+      <rect x="120" y="58" width="40" height="22" class="f-ink"/>
+      <line x1="450" y1="20" x2="300" y2="66" class="s-rose" marker-end="url(#arrR)"/>
+      <line x1="300" y1="66" x2="470" y2="96" class="s-rose dash" marker-end="url(#arrR)"/>
+      <text x="456" y="18" class="t-rose t-b">laser</text>
+      <rect x="474" y="84" width="40" height="28" rx="4" class="f-vio"/><text x="522" y="104" class="t-vio t-b">photodiode</text>
+      <text x="160" y="52" class="t-muted">cantilever + tip</text>
+      <text x="345" y="122" text-anchor="middle" class="t-amb">height</text>
+    </svg>
+    <figcaption>Tip–sample force bends the cantilever; the laser spot moves on the photodiode. Scanning gives a 3D height map.</figcaption>
+  </figure>
+  <ul>
+    <li>Works <strong>dry and in liquid</strong></li>
+    <li>Resolution: ≈ 10–20 nm lateral, <strong>&lt; 1 nm vertical</strong> (so trust the height)</li>
+    <li>Number-based size distribution; <strong>3D</strong> shape imaging</li>
+    <li>Sample must be on a <strong>hard surface</strong></li>
+  </ul>
+</section>
+
+<!-- ============ COMPARE ============ -->
+<section id="cmp">
+  <div class="eyebrow">Classic exam question</div>
+  <h2>Why DLS &gt; TEM &gt; AFM height</h2>
+  <figure>
+    <svg viewBox="0 0 640 230" role="img" aria-label="Same particle measured three ways: DLS includes the hydrated shell; TEM sees the dried projected particle; AFM sees a flattened particle on a substrate">
+      <text x="110" y="20" text-anchor="middle" class="t-b">DLS (in water)</text>
+      <circle cx="110" cy="105" r="72" class="f-soft" stroke="var(--accent)" stroke-dasharray="5 4"/>
+      <circle cx="110" cy="105" r="46" class="f-amb"/>
+      <line x1="38" y1="190" x2="182" y2="190" class="s-acc" marker-start="url(#arrA)" marker-end="url(#arrA)"/>
+      <text x="110" y="212" text-anchor="middle" class="t-acc">hydrodynamic d (largest)</text>
+      <text x="320" y="20" text-anchor="middle" class="t-b">TEM (dried)</text>
+      <circle cx="320" cy="105" r="50" class="f-amb"/>
+      <line x1="270" y1="190" x2="370" y2="190" class="ln" marker-start="url(#arr)" marker-end="url(#arr)"/>
+      <text x="320" y="212" text-anchor="middle">projected d, shell collapsed</text>
+      <text x="530" y="20" text-anchor="middle" class="t-b">AFM (on surface)</text>
+      <rect x="440" y="160" width="180" height="10" class="f-line"/>
+      <path d="M465 160 C470 115 590 115 595 160 Z" class="f-amb"/>
+      <line x1="610" y1="160" x2="610" y2="124" class="s-rose" marker-start="url(#arrR)" marker-end="url(#arrR)"/>
+      <text x="530" y="212" text-anchor="middle" class="t-rose">height (smallest): flattened</text>
+    </svg>
+  </figure>
+  <ul>
+    <li><strong>DLS</strong> (e.g. 180 nm): hydrodynamic diameter includes the solvation layer / swollen corona; intensity-weighted (d⁶) so big particles push it up.</li>
+    <li><strong>TEM</strong> (e.g. 130 nm): dried, 2D projected; hydrated shell collapsed or invisible (low contrast); number-weighted.</li>
+    <li><strong>AFM height</strong> (e.g. 95 nm): soft particles flatten on the substrate (adhesion, tip force).</li>
+    <li>Other microscopy differences: SEM metal coating adds a few nm; beam damage shrinks polymers; limited particle counts; image threshold choice.</li>
+  </ul>
+</section>
+
+<!-- ============ ZETA ============ -->
+<section id="zeta">
+  <div class="eyebrow">P4 · Zeta potential</div>
+  <h2>Zeta potential</h2>
+  <p>A charged particle in water attracts a layer of opposite ions. When it moves, some liquid moves with it. The boundary between "moves with the particle" and "stays behind" is the <strong>slipping plane</strong>. The potential there is the <strong>zeta potential (ζ)</strong>.</p>
+  <figure>
+    <svg viewBox="0 0 640 260" role="img" aria-label="Electrical double layer: negative particle, Stern layer of bound positive ions, slipping plane, diffuse layer; potential decays with distance and the value at the slipping plane is the zeta potential">
+      <circle cx="140" cy="130" r="58" class="f-ink"/>
+      <text x="140" y="135" text-anchor="middle" style="fill:var(--surface)" class="t-b">− − −</text>
+      <g class="f-rose">
+        <circle cx="140" cy="62" r="6"/><circle cx="140" cy="198" r="6"/><circle cx="72" cy="130" r="6"/><circle cx="208" cy="130" r="6"/>
+        <circle cx="92" cy="82" r="6"/><circle cx="188" cy="82" r="6"/><circle cx="92" cy="178" r="6"/><circle cx="188" cy="178" r="6"/>
+      </g>
+      <circle cx="140" cy="130" r="82" class="s-acc dash"/>
+      <g class="f-rose" opacity=".55"><circle cx="40" cy="60" r="5"/><circle cx="250" cy="60" r="5"/><circle cx="255" cy="200" r="5"/><circle cx="35" cy="205" r="5"/><circle cx="140" cy="20" r="5"/></g>
+      <g class="f-blue" opacity=".6"><circle cx="20" cy="130" r="5"/><circle cx="262" cy="130" r="5"/><circle cx="140" cy="245" r="5"/></g>
+      <text x="200" y="40" class="t-rose">Stern layer</text>
+      <text x="222" y="104" class="t-acc t-b">slipping plane</text>
+      <text x="196" y="236" class="t-muted">diffuse layer</text>
+      <!-- potential curve -->
+      <line x1="360" y1="220" x2="620" y2="220" class="ln" marker-end="url(#arr)"/>
+      <line x1="360" y1="220" x2="360" y2="30" class="ln" marker-end="url(#arr)"/>
+      <text x="620" y="258" text-anchor="end">distance from surface</text><text x="344" y="40" transform="rotate(-90 344 40)" text-anchor="end">potential (mV)</text>
+      <path d="M362 40 L400 100 C440 160 500 200 610 214" class="s-vio"/>
+      <circle cx="362" cy="40" r="5" class="f-vio"/><text x="372" y="40" class="t-vio">surface potential</text>
+      <line x1="430" y1="220" x2="430" y2="138" class="s-acc dash"/><circle cx="430" cy="138" r="6" class="f-acc"/>
+      <text x="440" y="132" class="t-acc t-b">ζ (zeta potential)</text>
+      <text x="430" y="238" text-anchor="middle" class="t-acc">slipping plane</text>
+    </svg>
+  </figure>
+  <div class="tbl"><table>
+    <tr><th></th><th>Surface charge</th><th>Zeta potential</th></tr>
+    <tr><td>Describes</td><td>Charge on the particle surface</td><td>Potential at the slipping plane</td></tr>
+    <tr><td>Units</td><td>C/m² or mC/m²</td><td>mV</td></tr>
+    <tr><td>Measured by</td><td>Direct / indirect surface-charge methods</td><td>Electrophoretic mobility</td></tr>
+    <tr><td>Used for</td><td>Surface chemistry, ionization</td><td><strong>Colloidal stability</strong>, particle interactions</td></tr>
+  </table></div>
+  <h3>How it's measured: electrophoretic light scattering</h3>
+  <figure>
+    <svg viewBox="0 0 640 170" role="img" aria-label="Electrophoretic light scattering: electric field across a cell makes charged particles move toward the opposite electrode; a laser detects the Doppler shift of scattered light">
+      <rect x="150" y="40" width="260" height="90" rx="8" class="f-soft" stroke="var(--accent)"/>
+      <rect x="130" y="40" width="20" height="90" class="f-rose"/><text x="140" y="30" text-anchor="middle" class="t-rose t-b">+</text>
+      <rect x="410" y="40" width="20" height="90" class="f-blue"/><text x="420" y="30" text-anchor="middle" class="t-blue t-b">−</text>
+      <g><circle cx="300" cy="70" r="9" class="f-ink"/><text x="300" y="74" text-anchor="middle" style="fill:var(--surface)">−</text><line x1="288" y1="70" x2="250" y2="70" class="ln" marker-end="url(#arr)"/>
+      <circle cx="260" cy="105" r="9" class="f-ink"/><text x="260" y="109" text-anchor="middle" style="fill:var(--surface)">−</text><line x1="248" y1="105" x2="210" y2="105" class="ln" marker-end="url(#arr)"/></g>
+      <line x1="20" y1="150" x2="270" y2="100" class="s-rose" marker-end="url(#arrR)"/><text x="20" y="166" class="t-rose">laser</text>
+      <line x1="300" y1="80" x2="520" y2="150" class="s-rose dash" marker-end="url(#arrR)"/>
+      <text x="446" y="56">moving particles shift</text><text x="446" y="74">the light frequency</text><text x="446" y="92">(Doppler shift)</text><text x="446" y="112" class="t-muted">→ speed → U<tspan baseline-shift="sub">E</tspan> → ζ</text>
+    </svg>
+  </figure>
+  <div class="eq">Henry: &nbsp; U<sub>E</sub> = 2 ε ζ f(κa) / (3η)</div>
+  <p class="mono" style="color:var(--muted)">U<sub>E</sub> electrophoretic mobility · ε dielectric constant · ζ zeta potential · η viscosity · f(κa) Henry's function</p>
+  <p>Technique name: <strong>electrophoretic light scattering (ELS)</strong> using <strong>laser Doppler velocimetry</strong>, in a folded capillary cuvette with an electrode at each end.</p>
+  <figure>
+    <svg viewBox="0 0 640 220" role="img" aria-label="Zeta potential versus pH: about plus 40 mV at pH 2, crossing zero at the isoelectric point near pH 5.5, levelling at about minus 37 mV above pH 8">
+      <line x1="60" y1="110" x2="610" y2="110" class="ln-m"/>
+      <line x1="60" y1="20" x2="60" y2="200" class="ln"/>
+      <g class="t-muted"><text x="52" y="34" text-anchor="end">+60</text><text x="52" y="114" text-anchor="end">0</text><text x="52" y="194" text-anchor="end">−60</text></g>
+      <g class="t-muted"><text x="60" y="214" text-anchor="middle">2</text><text x="200" y="214" text-anchor="middle">4</text><text x="340" y="214" text-anchor="middle">8</text><text x="480" y="214" text-anchor="middle">10</text><text x="600" y="214" text-anchor="middle">12 pH</text></g>
+      <path d="M60 56 C110 40 150 50 180 80 C210 110 230 140 270 158 C300 170 330 162 380 160 C450 158 520 162 600 160" class="s-acc"/>
+      <circle cx="232" cy="110" r="6" class="f-amb"/>
+      <line x1="232" y1="110" x2="232" y2="190" class="s-amb dash"/>
+      <text x="240" y="190" class="t-amb t-b">isoelectric point (ζ = 0)</text>
+      <rect x="62" y="22" width="546" height="38" class="f-soft" opacity=".5"/><rect x="62" y="160" width="546" height="38" class="f-soft" opacity=".5"/>
+      <text x="330" y="44" class="t-acc">|ζ| large → repel → stable</text>
+      <text x="300" y="100" class="t-rose">near 0 → aggregation</text>
+    </svg>
+    <figcaption>At the isoelectric point the particle carries no net charge at the slipping plane, so nothing keeps particles apart. Rule of thumb (general knowledge, not on the slides): |ζ| above ~30 mV is usually considered stable.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ FORMULAS ============ -->
+<section id="formulas">
+  <div class="eyebrow">Cheat sheet</div>
+  <h2>Formula sheet</h2>
+  <div class="tbl"><table>
+    <tr><th>Quantity</th><th>Equation</th><th>Use</th></tr>
+    <tr><td>M<sub>n</sub>, M<sub>w</sub>, PDI</td><td class="mono">ΣNM/ΣN · ΣNM²/ΣNM · Mw/Mn</td><td>From a distribution (GPC, MALDI)</td></tr>
+    <tr><td>Mark–Houwink</td><td class="mono">[η] = K·M^a</td><td>a → shape / solvent quality</td></tr>
+    <tr><td>Universal calibration</td><td class="mono">hydrodynamic volume ∝ [η]·M</td><td>Standard-independent GPC</td></tr>
+    <tr><td>Shape factor</td><td class="mono">ρ = Rg / Rh</td><td>0.77 sphere · 1.5–1.8 coil · ≥2 rod</td></tr>
+    <tr><td>NMR end group</td><td class="mono">n = (I_repeat / H_repeat) / (I_end / H_end)</td><td>Mn = FW_ends + n·FW_repeat</td></tr>
+    <tr><td>NMR ratio</td><td class="mono">mol_X = I_X / H_X</td><td>mol % = mol_X / Σ mol × 100</td></tr>
+    <tr><td>Titration</td><td class="mono">mol = M × V(L)</td><td>Mn = mass / (mol acid ÷ acid per chain)</td></tr>
+    <tr><td>Stokes–Einstein</td><td class="mono">D = kB·T / (6πηRh)</td><td>DLS size</td></tr>
+    <tr><td>Rayleigh / Debye</td><td class="mono">Kc/Rθ = (1/Mw + 2A₂c)·P(θ)</td><td>SLS: intercept 1/Mw, slope 2A₂</td></tr>
+    <tr><td>Aggregation number</td><td class="mono">Nagg = Mw(micelle) / M(unimer)</td><td>Micelles by SLS</td></tr>
+    <tr><td>Henry</td><td class="mono">U_E = 2εζ f(κa) / (3η)</td><td>Zeta from mobility</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ PRACTICE ============ -->
+<section id="practice">
+  <div class="eyebrow">Try first, then open</div>
+  <h2>Practice problems</h2>
+  <details><summary>1 · Titration %: 0.8 g of an acrylic acid copolymer needs 4 mL of 0.5 M NaOH. What % w/w is PAA?</summary>
+    <p>mol NaOH = 0.5 × 0.004 = 0.002 mol COOH → 0.002 × 72 = 0.144 g → 0.144 / 0.8 × 100 = <strong>18 % w/w PAA</strong>.</p></details>
+  <details><summary>2 · Titration M<sub>n</sub>: 5 g of HOOC~~~COOH polymer needs 10 mL of 0.1 M NaOH. M<sub>n</sub>?</summary>
+    <p>0.1 × 0.010 = 0.001 mol COOH → ÷ 2 = 0.0005 mol chains → M<sub>n</sub> = 5 / 0.0005 = <strong>10,000 g/mol</strong>.</p></details>
+  <details><summary>3 · NMR end group: PEG diacrylate, vinyl integrals total 12 (6 H), OCH₂CH₂ integral 80. M<sub>n</sub>?</summary>
+    <p>Per proton = 12 / 6 = 2. n = (80 / 4) / 2 = 10. M<sub>n</sub> = 126.12 + 44.05 × 10 = <strong>≈ 567 g/mol</strong>.</p></details>
+  <details><summary>4 · NMR ratio: PEG–PPG copolymer, CH₃ (1.0 ppm) integral 60, 3.0–4.0 ppm integral 140. mol % EG?</summary>
+    <p>PG = 60 / 3 = 20. EG = (140 − 60) / 4 = 20. mol % EG = 20 / 40 = <strong>50 %</strong>.</p></details>
+  <details><summary>5 · SLS: Debye intercept = 2.5 × 10⁻⁶ mol/g, unimer M = 20,000 g/mol. N<sub>agg</sub>?</summary>
+    <p>M<sub>w</sub> = 1 / 2.5 × 10⁻⁶ = 400,000 g/mol → N<sub>agg</sub> = 400,000 / 20,000 = <strong>20</strong>.</p></details>
+  <details><summary>6 · DLS: D = 4.4 × 10⁻¹² m²/s in water at 25 °C (η = 0.89 mPa·s). Hydrodynamic diameter?</summary>
+    <p>R<sub>h</sub> = (1.381 × 10⁻²³ × 298.15) / (6π × 0.89 × 10⁻³ × 4.4 × 10⁻¹²) = 5.58 × 10⁻⁸ m ≈ 56 nm → <strong>d<sub>h</sub> ≈ 112 nm</strong>. (Remember: R → multiply by 2 for diameter.)</p></details>
+  <details><summary>7 · MALDI: species 1000 Da (N = 1), 2000 Da (N = 2), 3000 Da (N = 1). M<sub>n</sub>, M<sub>w</sub>, PDI?</summary>
+    <p>M<sub>n</sub> = (1000 + 4000 + 3000) / 4 = <strong>2000</strong>. M<sub>w</sub> = (1×10⁶ + 2×4×10⁶ + 9×10⁶) / 8000 = 18×10⁶ / 8000 = <strong>2250</strong>. PDI = <strong>1.125</strong>.</p></details>
+  <details><summary>8 · R<sub>g</sub> = 45 nm, R<sub>h</sub> = 58 nm. Shape?</summary>
+    <p>ρ = 45 / 58 = 0.78 → <strong>solid sphere</strong>.</p></details>
+  <details><summary>9 · Mark–Houwink a = 0.72. What does it say?</summary>
+    <p><strong>Flexible random coil in a good solvent</strong> (0.5 = theta; ~2 = rod).</p></details>
+  <details><summary>10 · MALDI peaks are spaced by 58 Da. Which polymer?</summary>
+    <p>Repeat unit 58 = C₃H₆O → <strong>poly(propylene glycol)</strong> (PEG would be 44).</p></details>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz">
+  <div class="eyebrow">Quick self-test</div>
+  <h2>Concept check</h2>
+  <details><summary>In GPC, which elutes first, big or small chains? Why?</summary><p><strong>Big.</strong> They're excluded from the pores and take the shortest path. Small chains enter pores and elute last.</p></details>
+  <details><summary>Why is conventional GPC calibration only "relative"?</summary><p>It converts elution time to MW using standards (often polystyrene). If the sample has different chemistry, the same MW gives a different coil size, so the result is only comparative.</p></details>
+  <details><summary>What makes universal calibration universal?</summary><p>Separation depends on hydrodynamic volume ∝ M × [η]. Measuring [η] with a viscometer makes it independent of standard type.</p></details>
+  <details><summary>RALS vs LALS: which for a 100 nm polymer?</summary><p><strong>LALS</strong> (~7°): close to zero angle, so no angular extrapolation needed for large molecules. RALS (90°) suits ≤ 20–30 nm.</p></details>
+  <details><summary>Which methods give only M<sub>n</sub>?</summary><p>NMR end-group analysis and titration (they count chain ends = count molecules).</p></details>
+  <details><summary>Why is MALDI called "soft" and why does it matter?</summary><p>The matrix absorbs most of the laser energy, so the polymer ionizes gently without breaking. Each intact chain gives its own peak.</p></details>
+  <details><summary>Two ions, same charge, A1 lighter than A2. Which reaches the ToF detector first?</summary><p><strong>A1</strong> (lighter ions fly faster).</p></details>
+  <details><summary>A DLS sample has a few aggregates. What happens to the reported size?</summary><p>It jumps up. Intensity ∝ d⁶, so the few large aggregates dominate the signal.</p></details>
+  <details><summary>DLS gives size from what physical process?</summary><p>Brownian motion → diffusion coefficient → Stokes–Einstein → R<sub>h</sub>.</p></details>
+  <details><summary>What can't DLS tell you?</summary><p>Particle <strong>shape</strong>.</p></details>
+  <details><summary>Which microscope can show internal core–shell structure?</summary><p><strong>TEM</strong> (electrons pass through; also Cryo-TEM).</p></details>
+  <details><summary>Biological nanoparticle that can't be dried. Which EM?</summary><p><strong>Cryo-TEM</strong>: flash-frozen, no drying or staining.</p></details>
+  <details><summary>Which technique works both dry and in liquid and gives 3D height?</summary><p><strong>AFM</strong>.</p></details>
+  <details><summary>Zeta potential is measured where?</summary><p>At the <strong>slipping plane</strong> (boundary between the ions moving with the particle and the bulk liquid).</p></details>
+  <details><summary>What happens at the isoelectric point?</summary><p>ζ = 0 → no electrostatic repulsion → particles tend to aggregate.</p></details>
+  <details><summary>Name the zeta measurement technique.</summary><p>Electrophoretic light scattering (ELS) by laser Doppler velocimetry; mobility → ζ via the Henry equation.</p></details>
+</section>
+
+<p style="margin-top:40px;color:var(--muted);font-size:14px">Built from Pharm 610 lecture decks P3 and P4 (Fall 2026). Values in the practice problems are made up for practice; the worked examples in the NMR and titration sections are the ones from the slides.</p>
+</div>
