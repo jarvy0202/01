@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nanomedicine Targeting Review</title>
+<style>
+:root{
+  --bg:#f7f7f5; --card:#ffffff; --ink:#1d1f23; --muted:#5d6470; --line:#e3e4e8;
+  --accent:#0b6e4f; --accent-soft:#e3f2ec; --star:#b45309; --star-soft:#fff4e0;
+  --th:#f0f2f4; --info-soft:#eaf1fb; --info:#2b5fad;
+  --lipid:#f3d9a4; --head:#c8862b; --water:#d7ecf7; --blue:#2b6cb0; --orange:#d9622b;
+  --green:#2f8f4e; --peg:#7a5cc4; --cell:#f1d3cf; --cellline:#c98b84;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+    --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a;
+    --th:#262a2f; --info-soft:#1b2534; --info:#7fa8e6;
+    --lipid:#6b5428; --head:#e0a24c; --water:#1f3644; --blue:#6aa5ea; --orange:#f0884f;
+    --green:#5cc07c; --peg:#a98ff0; --cell:#4a2f2c; --cellline:#b07870;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+  --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a;
+  --th:#262a2f; --info-soft:#1b2534; --info:#7fa8e6;
+  --lipid:#6b5428; --head:#e0a24c; --water:#1f3644; --blue:#6aa5ea; --orange:#f0884f;
+  --green:#5cc07c; --peg:#a98ff0; --cell:#4a2f2c; --cellline:#b07870;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-size:1.6rem;line-height:1.25;margin:0 0 4px}
+header p{margin:0;color:var(--muted);font-size:.92rem}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px}
+nav a{font-size:.82rem;text-decoration:none;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:999px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+h2{font-size:1.25rem;margin:0 0 10px;color:var(--accent)}
+h3{font-size:1.05rem;margin:20px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:6px 0;padding-left:22px}
+li{margin:3px 0}
+.star{color:var(--star);font-weight:700}
+.key{background:var(--star-soft);border-left:4px solid var(--star);padding:10px 14px;border-radius:6px;margin:12px 0}
+.key b:first-child{color:var(--star)}
+.why{background:var(--info-soft);border-left:4px solid var(--info);padding:10px 14px;border-radius:6px;margin:12px 0}
+.why b:first-child{color:var(--info)}
+.tbl{overflow-x:auto;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--th)}
+.steps{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px;margin:10px 0}
+.steps div{flex:1 1 140px;background:var(--th);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.88rem;position:relative}
+.steps div b{display:block;font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+figure{margin:12px 0;text-align:center}
+figure svg{width:100%;max-width:560px;height:auto}
+figcaption{font-size:.84rem;color:var(--muted);margin-top:4px}
+.spectrum{margin:12px 0 4px}
+.bar{height:12px;border-radius:6px;background:linear-gradient(90deg,#d9534f,#e8a33d,#0b6e4f)}
+.labels{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--muted);margin-top:4px}
+details{border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:8px 0;background:var(--card)}
+summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:6px}
+.glossary dt{font-weight:700;margin-top:6px}
+.glossary dd{margin:0 0 4px 0;color:var(--ink)}
+/* svg */
+.t{fill:var(--ink);font-size:12px;font-family:inherit}
+.tm{fill:var(--muted);font-size:11px;font-family:inherit}
+.tail{fill:var(--lipid)} .core{fill:var(--water)}
+.head{fill:none;stroke:var(--head);stroke-width:6;stroke-dasharray:2 3}
+.phil{fill:var(--blue)} .phob{fill:var(--orange)} .amph{fill:var(--green)}
+.peg{fill:none;stroke:var(--peg);stroke-width:2;stroke-linecap:round}
+.ab{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round}
+.ln{stroke:var(--muted);stroke-width:1;fill:none}
+.ax{stroke:var(--ink);stroke-width:1.2;fill:none}
+.cx{fill:none;stroke:var(--green);stroke-width:2.5}
+.fx{fill:none;stroke:var(--orange);stroke-width:2.5}
+.cell{fill:var(--cell);stroke:var(--cellline);stroke-width:1}
+.vessel{fill:#c0392b;opacity:.75}
+.lipo{fill:var(--lipid);stroke:var(--head);stroke-width:1.5}
+.poly{fill:var(--water);stroke:var(--blue);stroke-width:2}
+.shell{stroke:var(--peg);stroke-width:2;fill:none;stroke-linecap:round}
+.mcore{fill:var(--lipid);stroke:var(--orange);stroke-width:1.5}
+.arrow{stroke:var(--ink);stroke-width:1.5;fill:none;marker-end:url(#ah)}
+@media print{body{background:#fff} section{break-inside:avoid;border-color:#ccc} nav{display:none} details{break-inside:avoid}}
+</style>
+</head>
+<body>
+<style>
+.endo{fill:var(--cell);stroke:var(--cellline);stroke-width:1}
+.bm{stroke:var(--ink);stroke-width:3;fill:none}
+.kup{fill:var(--green);opacity:.8}
+.np{fill:var(--orange)}
+.lumen{fill:#c0392b;opacity:.18}
+.lymph{fill:none;stroke:var(--green);stroke-width:8;stroke-linecap:round;opacity:.7}
+.z-red{fill:#d9534f;opacity:.75} .z-grn{fill:#2f8f4e;opacity:.8} .z-gry{fill:#999;opacity:.6} .z-org{fill:#e8a33d;opacity:.85}
+.box1{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.box2{fill:var(--info-soft);stroke:var(--info);stroke-width:1.5}
+.box3{fill:var(--star-soft);stroke:var(--star);stroke-width:1.5}
+</style>
+<div class="wrap">
+<header>
+  <h1>PHARM 610 · Lecture VI: Nano-Medicine &amp; Principles of Drug Targeting</h1>
+  <p>Dr. Lavasanifar · Midterm 2 · Full study guide (based mainly on the transcript, with the slides as support). This lecture comes <b>before</b> Lecture VII and gives the "why" behind nanocarriers.
+     <span class="star">★</span> = stressed in lecture / likely exam. <b style="color:var(--info)">Why?</b> boxes explain the reasoning behind a fact.</p>
+</header>
+
+<nav>
+  <a href="#intro">Intro (slides)</a><a href="#why">Why target?</a><a href="#deg">Degrees</a>
+  <a href="#design">Carrier design</a><a href="#cap">Capillaries</a><a href="#lymph">Lymph</a>
+  <a href="#path">Inflammation &amp; tumors</a><a href="#epr">EPR effect</a><a href="#size">Design for EPR</a>
+  <a href="#active">Active targeting</a><a href="#uptake">Cell uptake</a><a href="#phys">Physical</a>
+  <a href="#chan">Chan 2020</a><a href="#cheat">Cheat sheet</a><a href="#qa">Practice Qs</a>
+</nav>
+
+<!-- ============ 0 ============ -->
+<section id="intro">
+<h2>0. Nanotechnology in Medicine: Overview (slides only, not in this recording)</h2>
+<p>These opening slides weren't covered in the recorded transcript, so treat them as background.</p>
+<h3>Problems in drug therapy that nanotechnology can help with</h3>
+<ul>
+  <li>Low water solubility</li>
+  <li>Poor absorption</li>
+  <li>Short biological half-life</li>
+  <li>Non-specificity and non-selectivity</li>
+  <li>Adverse effects and toxicity</li>
+  <li>Low cellular uptake</li>
+</ul>
+<p>"Learning lessons from nature": <b>lipoproteins</b> are natural nanocarriers. They have a phospholipid/apoprotein surface around a non-polar lipid core that carries triglycerides and cholesterol esters through the blood.</p>
+<h3>Size classes in traditional pharmaceutics</h3>
+<div class="tbl"><table>
+  <tr><th>Molecular</th><th>Colloidal</th><th>Coarse</th></tr>
+  <tr><td>&lt; 1 nm</td><td><b>1 nm – 0.5 µm</b> (e.g., colloidal sulfur, silver, platinum, copper)</td><td>&gt; 0.5 µm</td></tr>
+</table></div>
+<h3>Common nano-delivery systems</h3>
+<ul>
+  <li><b>Lipid-based:</b> liposomes, stealth liposomes, solid lipid nanoparticles.</li>
+  <li><b>Polymer-based:</b> polymeric micelles, polymeric nanoparticles, albumin-bound (nab) nanoparticles.</li>
+  <li><b>Drug conjugates:</b> antibody–drug, polymer–drug, polymer–protein.</li>
+  <li><b>Inorganic:</b> silica, metal, hafnium oxide nanoparticles.</li>
+  <li><b>Viral</b> nanoparticles.</li>
+</ul>
+<h3>Applications</h3>
+<ul>
+  <li><b>Common applications:</b> solubilizing agents; controlled and targeted drug delivery; intracellular drug delivery.</li>
+  <li><b>New applications:</b> enhanced permeation across biological barriers (BBB, skin, GI epithelium); combination therapy.</li>
+  <li><b>Other applications:</b> vaccine delivery vehicles; image-guided therapy (seeing the drug's path in real time); diagnostics.</li>
+</ul>
+</section>
+
+<!-- ============ 1 ============ -->
+<section id="why">
+<h2>1. Why Do Drug Targeting?</h2>
+<p>There are three motivations (slide: "Why drug targeting?"):</p>
+<ol>
+  <li><b>Accessibility:</b> it can be hard for the drug to reach its site of action, so too little dose arrives there.</li>
+  <li><b>Instability:</b> the drug may be destroyed on the way to its site of action. A chemical approach (e.g., a prodrug) or a drug carrier can protect it until it gets there.</li>
+  <li><b>Unwanted drug effects:</b> if the drug reaches <i>only</i> (or mainly) the site of action, other tissues don't suffer side effects. This is the biggest motivation.</li>
+</ol>
+
+<h3><span class="star">★</span> An ideal delivery system for drug targeting must be:</h3>
+<div class="tbl"><table>
+  <tr><th>Property</th><th>What it means</th></tr>
+  <tr><td><b>Inert</b></td><td>Has no pharmacological effect of its own</td></tr>
+  <tr><td><b>Biocompatible</b></td><td>No acute or chronic toxicity, and <b>not immunogenic</b> (doesn't trigger immune reactions)</td></tr>
+  <tr><td><b>Stable in vitro and in vivo</b></td><td>On the shelf and in the body</td></tr>
+  <tr><td><b>Biodegradable or readily eliminated</b></td><td>Doesn't accumulate in the body (a plus)</td></tr>
+  <tr><td><b>Reproducible</b></td><td>Manufacturing without batch-to-batch variation</td></tr>
+  <tr><td><b>Cost-effective</b></td><td>A big practical factor in development</td></tr>
+</table></div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section id="deg">
+<h2><span class="star">★</span> 2. Three Degrees (Orders) of Targeting</h2>
+<figure>
+<svg viewBox="0 0 520 200" role="img" aria-label="Nested degrees of targeting: organ, cell, organelle">
+  <rect x="10" y="10" width="500" height="180" rx="12" class="box1"/>
+  <text x="22" y="30" class="t" font-weight="700">1st order: diseased ORGAN / tissue</text>
+  <text x="22" y="46" class="tm">e.g., arthritic joints; a colorectal tumor (not the rest of the body)</text>
+  <rect x="150" y="60" width="350" height="120" rx="10" class="box2"/>
+  <text x="162" y="78" class="t" font-weight="700">2nd order: specific CELLS in that organ</text>
+  <text x="162" y="93" class="tm">tumor cells vs T cells / fibroblasts in the tumor</text>
+  <rect x="310" y="105" width="180" height="65" rx="8" class="box3"/>
+  <text x="320" y="123" class="t" font-weight="700">3rd order: ORGANELLE</text>
+  <text x="320" y="138" class="tm">nucleus (DNA), cytoplasm</text>
+  <text x="320" y="152" class="tm">(mRNA), mitochondria</text>
+</svg>
+<figcaption>Each level sits inside the previous one. Going from 1st to 3rd order, delivery systems become harder to design.</figcaption>
+</figure>
+<ul>
+  <li><b>First order:</b> targeting the diseased organ or tissue. Example: drug goes to the colon tumor, not elsewhere.</li>
+  <li><b>Second order:</b> targeting specific cells within that organ. Example: tumor cells rather than the tumor microenvironment, or deliberately targeting T cells that have trafficked into the tumor.</li>
+  <li><b>Third order:</b> targeting a specific intracellular organelle. Examples: nucleus for DNA delivery, cytoplasm for mRNA/RNA, mitochondria.</li>
+</ul>
+<div class="key"><b>Key point:</b> the further you go (1st → 2nd → 3rd), the <b>more difficult</b> it is to design a delivery system that achieves it.</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section id="design">
+<h2><span class="star">★</span> 3. The First Rule of Nanocarrier Design</h2>
+<div class="key"><b>Slide statement:</b> "The fate of the drug in vivo will be governed by the <b>physicochemical properties of the carrier</b>, not the drug."</div>
+<p>Wherever the nanocarrier goes, the drug must go with it. For that to happen, the <b>drug has to stay with the carrier</b> in the biological environment. That means <b>slow release, with little premature release</b>.</p>
+<div class="why"><b>Why is drug release one of the first tests done on a new nanocarrier?</b> If the drug leaks out early, it follows its <i>own</i> PK instead of the carrier's, and there is no targeting. A slow release profile shows that the drug will stay with the carrier after injection. (This links to Lecture VII: slow release is a prerequisite for targeting.)</div>
+<p><b>Three kinds of targeting with nanocarriers:</b> <b>passive</b>, <b>active</b> and <b>physical</b>. Each is explained below.</p>
+</section>
+
+<!-- ============ 4 ============ -->
+<section id="cap">
+<h2>4. Passive Targeting and Blood Capillary Structure</h2>
+<p><b>Passive targeting</b> is passive: no energy is used and no targeting ligand is attached. It <b>takes advantage of natural differences between diseased and healthy tissue</b>. The main difference is the degree of <b>extravasation</b>: how easily the carrier can escape from blood vessels into the tissue.</p>
+<ul>
+  <li>The drug's target may sit <b>outside the vessels</b>: in the extracellular space, on the cell membrane, or inside the cell.</li>
+  <li>To reach it, the carrier must (1) <b>leave the vasculature</b>, (2) move through the extracellular space, and (3) if the target is intracellular, be <b>taken up by cells</b>.</li>
+  <li>Extravasation is governed by the <b>permeability of the capillary wall</b>. That depends on the <b>rate of blood supply</b> and the <b>structure of the capillary wall</b>, in both normal and diseased (pathophysiological) conditions.</li>
+</ul>
+
+<h3>4.1 Structure of a blood vessel wall (inside → out)</h3>
+<p><b>Endothelium</b> (endothelial cells lining the lumen) → <b>basement membrane</b> (similar to extracellular matrix) → elastic layer → smooth muscle → elastic layer → connective tissue.</p>
+
+<h3>4.2 Endothelial cells</h3>
+<ul>
+  <li><b>Dimensions:</b> about 20–40 µm long and 10–15 µm wide (micrometer range), but only about <b>100–500 nm thick</b> (nanometer range).</li>
+  <li><b>Plasmalemmal vesicles:</b> about <b>70% open to the luminal (blood) side</b>, the rest to the tissue side. These vesicles carry material across the cell (vesicular trafficking).</li>
+  <li><b>Transendothelial channels:</b> vesicles can fuse to form a channel through the cell, giving particles a route across.</li>
+  <li><b>Glycosaminoglycan coating</b> (glycocalyx) covers the luminal surface.</li>
+  <li>Normal endothelial cells divide very slowly (roughly one replacement every ~3 years). Exceptions are the placenta and wound healing.</li>
+</ul>
+
+<h3><span class="star">★</span> 4.3 The three types of capillaries</h3>
+<figure>
+<svg viewBox="0 0 600 215" role="img" aria-label="Continuous, fenestrated and sinusoidal capillaries">
+  <!-- panel 1 continuous -->
+  <text x="100" y="20" text-anchor="middle" class="t" font-weight="700">Continuous</text>
+  <rect x="10" y="30" width="180" height="28" class="lumen"/><text x="100" y="48" text-anchor="middle" class="tm">blood (lumen)</text>
+  <rect x="15" y="60" width="42" height="18" rx="5" class="endo"/><rect x="59" y="60" width="42" height="18" rx="5" class="endo"/>
+  <rect x="103" y="60" width="42" height="18" rx="5" class="endo"/><rect x="147" y="60" width="42" height="18" rx="5" class="endo"/>
+  <line x1="12" y1="84" x2="190" y2="84" class="bm"/>
+  <text x="100" y="108" text-anchor="middle" class="t">Tight junctions ≤ 2 nm</text>
+  <text x="100" y="124" text-anchor="middle" class="tm">basement membrane: continuous</text>
+  <text x="100" y="146" text-anchor="middle" class="tm">muscle, heart, brain, lung,</text>
+  <text x="100" y="160" text-anchor="middle" class="tm">pancreas, gonads, connective tissue</text>
+  <text x="100" y="182" text-anchor="middle" class="tm">crossing: vesicular trafficking</text>
+  <text x="100" y="196" text-anchor="middle" class="tm">or tiny molecules only</text>
+  <!-- panel 2 fenestrated -->
+  <text x="300" y="20" text-anchor="middle" class="t" font-weight="700">Fenestrated</text>
+  <rect x="210" y="30" width="180" height="28" class="lumen"/><text x="300" y="48" text-anchor="middle" class="tm">blood (lumen)</text>
+  <rect x="215" y="60" width="38" height="18" rx="5" class="endo"/><rect x="261" y="60" width="38" height="18" rx="5" class="endo"/>
+  <rect x="307" y="60" width="38" height="18" rx="5" class="endo"/><rect x="353" y="60" width="36" height="18" rx="5" class="endo"/>
+  <line x1="212" y1="84" x2="390" y2="84" class="bm"/>
+  <text x="300" y="108" text-anchor="middle" class="t">Gaps 20–80 nm</text>
+  <text x="300" y="124" text-anchor="middle" class="tm">basement membrane: continuous</text>
+  <text x="300" y="146" text-anchor="middle" class="tm">kidney glomeruli, GI mucosa,</text>
+  <text x="300" y="160" text-anchor="middle" class="tm">endocrine/exocrine glands</text>
+  <text x="300" y="182" text-anchor="middle" class="tm">only much smaller things pass</text>
+  <text x="300" y="196" text-anchor="middle" class="tm">(≲10 nm effectively)</text>
+  <!-- panel 3 sinusoidal -->
+  <text x="500" y="20" text-anchor="middle" class="t" font-weight="700">Sinusoidal</text>
+  <rect x="410" y="30" width="180" height="28" class="lumen"/><text x="470" y="48" text-anchor="middle" class="tm">blood</text>
+  <rect x="415" y="60" width="30" height="18" rx="5" class="endo"/><rect x="465" y="60" width="30" height="18" rx="5" class="endo"/>
+  <rect x="515" y="60" width="30" height="18" rx="5" class="endo"/><rect x="565" y="60" width="24" height="18" rx="5" class="endo"/>
+  <ellipse cx="505" cy="50" rx="17" ry="9" class="kup"/><text x="545" y="46" class="tm">Kupffer</text>
+  <path d="M412 84 L440 84 M462 84 L500 84 M525 84 L560 84" class="bm"/>
+  <text x="500" y="108" text-anchor="middle" class="t">Gaps up to ~150 nm</text>
+  <text x="500" y="124" text-anchor="middle" class="tm">basement membrane: absent/broken</text>
+  <text x="500" y="146" text-anchor="middle" class="tm">liver, spleen, red bone marrow</text>
+  <text x="500" y="160" text-anchor="middle" class="tm">macrophages sit in the gaps</text>
+  <text x="500" y="182" text-anchor="middle" class="tm">particles ≤ 70–80 nm</text>
+  <text x="500" y="196" text-anchor="middle" class="tm">extravasate well</text>
+</svg>
+<figcaption>Gap size and basement membrane decide what can leave the blood. Tumor (angiogenic) vessels are leakier than any of these (see section 6).</figcaption>
+</figure>
+<div class="tbl"><table>
+  <tr><th>Type</th><th>Where</th><th>Junctions / gaps</th><th>Basement membrane</th><th>What gets through</th></tr>
+  <tr><td><b>Continuous</b> (most common)</td><td>Connective tissue, skeletal and smooth muscle, heart, pancreas, brain, lung, gonads, mesentery</td><td><b>Tight junctions, up to ~2 nm</b></td><td>Continuous</td><td>Mainly by <b>vesicular trafficking</b>, or very small molecules (&lt; 2 nm, i.e., small-molecule drugs)</td></tr>
+  <tr><td><b>Fenestrated</b></td><td><b>Kidney glomeruli</b>, GI mucosa, exocrine/endocrine glands, choroid plexus, intestinal wall, certain tumors</td><td>Interruptions <b>20–80 nm</b> (the lecturer also quoted ~7–10 nm as the effective size)</td><td>Continuous</td><td>Only things <b>much smaller than the gap</b>, such as electrolytes. Proteins of similar size don't pass.</td></tr>
+  <tr><td><b>Sinusoidal</b></td><td><b>Liver, spleen, red bone marrow</b>, suprarenal/parathyroid glands, certain tumors</td><td>Junctions <b>up to ~150 nm</b></td><td><b>Absent in liver</b>; discontinuous in spleen and bone marrow</td><td>Particles ≲ <b>70–80 nm</b> extravasate well; 100–150 nm particles struggle. <b>Kupffer cells</b> (macrophages) sit in the gaps.</td></tr>
+</table></div>
+
+<div class="why"><b>Why can't a particle the same size as the gap pass easily?</b> The lecturer's analogy is a person as wide as a doorway trying to get through. Blood flows <i>parallel</i> to the wall while the gap is <i>perpendicular</i> to the flow, so a particle as big as the gap rarely lines up and slips through. The smaller the particle relative to the gap, the higher the chance it passes. This is why the kidney (gaps 20–80 nm) normally keeps plasma proteins out of urine. <b>Protein in the urine means kidney damage.</b></div>
+
+<div class="key"><b>Using capillary type for targeting:</b> to target the <b>liver or bone marrow</b> (e.g., liver cancer), design particles of about <b>70–80 nm</b>. They are too big for continuous capillaries (muscle, connective tissue) and for a healthy kidney, but they <b>extravasate through the sinusoidal capillaries</b> of the liver.</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section id="lymph">
+<h2>5. What Happens After Extravasation: Capillary Pressure and Lymph</h2>
+<div class="steps">
+  <div><b>Arterial end</b><b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">High hydrostatic pressure</b> pushes water and small molecules <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">out</b> into the extracellular space</div>
+  <div><b>Venous end</b>Pressure drops and endothelium is <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">thinner</b> → some fluid is reabsorbed by osmotic attraction</div>
+  <div><b>Leftover</b>Material that isn't reabsorbed stays in the interstitium → may be taken up by <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">lymphatic vessels</b></div>
+</div>
+<p>Every tissue has <b>lymphatic vessels</b> alongside blood vessels. They collect fluid, oily and fatty material, and macromolecules, and they carry many immune cells.</p>
+<div class="tbl"><table>
+  <tr><th>After extravasation…</th><th>Usually goes back via</th></tr>
+  <tr><td><b>Small-molecule drugs</b></td><td>Re-absorbed into the <b>blood</b> (venous capillaries)</td></tr>
+  <tr><td><b>Macromolecules / nanoparticles</b> (too big to go back easily)</td><td><b>Lymphatic vessels</b></td></tr>
+  <tr><td><b>Oily / hydrophobic</b> material</td><td>Lymphatics</td></tr>
+  <tr><td><b>Negatively charged</b> material</td><td>More tendency toward lymphatics</td></tr>
+</table></div>
+<h3>Factors affecting clearance of drugs from interstitial sites</h3>
+<ul>
+  <li><b>Size</b></li>
+  <li><b>Surface properties:</b> charge, hydrophobic vs hydrophilic</li>
+  <li><b>Formulation medium:</b> e.g., oily vehicles favor lymph</li>
+  <li><b>pH of the interstitial fluid:</b> changes the particle's charge</li>
+  <li><b>Disease condition:</b> other materials in the tissue may coat the particle and form a <b>protein corona</b> that changes its fate</li>
+</ul>
+</section>
+
+<!-- ============ 6 ============ -->
+<section id="path">
+<h2>6. Pathological Conditions Make Vessels Leakier: Inflammation and Solid Tumors</h2>
+<p>On top of the normal differences between organs, <b>disease can change a tissue's vasculature</b>. A muscle normally has continuous capillaries, but inflammation, infection or a tumor in that muscle can make its vessels leaky. Conditions that cause <b>transcapillary leakage or increased pinocytosis</b> include injury, osmotic shock, infection, embolism, hypertension, inflammation and cancer.</p>
+
+<h3>6.1 Inflammation</h3>
+<ul>
+  <li>Immune cells release <b>histamine and bradykinin</b>, which are <b>vasodilators</b>. Blood flow to the area increases, so extravasation increases.</li>
+  <li>These mediators can also <b>damage capillaries</b> and widen the gaps between endothelial cells. Damaged capillary openings are about <b>80–140 nm</b>.</li>
+  <li>There are also <b>changes to the glycocalyx</b> (the glycosaminoglycan layer) and <b>increased vesicular trafficking</b>.</li>
+</ul>
+<div class="why"><b>Why does this help nanocarriers?</b> Inflammation opens the vessels so <i>immune cells</i> can reach the tissue, but the opening isn't selective. A nanoparticle of the right size can get in through the same openings.</div>
+
+<h3><span class="star">★</span> 6.2 Solid tumors: hypoxia → HIF-1α → VEGF → angiogenesis</h3>
+<div class="steps">
+  <div><b>1 · Tumor grows</b>Cells in the core end up far from blood vessels (beyond ~100 µm) → <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">hypoxic</b> and nutrient-poor; the center can become <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">necrotic</b></div>
+  <div><b>2 · Metabolism shifts</b>Aerobic → <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">anaerobic</b> → more <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">lactic acid</b> → <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">pH drops</b> (≈7.4 → ≈6.8 with distance from vessel)</div>
+  <div><b>3 · HIF-1α builds up</b>Its degradation needs oxygen, so under hypoxia it is <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">not degraded</b> → levels rise</div>
+  <div><b>4 · Transcription</b>HIF-1α + HIF-1β heterodimer → nucleus → binds HRE on DNA → genes for glycolysis, <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">survival / anti-apoptosis</b>, growth factors (<b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">VEGF</b>, Ang2, NOS, PDGF-B)</div>
+  <div><b>5 · Angiogenesis</b>VEGF binds VEGF receptors on endothelial cells → normally quiet cells <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">proliferate</b> → new vessels grow toward the tumor, bringing O₂ and nutrients</div>
+</div>
+<ul>
+  <li><b>Angiogenesis</b> = formation of new blood vessels. It also occurs in wound healing, the placenta, and abnormally in the eye (<b>macular degeneration</b>, which can cause blindness).</li>
+  <li>It is controlled by a <b>balance of activators and inhibitors</b>. When activators outweigh inhibitors, angiogenesis happens, and tumor cells tip this balance. Activators include <b>VEGF, bFGF (basic fibroblast growth factor), EGF</b>, angiogenin, TNF-α, IL-8 and others; the full list is FYI.</li>
+  <li>Endothelial and tumor cells secrete <b>proteases</b> that "chew" the <b>extracellular matrix</b>, so the growing vessels can push through toward the tumor.</li>
+</ul>
+<div class="key"><b>Why tumor vessels are leaky:</b> tumor angiogenesis is uncontrolled. The new vessels are <b>irregular and chaotic</b>, sometimes <b>open-ended</b>, with gaps between endothelial cells reaching about <b>700 nm</b>, larger than sinusoidal capillaries. Discontinuous vessels also permit metastasis. This leakiness is the basis for <b>passive targeting of solid tumors</b> by nanoparticles.</div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section id="epr">
+<h2><span class="star">★</span> 7. The EPR Effect (Enhanced Permeability and Retention)</h2>
+<h3>7.1 History: Maeda, 1986</h3>
+<ul>
+  <li>Proposed by <b>Prof. Hiroshi Maeda</b> (Japan) in <i>Cancer Research</i>, <b>1986</b>, as "a new concept for macromolecular therapeutics in cancer chemotherapy".</li>
+  <li>His agent was <b>SMANCS</b>, a small-molecule anticancer drug (neocarzinostatin) attached to a polymer. He also used an albumin-bound blue dye (Evans blue–albumin).</li>
+  <li><b>Observations in tumor-bearing mice:</b>
+    <ul>
+      <li>The macromolecule (blue) <b>accumulated preferentially in the tumor</b>, while the surrounding normal tissue stayed clear.</li>
+      <li>As the <b>plasma concentration fell</b> over time, <b>tumor concentration kept rising</b> (up to 48–144 h). Normal skin stayed low.</li>
+      <li>The macromolecules also accumulated in <b>lymphatic tissues</b> (lymph nodes, spleen, liver). This could help control lymphatic metastasis but has received little attention.</li>
+    </ul></li>
+  <li><b>Patient evidence:</b> CT scans of liver tumors after SMANCS/Lipiodol showed uptake that was <b>homogeneous in a primary liver tumor</b> (hepatocellular carcinoma). In <b>metastatic</b> liver tumors (from gallbladder or colon) it was a <b>ring-like, heterogeneous</b> pattern. There was still preferential uptake in all of them.</li>
+</ul>
+
+<h3>7.2 The two halves of EPR</h3>
+<figure>
+<svg viewBox="0 0 600 230" role="img" aria-label="EPR: normal tissue vs tumor tissue">
+  <!-- normal -->
+  <text x="145" y="18" text-anchor="middle" class="t" font-weight="700">Normal tissue</text>
+  <rect x="10" y="28" width="270" height="40" class="lumen"/>
+  <line x1="10" y1="70" x2="280" y2="70" stroke="var(--cellline)" stroke-width="5"/>
+  <g class="np"><circle cx="40" cy="48" r="5"/><circle cx="80" cy="42" r="5"/><circle cx="120" cy="52" r="5"/><circle cx="165" cy="44" r="5"/><circle cx="210" cy="50" r="5"/><circle cx="250" cy="43" r="5"/></g>
+  <g><circle cx="45" cy="110" r="16" class="cell"/><circle cx="95" cy="125" r="16" class="cell"/><circle cx="150" cy="105" r="16" class="cell"/><circle cx="60" cy="160" r="16" class="cell"/><circle cx="140" cy="155" r="16" class="cell"/></g>
+  <path d="M215 90 Q225 130 215 175" class="lymph"/>
+  <text x="232" y="135" class="tm">lymph</text><text x="232" y="149" class="tm">drains</text>
+  <text x="145" y="200" text-anchor="middle" class="t">Tight wall → particles stay in blood</text>
+  <text x="145" y="216" text-anchor="middle" class="tm">working lymphatics clear anything that leaks</text>
+  <!-- tumor -->
+  <text x="455" y="18" text-anchor="middle" class="t" font-weight="700">Tumor tissue</text>
+  <rect x="320" y="28" width="270" height="40" class="lumen"/>
+  <path d="M320 70 L350 70 M372 70 L410 70 M436 70 L470 70 M500 70 L540 70 M565 70 L590 70" stroke="var(--cellline)" stroke-width="5"/>
+  <g class="np"><circle cx="345" cy="48" r="5"/><circle cx="395" cy="44" r="5"/><circle cx="450" cy="50" r="5"/><circle cx="520" cy="44" r="5"/><circle cx="570" cy="50" r="5"/>
+  <circle cx="361" cy="88" r="5"/><circle cx="423" cy="92" r="5"/><circle cx="485" cy="86" r="5"/><circle cx="552" cy="94" r="5"/>
+  <circle cx="380" cy="135" r="5"/><circle cx="440" cy="128" r="5"/><circle cx="505" cy="140" r="5"/><circle cx="470" cy="170" r="5"/></g>
+  <g><circle cx="355" cy="120" r="15" class="endo"/><circle cx="410" cy="150" r="15" class="endo"/><circle cx="470" cy="112" r="15" class="endo"/><circle cx="530" cy="160" r="15" class="endo"/><circle cx="385" cy="175" r="15" class="endo"/></g>
+  <path d="M560 110 q6 6 0 12 q-6 6 0 12 q6 6 0 12" stroke="var(--green)" stroke-width="3" fill="none" opacity=".7"/>
+  <text x="572" y="128" class="tm">✕</text>
+  <text x="455" y="200" text-anchor="middle" class="t">Leaky gaps → ENHANCED PERMEABILITY</text>
+  <text x="455" y="216" text-anchor="middle" class="tm">collapsed lymphatics → RETENTION</text>
+</svg>
+<figcaption>Particles get in through leaky tumor vessels (permeability) and stay because collapsed lymphatics can't drain them (retention).</figcaption>
+</figure>
+<ul>
+  <li><b>Enhanced permeability:</b> tumor capillaries behave like fenestrated capillaries with even <b>larger pores</b>. Nanoparticles (even cells) can extravasate at the tumor, while in normal tissue only small molecules can.</li>
+  <li><b>Retention:</b> the tumor's <b>extracellular (interstitial) pressure is high</b> because:
+    <ul>
+      <li>the leaky vessels let plasma and water pour in, and</li>
+      <li>fast-proliferating tumor cells generate a lot of waste.</li>
+    </ul>
+    This pressure <b>collapses the tumor's lymphatic vessels</b>, so macromolecules that entered <b>can't be drained</b> and are retained. In normal tissue the lymphatics work and clear them.</li>
+</ul>
+
+<h3><span class="star">★</span> 7.3 Long circulation drives EPR</h3>
+<p>Maeda linked plasma PK to tumor levels. As molecular size increases (above roughly the renal cut-off), <b>AUC rises, renal clearance falls, and tumor level rises</b>.</p>
+<div class="key"><b>Rule:</b> the higher the plasma AUC and the lower the clearance, the higher the tumor accumulation. A particle must <b>stay in the blood for a long time</b>, avoiding the clearing organs (liver, kidney, immune cells), to have enough chances to extravasate into the tumor.</div>
+
+<h3><span class="star">★</span> 7.4 Limitations of EPR</h3>
+<ul>
+  <li>EPR isn't limited to nanoparticles. It applies to any biocompatible macromolecule of suitable size: <b>proteins (albumin), antibodies, DNA/RNA, and nanocarriers</b>.</li>
+  <li><b>EPR is heterogeneous</b> and <b>depends on tumor size and type</b>. In large tumors, the <b>high interstitial pressure</b> limits how deep particles penetrate. They stay at the periphery, and the necrotic core is poorly reached.</li>
+  <li><b>Mouse vs human:</b> EPR is clearly seen in mouse tumors, but it often <b>doesn't translate to humans</b>, and human evidence is limited. In mice you can remove and measure the tumor; in patients you can't.</li>
+  <li>One research direction is <b>imaging tools to show whether a patient's tumor has EPR</b>. Patients with EPR would be better candidates for nanomedicine.</li>
+  <li>Only a <b>small fraction of the injected dose</b> actually reaches the tumor. The lecturer gave a figure of under 1% of the dose in answer to a student question; the transcript is garbled at that point.</li>
+  <li>Particles can also extravasate through the fenestrated or sinusoidal capillaries of the <b>liver, spleen and bone marrow</b>, or be captured by phagocytes. That is why particle properties must be controlled.</li>
+</ul>
+</section>
+
+<!-- ============ 8 ============ -->
+<section id="size">
+<h2><span class="star">★</span> 8. Designing a Nanoparticle to Show EPR</h2>
+<p>Nanoparticles are given <b>IV</b>, so there is no absorption step. The goal is long circulation, which comes from avoiding each "exit" from the blood:</p>
+<figure>
+<svg viewBox="0 0 600 175" role="img" aria-label="Particle size design window on a log scale">
+  <rect x="40" y="55" width="173.3" height="28" class="z-red"/>
+  <rect x="213.3" y="55" width="225.5" height="28" class="z-grn"/>
+  <rect x="438.8" y="55" width="30.5" height="28" class="z-gry"/>
+  <rect x="469.3" y="55" width="90.7" height="28" class="z-org"/>
+  <text x="126" y="74" text-anchor="middle" class="t" style="fill:#fff">kidney clears</text>
+  <text x="326" y="74" text-anchor="middle" class="t" style="fill:#fff">EPR sweet spot</text>
+  <text x="515" y="74" text-anchor="middle" class="t" style="fill:#fff">MPS eats</text>
+  <g class="ln"><line x1="40" y1="83" x2="40" y2="95"/><line x1="92.2" y1="83" x2="92.2" y2="95"/><line x1="213.3" y1="83" x2="213.3" y2="95"/><line x1="369.8" y1="40" x2="369.8" y2="95"/><line x1="438.8" y1="83" x2="438.8" y2="95"/><line x1="469.3" y1="83" x2="469.3" y2="95"/><line x1="560" y1="83" x2="560" y2="95"/></g>
+  <text x="40" y="108" text-anchor="middle" class="tm">1</text><text x="92" y="108" text-anchor="middle" class="tm">2</text>
+  <text x="213" y="108" text-anchor="middle" class="tm">10</text><text x="370" y="108" text-anchor="middle" class="tm">80</text>
+  <text x="436" y="108" text-anchor="middle" class="tm">200</text><text x="472" y="108" text-anchor="middle" class="tm">300</text>
+  <text x="560" y="108" text-anchor="middle" class="tm">1000</text>
+  <text x="300" y="126" text-anchor="middle" class="t">particle diameter (nm, log scale)</text>
+  <text x="92" y="36" text-anchor="middle" class="tm">&lt;2 nm crosses</text>
+  <text x="92" y="48" text-anchor="middle" class="tm">continuous caps</text>
+  <text x="370" y="32" text-anchor="middle" class="tm">&gt;70–80 nm avoids liver/spleen sinusoids</text>
+  <text x="300" y="150" text-anchor="middle" class="tm">Slide: passive targeting window ≈ 10 nm &lt; Ø &lt; 150–200 nm, plus a hydrophilic (PEG) surface</text>
+</svg>
+<figcaption>Size alone sets the lower limit (kidney) and part of the upper limit (MPS). Surface chemistry (PEG) controls the rest.</figcaption>
+</figure>
+<div class="tbl"><table>
+  <tr><th>To avoid…</th><th>Design rule</th><th>Reason</th></tr>
+  <tr><td>Leaking into normal tissues</td><td>Size <b>&gt; 2 nm</b></td><td>Continuous capillaries' tight junctions are ≤ 2 nm</td></tr>
+  <tr><td><b>Renal elimination</b></td><td>Size <b>&gt; ~10 nm</b></td><td>Above the effective glomerular filtration cut-off</td></tr>
+  <tr><td>Liver/spleen/bone-marrow extravasation (if not targeting them)</td><td>Size <b>&gt; 70–80 nm</b></td><td>Sinusoidal capillaries let ≤ 70–80 nm particles out</td></tr>
+  <tr><td><b>Capture by phagocytes</b> (blood macrophages, dendritic cells, Kupffer cells)</td><td>Size <b>&lt; ~300 nm</b> (not 300–500+ nm) <b>and</b> a <b>hydrophilic surface (PEG)</b></td><td>Big and hydrophobic particles are preferentially captured</td></tr>
+</table></div>
+<div class="why"><b>Why do macrophages take up hydrophobic particles?</b> A hydrophobic surface attracts blood proteins, the <b>opsonins</b>: <b>complement proteins and immunoglobulins (antibodies)</b>. These coat the particle and "mark" it for specific receptors on phagocytic cells. <b>PEG</b> makes the surface hydrophilic, so opsonins don't attach and the particle circulates longer. (The protein layer on a particle is called the <b>protein corona</b>.)</div>
+</section>
+
+<!-- ============ 9 ============ -->
+<section id="active">
+<h2><span class="star">★</span> 9. Active Targeting</h2>
+<ul>
+  <li><b>Definition:</b> attach a <b>ligand</b> to the nanocarrier that binds specific <b>receptors overexpressed</b> on target cells, e.g., tumor cells.</li>
+  <li><b>Purpose:</b> either to increase accumulation at the tumor or inflammation site, or to target specific cells within it (increased cell uptake or specific cell attachment).</li>
+  <li><b>Which degree does it achieve?</b> Usually <b>second order</b>, because a ligand for a receptor on tumor cells selects cells. If the ligand targets an organelle (mitochondria, nucleus), it can achieve <b>third order</b>.</li>
+</ul>
+<div class="key"><b>Honest evidence:</b> so far, studies have <b>not shown</b> that active targeting <b>increases nanoparticle accumulation</b> in the tumor. Accumulation is mostly due to EPR or other mechanisms. What active targeting <b>can</b> change is <b>how the particles are distributed among the cells</b> within the tissue.</div>
+<p><b>What can be targeted inside a tumor:</b></p>
+<ul>
+  <li><b>Tumor cells</b> (active tumor targeting).</li>
+  <li><b>Tumor vasculature</b> (active vascular targeting), e.g., a ligand for the <b>VEGF receptor</b> overexpressed on tumor endothelial cells, sometimes used to <b>cut off the tumor's blood supply</b>.</li>
+  <li><b>Other microenvironment cells</b>, e.g., fibroblasts.</li>
+</ul>
+<div class="key"><b>★ Passive targeting is a prerequisite for active targeting.</b> If the nanoparticle never reaches the tumor, it doesn't matter whether its ligand can bind a receptor. It must <b>first</b> get there (by long circulation and EPR), and only <b>then</b> can the ligand act.</div>
+</section>
+
+<!-- ============ 10 ============ -->
+<section id="uptake">
+<h2>10. How Nanocarriers Enter Cells (Intracellular Trafficking)</h2>
+<p>When a nanocarrier reaches a cell, it first <b>attaches to the cell membrane</b>. It is then taken in by one of several mechanisms, depending on its structure.</p>
+
+<h3>10.1 Phagocytosis (large particles, phagocytic cells): usually NOT what you want</h3>
+<div class="steps">
+  <div><b>1</b>Cell membrane attachment</div>
+  <div><b>2</b>Membrane engulfs the particle → <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">phagosome</b></div>
+  <div><b>3</b>Phagosome <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">fuses with lysosome</b></div>
+  <div><b>4</b>Lysosomal enzymes <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">digest</b> the carrier <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">and its cargo</b></div>
+</div>
+
+<h3>10.2 Endocytosis: preferred, ideally with endosomal escape</h3>
+<p>The particle (often bound to a receptor) is taken in by an <b>early endosome</b>, which matures. Contents are then sorted: receptors are recycled to the membrane, and cargo heads to the <b>lysosome for degradation</b> unless it escapes first.</p>
+<div class="key"><b>Design goal:</b> nanocarriers are usually designed to enter by <b>endocytosis, not phagocytosis</b>, and then to <b>escape the endosome</b> into the cytoplasm <b>before reaching the lysosome</b>.</div>
+
+<div class="tbl"><table>
+  <tr><th>Uptake mechanism</th><th>Approx. size (slide)</th><th>Notes</th></tr>
+  <tr><td><b>Phagocytosis</b></td><td>~500 nm and larger</td><td>Phagocytic cells (macrophages); leads to the lysosome</td></tr>
+  <tr><td><b>Clathrin-dependent endocytosis</b></td><td>&lt; 150 nm</td><td>One of the two best-known routes; e.g., transferrin, mannose-6-phosphate (receptor-mediated)</td></tr>
+  <tr><td><b>Caveolae-dependent endocytosis</b></td><td>50–80 nm</td><td><b>Better at escaping lysosomal fusion</b>; e.g., folic acid, LDL</td></tr>
+  <tr><td>Fluid-phase macropinocytosis</td><td>(slide label "0.5–5"; FYI)</td><td>Non-specific uptake of fluid</td></tr>
+  <tr><td><b>Non-endocytic / direct fusion</b></td><td>—</td><td>Particles with <b>cell-penetrating peptides</b> or a <b>positive charge</b> can fuse directly with the membrane</td></tr>
+</table></div>
+<p>Which route a particle takes depends on the <b>ligand</b>, the <b>surface properties</b> and the <b>morphology (shape)</b> of the carrier. It may be one route or a combination, and this has to be studied for each particle.</p>
+
+<h3>10.3 Receptor-mediated endocytosis: ligand types</h3>
+<p>Ligands can be <b>metabolites</b> (small molecules such as folate or vitamins), <b>hormones</b>, <b>immunoglobulins / antibodies</b>, or parts of <b>pathogens</b>. Ligands aren't only for cancer cells:</p>
+<div class="tbl"><table>
+  <tr><th>Target cell</th><th>Receptor for (ligands you could use)</th></tr>
+  <tr><td>Hepatocytes</td><td><b>Galactose</b>, LDL, IgA</td></tr>
+  <tr><td>Macrophages</td><td>Galactose, <b>mannose</b>-fucose, acetylated LDL</td></tr>
+  <tr><td>Fibroblasts</td><td>Transferrin, EGF, LDL, mannose-6-phosphate, B12</td></tr>
+  <tr><td><b>Blood–brain barrier</b></td><td><b>Transferrin, insulin</b></td></tr>
+</table></div>
+</section>
+
+<!-- ============ 11 ============ -->
+<section id="phys">
+<h2>11. Physical Targeting</h2>
+<p><b>Physical targeting</b> uses an <b>internal or external stimulus</b> at the target site to trigger drug release or carrier–cell interaction.</p>
+<ul>
+  <li><b>Acidic pH (internal stimulus):</b>
+    <ul>
+      <li>Solid tumors are acidic because of anaerobic metabolism and lactic acid.</li>
+      <li><b>Endosomes</b> are also slightly acidic.</li>
+      <li>A carrier can be designed to <b>release drug at acidic pH</b> (e.g., stable at pH 7.4, releasing at pH 5.0) or to become membrane-active in the endosome.</li>
+    </ul></li>
+  <li><b>Ultrasound (external stimulus):</b> applied at the target to increase release, cell interaction, or penetration of particles into the tumor. Example from the slide: drug-loaded nanobubbles coalesce into microbubbles under ultrasound at the tumor.</li>
+</ul>
+<div class="key"><b>Multifunctional nanocarriers</b> combine targeting strategies, e.g., active targeting plus physical targeting.</div>
+</section>
+
+<!-- ============ 12 ============ -->
+<section id="chan">
+<h2><span class="star">★</span> 12. Challenging EPR: Chan's 2020 <i>Nature Materials</i> Paper</h2>
+<p>Until recently, EPR was the "golden" proposed mechanism for nanoparticle accumulation in tumors. In <b>January 2020</b>, <b>Dr. Warren Chan</b>'s group (University of Toronto at the time) published "<i>The entry of nanoparticles into solid tumours</i>" in <i>Nature Materials</i>.</p>
+<div class="key"><b>Claim:</b> transport through gaps between endothelial cells (inter-endothelial gaps, up to ~2,000 nm) has been the central paradigm of cancer nanomedicine, but these <b>gaps are NOT responsible</b> for nanoparticle entry. Instead, <b>up to 97% of nanoparticles enter tumors by an ACTIVE process THROUGH endothelial cells</b> (transcytosis). EPR plays only a <b>minor role</b>.</div>
+<p>They used <b>gold nanoparticles</b>, which are easy to image and quantify. There were three lines of evidence:</p>
+<ol>
+  <li><b>Gap measurement:</b> they measured the gaps in their tumor models. Gaps exist, but they cover <b>too little total surface area</b> to explain the accumulation seen.</li>
+  <li><b>Imaging:</b> electron microscopy found gold nanoparticles <b>inside endothelial cells</b> (in vesicles), <b>not in the gaps</b>. The particles go into the cells and then out the other side.</li>
+  <li><b>The "zombie" mouse model:</b>
+    <ul>
+      <li>They compared a <b>live</b> tumor-bearing mouse with a <b>euthanized</b> tumor-bearing mouse whose blood was kept circulating by a machine (like a heart-surgery bypass pump).</li>
+      <li>The gaps are present in both. If gaps drove entry, tumor accumulation should be <b>equal</b>.</li>
+      <li>The zombie has <b>no living, energy-using cells</b>, so if entry is an active process, accumulation should <b>drop</b>.</li>
+      <li><b>Result:</b> tumor accumulation was <b>much lower in the zombie model</b>, pointing to active transport.</li>
+    </ul></li>
+</ol>
+<p><b>Proposed mechanism:</b> nanoparticles pick up blood proteins (a <b>protein corona</b>). Depending on the corona's composition, they interact with endothelial cells, perhaps preferentially with tumor endothelium, and are actively transported across.</p>
+<p><b>Criticism:</b> the study used <b>only gold nanoparticles</b>, so it is unclear whether the result applies to other nanoparticles such as liposomes or micelles. Repeating it with other particles would be hard because they are harder to image. The group later published a review proposing additional mechanisms of tumor accumulation.</p>
+<p class="tm" style="color:var(--muted);font-size:.88rem">FYI (slide table, % of tumor accumulation attributed to gaps): cisplatin 35%, 15 nm NP 12%, 50 nm NP 3%, 100 nm NP 25%.</p>
+</section>
+
+<!-- ============ 13 ============ -->
+<section id="cheat">
+<h2>13. One-Page Cheat Sheet</h2>
+<ol>
+  <li><b>Why target:</b> accessibility, instability, unwanted effects.</li>
+  <li><b>Ideal carrier:</b> inert, biocompatible (non-toxic, non-immunogenic), stable in vitro and in vivo, biodegradable or eliminated, reproducible, cost-effective.</li>
+  <li><b>Degrees:</b> 1st = organ, 2nd = cells, 3rd = organelle. Each is harder than the last.</li>
+  <li><b>Carrier, not drug, decides fate</b>. The drug must stay with the carrier, so slow release (check release first).</li>
+  <li><b>Targeting types:</b> passive (tissue differences, EPR), active (ligand–receptor), physical (pH, ultrasound). Combined = multifunctional.</li>
+  <li><b>Capillaries:</b> continuous ≤2 nm (muscle, heart, brain, lung); fenestrated 20–80 nm (kidney, GI, glands); sinusoidal ≤150 nm with Kupffer cells (liver, spleen, bone marrow). Particles ≤70–80 nm reach the liver.</li>
+  <li><b>After extravasation:</b> small drugs return to the blood; macromolecules, oily and negatively charged material go to lymph. Clearance depends on size, surface, medium, pH and disease (corona).</li>
+  <li><b>Inflammation:</b> histamine and bradykinin cause vasodilation and damaged capillaries (80–140 nm), glycocalyx changes and more vesicular trafficking.</li>
+  <li><b>Tumor:</b> hypoxia → anaerobic metabolism → low pH; HIF-1α stabilized + HIF-1β → VEGF → angiogenesis (proteases degrade ECM) → chaotic, open-ended, leaky vessels (gaps ~700 nm).</li>
+  <li><b>EPR</b> (Maeda 1986, SMANCS): leaky vessels give enhanced permeability; high interstitial pressure collapses lymphatics, giving retention. ↑AUC and ↓CL mean more tumor uptake.</li>
+  <li><b>EPR limits:</b> heterogeneous, depends on tumor size and type, high pressure limits core penetration, mouse ≠ human. Imaging could select patients.</li>
+  <li><b>Design for EPR:</b> &gt;10 nm (avoid kidney), &lt;~200–300 nm plus PEG (avoid MPS and opsonins), &gt;70–80 nm (avoid sinusoids).</li>
+  <li><b>Active targeting</b> doesn't increase tumor accumulation but changes cell-level distribution. <b>Passive targeting is a prerequisite</b>.</li>
+  <li><b>Uptake:</b> phagocytosis leads to the lysosome (bad). Endocytosis (clathrin &lt;150 nm; caveolae 50–80 nm, which avoids the lysosome better) plus endosomal escape is good. Cationic or CPP-bearing carriers can fuse directly.</li>
+  <li><b>Chan 2020:</b> up to 97% of particles enter via active transport through endothelial cells (gap area too small, NPs seen inside endothelial cells, zombie model). Criticism: gold particles only.</li>
+</ol>
+</section>
+
+<!-- ============ 14 ============ -->
+<section id="qa">
+<h2>14. Practice Short-Answer Questions</h2>
+<p>Try to answer each question yourself, then click it to see a model answer.</p>
+
+<details><summary>1. Give three reasons for drug targeting.</summary>
+(1) Poor accessibility of the drug to its site of action, so too little dose arrives. (2) Instability of the drug on its way to the site of action; a carrier or chemical approach protects it. (3) Unwanted side effects; targeting limits exposure of healthy tissue.</details>
+
+<details><summary>2. List the properties of an ideal delivery system for drug targeting.</summary>
+Inert (no effect of its own); biocompatible (non-toxic acutely and chronically, and non-immunogenic); stable in vitro and in vivo; biodegradable or readily eliminated; reproducible manufacturing (no batch-to-batch variation); cost-effective.</details>
+
+<details><summary>3. Define the three degrees of drug targeting, with examples.</summary>
+First order: the diseased organ or tissue (e.g., joints in arthritis, a colorectal tumor). Second order: specific cells within that organ (e.g., tumor cells vs other cells in the tumor microenvironment, or T cells in the tumor). Third order: specific intracellular organelles (e.g., the nucleus for DNA, cytoplasm for mRNA, mitochondria). Each successive order is harder to achieve.</details>
+
+<details><summary>4. What is the first requirement when designing a nanocarrier for targeting, and how is it tested?</summary>
+The fate of the drug in vivo must be governed by the physicochemical properties of the carrier, not the drug, so the drug must stay with the carrier. This requires slow release with minimal premature release, which is why in vitro drug release is one of the first tests performed.</details>
+
+<details><summary>5. Define passive, active and physical targeting.</summary>
+Passive: no ligand or energy; it exploits natural differences between diseased and healthy tissue, mainly extravasation through leaky vessels (EPR). Active: a ligand on the carrier binds receptors overexpressed on target cells. Physical: an internal stimulus (e.g., acidic tumor or endosomal pH) or external stimulus (e.g., ultrasound) triggers release or uptake at the target. Combining strategies gives "multifunctional" carriers.</details>
+
+<details><summary>6. Compare continuous, fenestrated and sinusoidal capillaries.</summary>
+Continuous (muscle, heart, brain, lung, connective tissue): tight junctions ≤2 nm and a continuous basement membrane; only small molecules or vesicular trafficking cross. Fenestrated (kidney glomeruli, GI mucosa, endocrine and exocrine glands): gaps of 20–80 nm with a continuous basement membrane; only materials much smaller than the gap pass. Sinusoidal (liver, spleen, red bone marrow): gaps up to ~150 nm, basement membrane absent (liver) or discontinuous, Kupffer cells/macrophages in the gaps; particles ≤70–80 nm extravasate well.</details>
+
+<details><summary>7. Why does the kidney not filter proteins even though its fenestrations are 20–80 nm?</summary>
+A particle about the same size as the gap has a low probability of passing, especially because blood flows parallel to the wall while the gap is perpendicular to the flow. Only materials much smaller than the gap, such as electrolytes, pass easily. Protein in the urine indicates kidney damage.</details>
+
+<details><summary>8. What particle size would you choose to target the liver or bone marrow, and why?</summary>
+About 70–80 nm. That size is too large to cross continuous capillaries (muscle, connective tissue) or a healthy kidney, but small enough to extravasate through the sinusoidal capillaries (gaps up to ~150 nm) of the liver and bone marrow.</details>
+
+<details><summary>9. Describe the structure of endothelial cells relevant to extravasation.</summary>
+They are 20–40 µm long and 10–15 µm wide but only 100–500 nm thick. They contain plasmalemmal vesicles (about 70% open to the luminal side) that carry out vesicular transport. These vesicles can fuse into transendothelial channels. The cells are coated by a glycosaminoglycan layer (glycocalyx).</details>
+
+<details><summary>10. What happens to drugs and particles after they extravasate? What determines whether they enter blood or lymph?</summary>
+Hydrostatic pressure pushes fluid out at the arterial end of the capillary. At the venous end, pressure is lower and the endothelium thinner, so some fluid is reabsorbed. Small drugs return to the blood. Macromolecules and nanoparticles, oily/hydrophobic material and negatively charged material tend to enter the lymphatics. Clearance from the interstitium depends on size, surface properties (charge, hydrophobicity), formulation medium, interstitial pH and disease condition (e.g., protein corona formation).</details>
+
+<details><summary>11. How does inflammation increase capillary permeability?</summary>
+Immune cells release histamine and bradykinin, which cause vasodilation and increased blood flow. These mediators can damage capillaries and enlarge endothelial gaps (openings of ~80–140 nm), alter the glycocalyx and increase vesicular trafficking. Together this increases extravasation, which nanoparticles can exploit.</details>
+
+<details><summary>12. Explain how a growing solid tumor develops leaky vasculature.</summary>
+As the tumor grows, core cells become far from vessels, hypoxic and nutrient-poor, and they switch to anaerobic metabolism, producing lactic acid and lowering pH. Under hypoxia, HIF-1α isn't degraded (its degradation is oxygen-dependent). It dimerizes with HIF-1β, enters the nucleus and switches on genes for survival and growth factors such as VEGF. VEGF binds receptors on endothelial cells and makes them proliferate (angiogenesis), while proteases degrade the extracellular matrix to let vessels grow toward the tumor. Because this angiogenesis is uncontrolled, the new vessels are chaotic, sometimes open-ended, with gaps up to ~700 nm, so they are leaky.</details>
+
+<details><summary>13. What is the role of HIF-1α in tumors?</summary>
+Under hypoxia HIF-1α escapes oxygen-dependent degradation, accumulates, heterodimerizes with HIF-1β and acts as a transcription factor (binding hypoxia response elements). It upregulates genes for glycolysis, cell survival and inhibition of apoptosis, and angiogenic growth factors (VEGF, Ang2, NOS, PDGF-B).</details>
+
+<details><summary>14. What is the EPR effect? Explain both the "permeability" and the "retention" parts.</summary>
+The EPR (enhanced permeability and retention) effect was described by Maeda in 1986 with the polymer–drug conjugate SMANCS. It is the preferential accumulation of macromolecules and nanoparticles in solid tumors. Enhanced permeability: angiogenic tumor vessels are leaky with large gaps, so large particles extravasate in the tumor but not in normal tissue. Retention: high interstitial pressure in the tumor (from vessel leakage and tumor waste) collapses tumor lymphatics, so the extravasated particles can't be drained and are retained. In normal tissue, working lymphatics clear them.</details>
+
+<details><summary>15. What did Maeda observe in his 1986 study?</summary>
+The macromolecule (SMANCS, or albumin-bound Evans blue) accumulated preferentially in the tumor while the surrounding normal tissue stayed clear. Tumor concentration kept rising as plasma concentration fell, while normal skin stayed low. The macromolecule also accumulated in lymphatic tissues. Tumor accumulation increased with higher plasma AUC and lower clearance.</details>
+
+<details><summary>16. Why is long blood circulation important for passive targeting?</summary>
+Tumor accumulation correlates with plasma exposure: higher AUC and lower clearance lead to higher tumor levels. A particle that circulates longer has more chances to pass through the leaky tumor vessels. It must therefore avoid rapid clearance by the kidney, liver and immune cells.</details>
+
+<details><summary>17. What are the limitations of the EPR effect?</summary>
+It is heterogeneous and depends on tumor size and type (e.g., homogeneous uptake in primary liver cancer but ring-like uptake in liver metastases). High interstitial pressure limits penetration into the core of large tumors. It is clearly seen in mice but evidence in humans is limited, so results often don't translate. Only a small fraction of the dose reaches the tumor, and particles may also go to the liver, spleen and bone marrow or be captured by phagocytes. Imaging to select EPR-positive patients is being studied.</details>
+
+<details><summary>18. Which size and surface properties should a nanoparticle have to show EPR? Justify each.</summary>
+Larger than 2 nm, so it doesn't cross continuous capillaries in normal tissue. Larger than ~10 nm, to avoid renal filtration. Smaller than ~200–300 nm with a hydrophilic surface (PEG), to avoid uptake by macrophages, dendritic cells and Kupffer cells, which capture large hydrophobic particles. Optionally larger than 70–80 nm, to avoid extravasation through liver and spleen sinusoids. The slide gives the passive targeting window as 10–150/200 nm.</details>
+
+<details><summary>19. Why are hydrophobic nanoparticles cleared by phagocytes, and how does PEG prevent this?</summary>
+Hydrophobic surfaces adsorb blood proteins called opsonins (complement, immunoglobulins), forming a protein corona that marks the particle for receptors on phagocytic cells. PEG makes the surface hydrophilic and prevents opsonin adsorption, so the particle avoids MPS uptake and circulates longer.</details>
+
+<details><summary>20. What is active targeting, and does it increase tumor accumulation?</summary>
+Active targeting attaches a ligand that binds receptors overexpressed on target cells, such as tumor cells, tumor endothelium (e.g., VEGF receptor) or fibroblasts. It usually achieves second-order targeting, or third-order if the ligand targets an organelle. Studies have generally not shown that it increases total tumor accumulation, which is mostly due to EPR. Instead it changes the distribution among cells within the tissue.</details>
+
+<details><summary>21. Why is passive targeting a prerequisite for active targeting?</summary>
+A ligand can only bind its receptor once the nanoparticle has reached the tissue. If the particle doesn't first reach the tumor through long circulation and extravasation (EPR), its ligand is irrelevant.</details>
+
+<details><summary>22. Compare phagocytosis and endocytosis for nanocarrier uptake. Which is preferred and why?</summary>
+Phagocytosis (large particles, phagocytic cells): membrane attachment, engulfment into a phagosome, fusion with a lysosome and digestion. Enzymes destroy the carrier and its cargo. Endocytosis takes the particle into endosomes, which can be routed to lysosomes. It is preferred because the carrier can be designed to escape the endosome before lysosomal degradation and deliver its cargo to the cytoplasm.</details>
+
+<details><summary>23. Name cellular uptake pathways and their approximate size ranges. Which avoids lysosomes better?</summary>
+Phagocytosis (~500 nm and above); clathrin-dependent endocytosis (&lt;150 nm); caveolae-dependent endocytosis (50–80 nm); macropinocytosis (fluid phase); non-endocytic direct fusion (cationic or cell-penetrating-peptide carriers). Caveolae-mediated uptake escapes lysosomal fusion better. The route depends on the ligand, surface properties and morphology.</details>
+
+<details><summary>24. Give examples of ligands for targeting hepatocytes, macrophages and the blood–brain barrier.</summary>
+Hepatocytes: galactose, LDL, IgA. Macrophages: galactose, mannose(-fucose), acetylated LDL. Blood–brain barrier: transferrin, insulin. (Fibroblasts: transferrin, EGF, LDL, mannose-6-phosphate, B12.)</details>
+
+<details><summary>25. What is physical targeting? Give two examples.</summary>
+Physical targeting uses an internal or external stimulus at the target site. Acidic pH: tumors (lactic acid from anaerobic metabolism) and endosomes are acidic, so carriers can release drug or become membrane-active at low pH. Ultrasound: applied externally to increase drug release, cell interaction or tumor penetration. Carriers combining several strategies are called multifunctional.</details>
+
+<details><summary>26. Summarize Chan's 2020 Nature Materials findings and the main criticism.</summary>
+The study argued that inter-endothelial gaps aren't responsible for nanoparticle entry into tumors; up to 97% enter by an active process through endothelial cells, so EPR plays a minor role. Evidence with gold nanoparticles: (1) the gaps cover too little area to account for accumulation; (2) nanoparticles were seen inside endothelial cells, not in the gaps; (3) in a "zombie" model (euthanized mice with blood still circulating, so gaps were present but there was no active transport) tumor accumulation was much lower than in live mice. The proposed mechanism is that the protein corona mediates active interaction with tumor endothelium. Criticism: only gold nanoparticles were studied, so the result may not apply to other nanocarriers.</details>
+</section>
+
+<p style="color:var(--muted);font-size:.85rem;text-align:center">Transcript corrections: "Madea" → Maeda; "Kukfer/Coofer" → Kupffer; "claterine / caviolet" → clathrin / caveolae; "HEF1" → HIF-1. Slides 3–8 (nanotechnology overview) and the prodrug approach in the learning objectives weren't in this recording.</p>
+</div>
+</body>
+</html>
