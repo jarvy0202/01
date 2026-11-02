@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nanodelivery Systems Review</title>
+<style>
+:root{
+  --bg:#f7f7f5; --card:#ffffff; --ink:#1d1f23; --muted:#5d6470; --line:#e3e4e8;
+  --accent:#0b6e4f; --accent-soft:#e3f2ec; --star:#b45309; --star-soft:#fff4e0;
+  --th:#f0f2f4;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+    --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a; --th:#262a2f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+  --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a; --th:#262a2f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-size:1.6rem;line-height:1.25;margin:0 0 4px}
+header p{margin:0;color:var(--muted);font-size:.92rem}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px}
+nav a{font-size:.82rem;text-decoration:none;color:var(--accent);background:var(--accent-soft);
+  padding:4px 10px;border-radius:999px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+h2{font-size:1.2rem;margin:0 0 10px;color:var(--accent)}
+h3{font-size:1rem;margin:16px 0 6px}
+ul,ol{margin:6px 0;padding-left:22px}
+li{margin:3px 0}
+.star{color:var(--star);font-weight:700}
+.key{background:var(--star-soft);border-left:4px solid var(--star);padding:10px 14px;border-radius:6px;margin:10px 0;font-weight:600}
+.tbl{overflow-x:auto;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--th)}
+.spectrum{margin:12px 0 4px}
+.bar{height:12px;border-radius:6px;background:linear-gradient(90deg,#d9534f,#e8a33d,#0b6e4f)}
+.labels{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);margin-top:4px}
+.qa li{margin:6px 0}
+.qa b{display:block}
+.qa span{color:var(--muted)}
+code{font-size:.9em}
+@media print{body{background:#fff} section{break-inside:avoid;border-color:#ccc} nav{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>PHARM 610 · Lecture VII: Nano-drug Delivery Systems</h1>
+  <p>Dr. Lavasanifar · Midterm 2 · Key points (transcript-based, slides as support) · <span class="star">★</span> = emphasized / likely exam</p>
+</header>
+
+<nav>
+  <a href="#cd">Cyclodextrins</a><a href="#lipo">Liposomes</a><a href="#release">Release → PK</a>
+  <a href="#stealth">Conventional vs Stealth</a><a href="#doxil">Doxil</a><a href="#target">Targeting</a>
+  <a href="#poly">Polymer NPs</a><a href="#mic">Micelles</a><a href="#qa">Exam Qs</a>
+</nav>
+
+<section id="cd">
+<h2>1. Cyclodextrins</h2>
+<ul>
+  <li>Cyclic glucose oligomers: <b>α = 6, β = 7, γ = 8</b> units. Hydrophilic outside, <b>hydrophobic cavity</b> inside.</li>
+  <li>Drug enters cavity → <b>inclusion complex</b> (1:1 or 1:2) → <b>solubilizer</b>.</li>
+  <li><b>Not useful for targeting: drug is released too fast.</b></li>
+</ul>
+</section>
+
+<section id="lipo">
+<h2>2. Liposomes</h2>
+<h3>Structure</h3>
+<ul>
+  <li>Phospholipid <b>bilayer vesicles</b>.
+    <ul>
+      <li>Hydrophilic drug → <b>aqueous core</b></li>
+      <li>Hydrophobic drug → <b>bilayer</b></li>
+      <li>Amphiphilic drug → <b>interface</b></li>
+    </ul></li>
+  <li>Phospholipids: PC, PE, PS, PI, PG.
+    <ul>
+      <li>Fatty acid chains → transition temperature (Tm).</li>
+      <li>Cationic/ionizable heads → membrane fusion, endosomal escape, RNA loading.</li>
+    </ul></li>
+  <li><b>Cholesterol → ↑ rigidity, ↓ drug leakage.</b></li>
+</ul>
+
+<h3>Preparation</h3>
+<ol>
+  <li><b>Thin-film hydration</b> (old method): lipid in chloroform → rotary evaporation → thin film → hydrate with buffer → large MLVs → <b>sonication / extrusion</b> to make them smaller and uniform.</li>
+  <li><b>Ethanol injection</b>: lipid in ethanol injected into water → smaller, more uniform; usually no extrusion needed.</li>
+  <li><b>Microfluidics</b>: better mixing; automated and scalable.</li>
+</ol>
+<ul>
+  <li>Vesicle types: <b>SUV, LUV, MLV, MVV</b> (multivesicular).</li>
+  <li>Designs: <b>conventional, pH-sensitive, cationic, thermo-responsive, immuno- (antibody), stealth/long-circulating (PEG)</b>.</li>
+</ul>
+
+<h3>Drug loading</h3>
+<ul>
+  <li><b>Passive:</b> drug added during preparation (organic or aqueous phase).</li>
+  <li><b>Active / remote:</b> liposome formed first, then incubated with drug; a pH gradient or salt inside pulls the drug in.
+    <ul><li><b>Doxil:</b> ammonium sulfate gradient → doxorubicin <b>precipitates inside</b> → very low leakage.</li></ul></li>
+</ul>
+
+<h3>Quality criteria for generic liposomes (e.g., generic Doxil)</h3>
+<ul><li>Lipid content · Drug encapsulation · Size, PDI, charge · Stability (aggregation, shelf life) · Drug release</li></ul>
+
+<h3>Other tools</h3>
+<ul>
+  <li><b>AF4 (field-flow fractionation):</b> separates by size (or charge/density) using flow only — <b>no stationary phase</b>.</li>
+  <li><b>In vitro release:</b> dialysis (can be run in USP apparatus 2); add surfactant or albumin to keep <b>sink conditions</b> for poorly soluble drugs.</li>
+</ul>
+</section>
+
+<section id="release">
+<h2><span class="star">★</span> 3. Release Rate → PK → Targeting</h2>
+<div class="tbl"><table>
+  <tr><th>Formulation</th><th>Drug location</th><th>Drug PK</th></tr>
+  <tr><td>Rapid release (e.g., Visudyne)</td><td>In the bilayer</td><td>≈ <b>free drug</b></td></tr>
+  <tr><td>Sustained release</td><td>In the aqueous core</td><td>≈ <b>carrier</b></td></tr>
+</table></div>
+<div class="spectrum">
+  <div class="bar"></div>
+  <div class="labels"><span>Fast release → PK = free drug</span><span>In between</span><span>Slow release → PK = carrier</span></div>
+</div>
+<div class="key">The slower the release, the more the drug follows the carrier. Slow release is a prerequisite for targeting.</div>
+<ul>
+  <li>Sustained release → effective dose ↓, toxic dose ↑ → <b>therapeutic index ↑</b>.</li>
+  <li>Accumulation in tumors / inflammation via <b>EPR</b>.</li>
+</ul>
+</section>
+
+<section id="stealth">
+<h2><span class="star">★</span> 4. Conventional vs Stealth Liposomes</h2>
+<div class="tbl"><table>
+  <tr><th></th><th>Conventional</th><th>Stealth (PEG)</th></tr>
+  <tr><td>Examples</td><td>Myocet (doxorubicin), AmBisome (amphotericin B)</td><td>Doxil / Caelyx</td></tr>
+  <tr><td>Mechanism</td><td>Opsonins adsorb → taken up by <b>MPS / Kupffer cells</b></td><td>PEG <b>hydration layer</b> blocks protein adsorption → not recognized by MPS</td></tr>
+  <tr><td>Result</td><td><b>Short circulation</b>, high <b>liver/spleen uptake</b>, toxicity with repeat doses</td><td><b>Long circulation</b>; + sustained release → drug reaches tumors / inflammation</td></tr>
+</table></div>
+<ul><li>AmBisome (1997, SUV, amphiphilic drug at interface) → <b>↓ nephrotoxicity</b>.</li></ul>
+</section>
+
+<section id="doxil">
+<h2><span class="star">★</span> 5. Doxil / Caelyx (PEGylated liposomal doxorubicin)</h2>
+<ul>
+  <li>~100 nm · HSPC + cholesterol · <b>t½ &gt; 50 h</b> · main benefit: <b>↓ cardiotoxicity</b>.</li>
+  <li>PK vs free drug: <b>↓ CL · ↓ Vd · ↑ t½ · ↑ AUC · ↑ tumor distribution</b>.</li>
+  <li><b>Vd = D<sub>body</sub> / C<sub>plasma</sub></b>: free doxorubicin <b>254 L</b> → Doxil <b>4.1 L</b> (≈ blood volume). Liposomes are too big to leave normal capillaries → drug stays in plasma.</li>
+  <li>Still the best formulation because the precipitated drug barely leaks out.</li>
+</ul>
+<div class="tbl"><table>
+  <tr><th>Side effects ↓</th><th>Side effects ↑</th></tr>
+  <tr><td>Cardiac, hematologic toxicity, hair loss, neuropathy, vesicant injury, nausea</td>
+      <td><b>Mucositis</b>; <b>hand-foot syndrome (PPE)</b> — pressure points squeeze liposomes out of vessels → management: <b>delay next chemo cycle</b></td></tr>
+</table></div>
+<h3>Onivyde (liposomal irinotecan, 2015)</h3>
+<ul><li>Irinotecan = <b>prodrug of SN-38</b> (SN-38 ~1000× more potent but poorly soluble). Liposome changes PK the same way as Doxil.</li></ul>
+</section>
+
+<section id="target">
+<h2>6. Active Targeting &amp; Triggered Release</h2>
+<ul>
+  <li>Ligands: antibodies, fragments, nanobodies, aptamers, peptides, folate. <b>Internalizing &gt; non-internalizing.</b></li>
+</ul>
+<div class="key">★ Ligand attachment does NOT increase tumor accumulation (EPR dominates).</div>
+<ul>
+  <li>High ligand density <b>masks PEG stealth</b> → faster clearance.</li>
+  <li>Ligands only change <b>intratumoral distribution</b>.</li>
+  <li><span class="star">★</span> <b>Binding site barrier:</b> in <b>large tumors</b>, liposomes bind the first cell layer and can't penetrate deeper. Micrometastases / vascular targets suit targeted liposomes better.</li>
+  <li><span class="star">★</span> <b>Post-insertion:</b> ligand-PEG-lipid micelles + preformed liposomes → ligand inserts into outer leaflet. Better than pre-mixing because <b>more ligand is exposed on the surface</b>.</li>
+  <li><b>ThermoDox:</b> lysolipid liposome designed to release at <b>42 °C</b>; <b>failed because it leaked at 37 °C</b>.</li>
+</ul>
+</section>
+
+<section id="poly">
+<h2>7. Polymeric Nano/Microparticles</h2>
+<ul>
+  <li>Natural: gelatin, <b>albumin</b>, alginate. Synthetic: PLA, PGA, <b>PLGA</b>, PCL, PACA.</li>
+  <li><b>Nanocapsule</b> = drug core + polymer shell (reservoir). <b>Nanosphere</b> = drug dispersed in polymer matrix.</li>
+</ul>
+<h3>Preparation</h3>
+<div class="tbl"><table>
+  <tr><th>Method</th><th>Key point</th></tr>
+  <tr><td>In situ polymerization</td><td>From <b>monomers</b> (emulsion / interfacial); surfactant prevents aggregation</td></tr>
+  <tr><td>Coacervation</td><td>Mainly <b>microparticles / reservoir</b>; non-solvent → polymer coacervate coats drug core → hardens</td></tr>
+  <tr><td><b>Emulsion / solvent evaporation</b></td><td><b>Water-immiscible</b> solvent (chloroform) + PVA; <b>O/W → hydrophobic drug, W/O/W → hydrophilic drug</b>; PLGA</td></tr>
+  <tr><td><b>Solvent displacement</b></td><td><b>Water-miscible</b> solvent (acetone, THF); water = non-solvent; <b>smaller particles</b></td></tr>
+  <tr><td>Salting out</td><td>Like displacement, but <b>electrolyte</b> triggers precipitation</td></tr>
+</table></div>
+<h3>Purification (remove free drug)</h3>
+<ul>
+  <li><b>Dialysis</b> — drawback: drug migrates to particle surface → <b>burst release</b>.</li>
+  <li><b>Ultrafiltration</b> (Amicon) · <b>Ultracentrifugation</b> · <b>SEC/GPC</b> (large particles elute first).</li>
+</ul>
+<ul>
+  <li><b>Abraxane</b> (albumin-bound paclitaxel, 2005): does <b>not</b> change PK like stealth carriers, but clinically effective.</li>
+  <li><b>Steric stabilization:</b> hydrophilic polymer on surface prevents aggregation — <b>adsorbed</b> (PVA, Pluronic PEO-PPO-PEO, PEO-PLA) or <b>grafted</b> (PEG).</li>
+</ul>
+</section>
+
+<section id="mic">
+<h2><span class="star">★</span> 8. Polymeric Micelles</h2>
+<ul>
+  <li>Amphiphilic block copolymers above <b>CMC</b> → <b>core–shell</b>, ~<b>100 nm</b>. <b>PEG shell</b>, <b>hydrophobic core</b> → solubilize / target poorly soluble drugs.</li>
+  <li>Polymers: PEO-b-PPO, PEO-b-PLA, PEO-b-poly(amino acid).</li>
+</ul>
+<h3>★ Thermodynamics — hydrophobic effect (ΔG = ΔH − TΔS)</h3>
+<ul>
+  <li>In water: <b>endothermic (ΔH &gt; 0)</b> → must be <b>entropy-driven</b>.</li>
+  <li>Hydrophobic blocks disrupt water's <b>H-bond network</b>; hiding them in the core restores it → <b>water entropy ↑</b> → ΔG &lt; 0.</li>
+  <li>In organic solvents: <b>enthalpy-driven</b>.</li>
+</ul>
+<h3>★ vs surfactant micelles (Cremophor EL, SDS, polysorbate)</h3>
+<ol>
+  <li><b>Lower CMC</b> (macromolecular hydrophobic block) → stay assembled after dilution in blood.</li>
+  <li><b>Kinetic stability</b>: rigid core breaks up over <b>hours</b> vs <b>milliseconds</b> for liquid-like surfactant cores.</li>
+</ol>
+<p>→ Allows sustained release &amp; targeting after IV injection.</p>
+<h3>Drug loading</h3>
+<ul><li><b>Dialysis</b> (DMSO/DMF vs water) · <b>O/W emulsion</b> (preformed micelles + drug in chloroform, vigorous mixing, evaporate) · <b>Film hydration</b> · <b>Co-solvent evaporation</b> (acetone/ACN/THF) · <b>Microfluidics</b></li></ul>
+<h3>Clinical examples</h3>
+<div class="tbl"><table>
+  <tr><th>Product</th><th>Drug</th><th>Outcome</th></tr>
+  <tr><td>NK911 (PEG-poly(Asp))</td><td>Doxorubicin</td><td>PK much worse than Doxil → dropped</td></tr>
+  <tr><td>SP1049C (Pluronic)</td><td>Doxorubicin (drug-resistant cancer)</td><td>Failed</td></tr>
+  <tr><td>NK105 (PEG-polyaspartate)</td><td>Paclitaxel</td><td>PK improved (↑AUC, ↑t½) but <b>missed clinical endpoints</b></td></tr>
+  <tr><td><b>Genexol-PM (PEG-PDLLA)</b></td><td>Paclitaxel</td><td><b>Marketed (Korea, India)</b>; solubility 5000× water; <b>no Cremophor EL toxicity</b> (vs Taxol)</td></tr>
+</table></div>
+</section>
+
+<section id="qa">
+<h2>9. Likely Short-Answer Questions</h2>
+<ol class="qa">
+  <li><b>Why did cyclodextrins fail for targeting?</b><span>Fast drug release.</span></li>
+  <li><b>Where do drugs sit in a liposome? Role of cholesterol?</b><span>Core / bilayer / interface; ↑ rigidity, ↓ leakage.</span></li>
+  <li><b>Film hydration &amp; size reduction?</b><span>Solvent → film → hydrate → MLV → sonicate / extrude.</span></li>
+  <li><b>Remote loading?</b><span>Preformed liposome + gradient; Doxil ammonium sulfate → precipitation.</span></li>
+  <li><b>Quality criteria for a generic liposome?</b><span>Lipid, encapsulation, size/PDI/charge, stability, release.</span></li>
+  <li><b>Why is slow release needed for targeting?</b><span>Drug PK follows carrier only if release is slow.</span></li>
+  <li><b>Problems with conventional liposomes?</b><span>MPS uptake, short circulation, liver/spleen toxicity.</span></li>
+  <li><b>How does stealth work?</b><span>PEG hydration layer → no opsonins → long circulation → EPR.</span></li>
+  <li><b>PK changes with Doxil? Why does Vd drop?</b><span>↓CL ↓Vd ↑t½ ↑AUC ↑tumor; 254 → 4.1 L, drug confined to blood.</span></li>
+  <li><b>Doxil toxicity changes? Hand-foot syndrome?</b><span>↓ cardiac; ↑ mucositis &amp; HFS (pressure points; delay next cycle).</span></li>
+  <li><b>Does a ligand increase tumor uptake?</b><span>No; may lose stealth; changes intratumoral distribution only.</span></li>
+  <li><b>Binding site barrier? Post-insertion?</b><span>Large tumors, first cell layer; ligand-PEG-lipid micelles insert into preformed liposomes.</span></li>
+  <li><b>Why did ThermoDox fail?</b><span>Leaked at 37 °C.</span></li>
+  <li><b>O/W vs W/O/W? Emulsion vs solvent displacement?</b><span>Hydrophobic vs hydrophilic drug; immiscible vs miscible solvent (smaller particles).</span></li>
+  <li><b>Purification methods? Drawback of dialysis?</b><span>Dialysis, ultrafiltration, ultracentrifugation, SEC; burst release.</span></li>
+  <li><b>Why is micellization entropy-driven?</b><span>Hydrophobic effect; released water restores H-bond network.</span></li>
+  <li><b>Polymeric vs surfactant micelles?</b><span>Lower CMC + higher kinetic stability.</span></li>
+  <li><b>Advantage of Genexol-PM?</b><span>Solubilizes paclitaxel without Cremophor EL toxicity.</span></li>
+</ol>
+</section>
+</div>
+</body>
+</html>
