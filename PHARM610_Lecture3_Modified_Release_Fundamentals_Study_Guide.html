@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modified Release Fundamentals</title>
+<style>
+:root{
+  --bg:#f7f7f5; --card:#ffffff; --ink:#1d1f23; --muted:#5d6470; --line:#e3e4e8;
+  --accent:#0b6e4f; --accent-soft:#e3f2ec; --star:#b45309; --star-soft:#fff4e0;
+  --th:#f0f2f4; --info-soft:#eaf1fb; --info:#2b5fad;
+  --lipid:#f3d9a4; --head:#c8862b; --water:#d7ecf7; --blue:#2b6cb0; --orange:#d9622b;
+  --green:#2f8f4e; --peg:#7a5cc4; --cell:#f1d3cf; --cellline:#c98b84;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+    --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a;
+    --th:#262a2f; --info-soft:#1b2534; --info:#7fa8e6;
+    --lipid:#6b5428; --head:#e0a24c; --water:#1f3644; --blue:#6aa5ea; --orange:#f0884f;
+    --green:#5cc07c; --peg:#a98ff0; --cell:#4a2f2c; --cellline:#b07870;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+  --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a;
+  --th:#262a2f; --info-soft:#1b2534; --info:#7fa8e6;
+  --lipid:#6b5428; --head:#e0a24c; --water:#1f3644; --blue:#6aa5ea; --orange:#f0884f;
+  --green:#5cc07c; --peg:#a98ff0; --cell:#4a2f2c; --cellline:#b07870;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-size:1.6rem;line-height:1.25;margin:0 0 4px}
+header p{margin:0;color:var(--muted);font-size:.92rem}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px}
+nav a{font-size:.82rem;text-decoration:none;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:999px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+h2{font-size:1.25rem;margin:0 0 10px;color:var(--accent)}
+h3{font-size:1.05rem;margin:20px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:6px 0;padding-left:22px}
+li{margin:3px 0}
+.star{color:var(--star);font-weight:700}
+.key{background:var(--star-soft);border-left:4px solid var(--star);padding:10px 14px;border-radius:6px;margin:12px 0}
+.key b:first-child{color:var(--star)}
+.why{background:var(--info-soft);border-left:4px solid var(--info);padding:10px 14px;border-radius:6px;margin:12px 0}
+.why b:first-child{color:var(--info)}
+.tbl{overflow-x:auto;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--th)}
+.steps{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px;margin:10px 0}
+.steps div{flex:1 1 140px;background:var(--th);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.88rem;position:relative}
+.steps div b{display:block;font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+figure{margin:12px 0;text-align:center}
+figure svg{width:100%;max-width:560px;height:auto}
+figcaption{font-size:.84rem;color:var(--muted);margin-top:4px}
+.spectrum{margin:12px 0 4px}
+.bar{height:12px;border-radius:6px;background:linear-gradient(90deg,#d9534f,#e8a33d,#0b6e4f)}
+.labels{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--muted);margin-top:4px}
+details{border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:8px 0;background:var(--card)}
+summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:6px}
+.glossary dt{font-weight:700;margin-top:6px}
+.glossary dd{margin:0 0 4px 0;color:var(--ink)}
+/* svg */
+.t{fill:var(--ink);font-size:12px;font-family:inherit}
+.tm{fill:var(--muted);font-size:11px;font-family:inherit}
+.tail{fill:var(--lipid)} .core{fill:var(--water)}
+.head{fill:none;stroke:var(--head);stroke-width:6;stroke-dasharray:2 3}
+.phil{fill:var(--blue)} .phob{fill:var(--orange)} .amph{fill:var(--green)}
+.peg{fill:none;stroke:var(--peg);stroke-width:2;stroke-linecap:round}
+.ab{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round}
+.ln{stroke:var(--muted);stroke-width:1;fill:none}
+.ax{stroke:var(--ink);stroke-width:1.2;fill:none}
+.cx{fill:none;stroke:var(--green);stroke-width:2.5}
+.fx{fill:none;stroke:var(--orange);stroke-width:2.5}
+.cell{fill:var(--cell);stroke:var(--cellline);stroke-width:1}
+.vessel{fill:#c0392b;opacity:.75}
+.lipo{fill:var(--lipid);stroke:var(--head);stroke-width:1.5}
+.poly{fill:var(--water);stroke:var(--blue);stroke-width:2}
+.shell{stroke:var(--peg);stroke-width:2;fill:none;stroke-linecap:round}
+.mcore{fill:var(--lipid);stroke:var(--orange);stroke-width:1.5}
+.arrow{stroke:var(--ink);stroke-width:1.5;fill:none;marker-end:url(#ah)}
+@media print{body{background:#fff} section{break-inside:avoid;border-color:#ccc} nav{display:none} details{break-inside:avoid}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs></svg>
+<style>
+.polyf{fill:var(--water);stroke:var(--blue);stroke-width:2}
+.drugf{fill:var(--orange);opacity:.85}
+.depl{fill:var(--card);stroke:var(--blue);stroke-width:1;stroke-dasharray:3 2}
+.win{fill:var(--accent-soft)}
+.ir{fill:none;stroke:var(--muted);stroke-width:2.2}
+.sr{fill:none;stroke:var(--orange);stroke-width:2.5}
+.cr{fill:none;stroke:var(--green);stroke-width:2.5}
+.dash{fill:none;stroke:var(--muted);stroke-width:1.3;stroke-dasharray:4 3}
+.hole{fill:var(--card)}
+.memb{fill:none;stroke:var(--ink);stroke-width:4}
+.flex{fill:var(--star-soft);stroke:var(--star);stroke-width:1.5;stroke-dasharray:3 2}
+.osm{fill:var(--info)}
+</style>
+<div class="wrap">
+<header>
+  <h1>PHARM 610 · Lecture III: Fundamentals of Advanced (Modified-Release) Drug Delivery Systems</h1>
+  <p>Dr. Lavasanifar · Midterm 2 · Full study guide (based mainly on the transcript, with the slides as support).
+     <span class="star">★</span> = stressed in lecture / likely exam. <b style="color:var(--info)">Why?</b> boxes explain the reasoning behind a fact.
+     The recording starts at "Mechanisms of controlling drug release". The history, routes and terminology slides came from an earlier class, so those sections are built from the slides and standard definitions.</p>
+</header>
+
+<nav>
+  <a href="#hist">History</a><a href="#term">Terminology</a><a href="#mech">6 mechanisms</a>
+  <a href="#diff">Diffusion</a><a href="#diss">Dissolution</a><a href="#deg">Degradation</a>
+  <a href="#osm">Osmotic</a><a href="#ion">Ion exchange</a><a href="#gel">Hydrogels</a>
+  <a href="#should">Should every drug be SR?</a><a href="#cheat">Cheat sheet</a><a href="#qa">Practice Qs</a>
+</nav>
+
+<!-- 1 -->
+<section id="hist">
+<h2>1. History of Advanced Drug Delivery (slides only)</h2>
+<p>Know the main milestones and the big names. The details are FYI.</p>
+<div class="tbl"><table>
+  <tr><th>When</th><th>What happened</th></tr>
+  <tr><td>1930s</td><td><b>Compressed pellets of hydrophobic compounds</b> (e.g., estradiol pellets) gave sustained release</td></tr>
+  <tr><td>1951</td><td><b>Cellulose acetate phthalate</b> introduced as an <b>enteric coating</b>, followed by polymethacrylates (<b>Eudragit L and S</b>)</td></tr>
+  <tr><td>1952</td><td><b>Spansule</b> (Smith, Kline &amp; French): <b>12-hour</b> delivery of dextroamphetamine sulfate. These were coated beads in a capsule.</td></tr>
+  <tr><td>1964–66</td><td><b>Judah Folkman</b> (Harvard) circulated rabbit blood through <b>silicone rubber (Silastic)</b> tubing. When the tubing was exposed to anesthetic gases, the rabbits fell asleep: hydrophobic drugs diffuse through silicone. <b>Bob Langer</b> was a postdoc in his lab in the 1970s.</td></tr>
+  <tr><td>1968</td><td><b>Alejandro Zaffaroni founded ALZA</b>, the company behind many first products</td></tr>
+  <tr><td>1974–76</td><td><b>Ocusert</b> (pilocarpine eye insert, 1974); <b>Progestasert</b> IUD (1976); <b>Norplant</b> (approved in Chile in 1974, Europe in the 1980s, the US in the 1990s; discontinued 2008)</td></tr>
+  <tr><td>1970s</td><td><b>Transdermal patches</b>: the first approved was <b>Transderm-Scop</b> (Alza, 1979). <b>Osmotic pumps</b> were also developed.</td></tr>
+  <tr><td>1980s</td><td>Polymeric <b>microparticles, wafers and gels</b> for parenteral use</td></tr>
+  <tr><td>Late 1990s</td><td>Vaginal rings <b>Estring</b> and <b>Femring</b></td></tr>
+</table></div>
+<p><b>Rate-controlling materials:</b></p>
+<ul>
+  <li><b>Silicone rubber</b> (PDMS) is very permeable to hydrophobic drugs.</li>
+  <li><b>EVA</b> (poly(ethylene-co-vinyl acetate)): the % vinyl acetate controls the % crystallinity of the polyethylene part, and therefore the permeability.</li>
+</ul>
+<p><b>Degradable materials:</b></p>
+<ul>
+  <li><b>PLGA</b> was made in <b>1967</b> for degradable sutures. It was used for depot drug release in the 1980s and in nanocarriers in the 1990s.</li>
+  <li>PCL came in the late 1970s.</li>
+  <li><b>Polyanhydrides</b> were developed by <b>Bob Langer</b> in <b>1983</b>.</li>
+  <li>The 1990s brought injectable degradable implants.</li>
+</ul>
+<p><b>Routes</b> used for modified-release systems: oral, parenteral, implants, transdermal, aerosols.</p>
+</section>
+
+<!-- 2 -->
+<section id="term">
+<h2><span class="star">★</span> 2. Terminology and the Design Concept</h2>
+<p>These definitions came from the slides and an earlier class, phrased in standard textbook terms. The lecturer referred back to "repeat action" in this recording.</p>
+<div class="tbl"><table>
+  <tr><th>Term</th><th>Meaning</th></tr>
+  <tr><td><b>Controlled release (CR)</b></td><td>Drug is released at a <b>constant, predetermined rate (zero order)</b>, so plasma levels stay flat. The ideal: <b>rate in = rate out</b> (release/absorption rate = elimination rate).</td></tr>
+  <tr><td><b>Sustained release (SR)</b></td><td>Release is <b>slowed and extended over time</b>, but <b>not constant</b>. The rate falls as time goes on, so plasma levels slowly decline.</td></tr>
+  <tr><td><b>Prolonged release</b></td><td>Drug action is extended for longer than with an immediate-release form (a general term for extending duration)</td></tr>
+  <tr><td><b>Repeat action</b></td><td>One dosage form releases <b>separate doses (pulses) at intervals</b>, e.g., layered tablets</td></tr>
+  <tr><td><b>Delayed release</b></td><td>Release <b>starts after a delay</b> following administration, e.g., <b>enteric-coated</b> tablets that release in the intestine</td></tr>
+</table></div>
+<figure>
+<svg viewBox="0 0 520 235" role="img" aria-label="Plasma concentration time curves for immediate, sustained and controlled release">
+  <rect x="50" y="80" width="450" height="60" class="win"/>
+  <text x="497" y="76" text-anchor="end" class="tm">MTC (toxic)</text><text x="497" y="136" text-anchor="end" class="tm">MEC (effective)</text>
+  <text x="497" y="121" text-anchor="end" class="tm">therapeutic window</text>
+  <line x1="50" y1="15" x2="50" y2="190" class="ax"/><line x1="50" y1="190" x2="505" y2="190" class="ax"/>
+  <path d="M50 190 C70 60 100 40 130 60 S 200 170 280 185 L500 188" class="ir"/>
+  <path d="M50 190 C80 120 110 108 160 110 S 400 135 500 150" class="sr"/>
+  <path d="M50 190 C66 125 85 103 125 103 L500 103" class="cr"/>
+  <text x="140" y="45" class="t">Immediate release (peaks above window)</text>
+  <text x="400" y="95" class="t" style="fill:var(--green)">Controlled (flat)</text>
+  <text x="330" y="170" class="t" style="fill:var(--orange)">Sustained (slow decline)</text>
+  <text x="275" y="212" text-anchor="middle" class="t">Time</text>
+  <text x="18" y="105" class="t" transform="rotate(-90 18 105)" text-anchor="middle">Plasma conc.</text>
+</svg>
+<figcaption>Immediate release overshoots and then drops below the effective level. Sustained release stays in the window longer. Controlled release stays flat.</figcaption>
+</figure>
+<div class="why"><b>Why bother?</b> Repeated immediate-release doses give peaks (possible toxicity) and troughs (loss of effect). One modified-release dose keeps the level inside the therapeutic window with <b>less frequent dosing</b>, which improves compliance and smooths the effect.</div>
+</section>
+
+<!-- 3 -->
+<section id="mech">
+<h2><span class="star">★</span> 3. The Six Mechanisms for Controlling Drug Release</h2>
+<ol>
+  <li><b>Diffusion</b></li>
+  <li><b>Dissolution</b>, of the drug itself or of the material it is embedded in</li>
+  <li><b>Degradation</b> of the polymer</li>
+  <li><b>Osmotic or vapor pressure</b></li>
+  <li><b>Electrostatic interactions</b> (ion exchange)</li>
+  <li><b>Swelling and expansion</b> (hydrogels)</li>
+</ol>
+<p>A single product can combine more than one mechanism. This lecture is an overview; the following lectures go into each mechanism in depth, starting with diffusion in Lecture IV.</p>
+</section>
+
+<!-- 4 -->
+<section id="diff">
+<h2><span class="star">★</span> 4. Diffusion-Controlled Systems: Reservoir vs Monolithic</h2>
+<p>In both types, the polymer must <b>not dissolve, degrade or swell</b>. It stays intact throughout release, and release happens only by drug <b>diffusing through</b> it.</p>
+<figure>
+<svg viewBox="0 0 560 190" role="img" aria-label="Reservoir system versus monolithic matrix system over time">
+  <text x="105" y="18" text-anchor="middle" class="t" font-weight="700">Reservoir ("egg")</text>
+  <circle cx="105" cy="95" r="58" class="polyf"/><circle cx="105" cy="95" r="40" class="drugf"/>
+  <text x="105" y="99" text-anchor="middle" class="t" style="fill:#fff">drug core</text>
+  <text x="105" y="170" text-anchor="middle" class="tm">coat thickness h fixed</text>
+  <text x="105" y="184" text-anchor="middle" class="tm">core just empties</text>
+  <text x="390" y="18" text-anchor="middle" class="t" font-weight="700">Monolithic / matrix ("chocolate chip cookie")</text>
+  <circle cx="270" cy="95" r="45" class="polyf"/><circle cx="270" cy="95" r="40" class="drugf"/>
+  <circle cx="390" cy="95" r="45" class="polyf"/><circle cx="390" cy="95" r="28" class="drugf"/>
+  <circle cx="510" cy="95" r="45" class="polyf"/><circle cx="510" cy="95" r="14" class="drugf"/>
+  <text x="270" y="158" text-anchor="middle" class="tm">t₁</text><text x="390" y="158" text-anchor="middle" class="tm">t₂</text><text x="510" y="158" text-anchor="middle" class="tm">t₃</text>
+  <text x="390" y="178" text-anchor="middle" class="tm">outer zone empties → h ↑ → release slows</text>
+</svg>
+<figcaption>Reservoir: drug core inside a rate-controlling membrane. Matrix: drug mixed through the polymer (the orange area is the part still loaded).</figcaption>
+</figure>
+
+<h3>4.1 Reservoir systems</h3>
+<p>The drug forms a <b>core</b> (reservoir) coated by a polymer membrane. The device can be a sphere or a slab. As release proceeds, the <b>device size and polymer don't change</b>; the core just empties.</p>
+<div class="key"><b>Fick's first law (reservoir form):</b> <b>J = D K ΔC / h</b>
+  <ul style="margin:6px 0 0">
+    <li>J = flux (amount per area per time)</li>
+    <li>D = diffusion coefficient of the drug in the polymer</li>
+    <li>K = partition coefficient (drug in polymer vs medium)</li>
+    <li>ΔC = concentration difference between inside and outside</li>
+    <li>h = membrane thickness</li>
+  </ul></div>
+<div class="why"><b>★ Why can a reservoir give zero-order (controlled) release?</b> For a given drug and polymer, <b>D, K and h stay constant</b> because the polymer doesn't change. If the reservoir holds <b>excess drug</b>, more than its solubility in the membrane, then any drug that leaves is replaced from the excess. The concentration at the inner face of the membrane stays at saturation, so <b>ΔC stays constant</b>. With every term constant, the release rate doesn't depend on concentration: it is <b>zero order</b>, i.e., <b>controlled release</b>.</div>
+<p>(The lecturer explained where K comes from. Fick's law strictly uses concentrations <i>inside</i> the membrane, which can't be measured. Multiplying the measurable donor and receiver concentrations by K converts them. This is covered in detail in Lecture IV.)</p>
+
+<h3><span class="star">★</span> Lag time vs burst effect</h3>
+<figure>
+<svg viewBox="0 0 500 220" role="img" aria-label="Burst effect and lag time release curves">
+  <line x1="50" y1="15" x2="50" y2="190" class="ax"/><line x1="50" y1="190" x2="470" y2="190" class="ax"/>
+  <line x1="50" y1="190" x2="450" y2="78" class="dash"/>
+  <path d="M50 190 C55 140 70 125 110 120 L450 25" class="sr"/>
+  <path d="M50 190 C120 190 150 185 200 170 L450 100" class="cr"/>
+  <line x1="200" y1="170" x2="128.6" y2="190" class="dash"/>
+  <text x="240" y="45" class="t" style="fill:var(--orange)">Burst effect (aged device)</text>
+  <text x="300" y="174" class="t" style="fill:var(--green)">Lag time (fresh device)</text>
+  <text x="455" y="82" class="tm">ideal</text>
+  <text x="129" y="205" text-anchor="middle" class="tm">lag</text>
+  <text x="260" y="215" text-anchor="middle" class="t">Time</text>
+  <text x="18" y="105" class="t" transform="rotate(-90 18 105)" text-anchor="middle">Amount released</text>
+</svg>
+<figcaption>Both curves eventually run parallel to the ideal zero-order line. Only the start differs.</figcaption>
+</figure>
+<ul>
+  <li><b>Lag time:</b> the device is used <b>right after manufacture</b>. The drug hasn't had time to partition into the coating, which starts empty, so it takes time before release begins.</li>
+  <li><b>Burst effect (dose dumping):</b> the device has been <b>stored a while</b> before use. Drug has already saturated the coating, so a large amount comes out immediately.</li>
+</ul>
+
+<div class="tbl"><table>
+  <tr><th>Reservoir: advantages</th><th>Reservoir: disadvantages</th></tr>
+  <tr><td><ul style="margin:0">
+    <li><b>Zero-order delivery is possible</b></li>
+    <li>Release rate can be tuned by choice of polymer and its compatibility with the drug</li>
+  </ul></td>
+  <td><ul style="margin:0">
+    <li>Must be <b>physically removed</b> (implant). Oral: the empty "ghost" shell appears in the stool.</li>
+    <li><b>Can't deliver high-MW drugs</b> (proteins, peptides) because of their low diffusion coefficient</li>
+    <li><b>Cost:</b> harder to manufacture</li>
+    <li><b>Potential toxicity:</b> high drug load, so <b>dose dumping</b> (e.g., a ruptured coat) can be toxic</li>
+  </ul></td></tr>
+</table></div>
+<p><b>Examples:</b></p>
+<ul>
+  <li><b>Norplant</b> (subdermal levonorgestrel)</li>
+  <li><b>Vitrasert</b> (intravitreal ganciclovir for CMV retinitis in AIDS patients)</li>
+  <li><b>Ocusert</b> (pilocarpine for glaucoma)</li>
+  <li><b>Transderm Scop</b> (scopolamine for motion sickness, one of the first patches)</li>
+  <li><b>Catapres-TTS</b> (clonidine for hypertension; the transcript's "captopril" is a slip)</li>
+  <li><b>Cervidil</b> and <b>Estring</b> vaginal inserts</li>
+</ul>
+
+<h3>4.2 Monolithic (matrix) systems</h3>
+<p>Drug and polymer are <b>mixed together</b>; there is no separate reservoir. The lecturer's analogy: a reservoir is like an <b>egg</b> (yolk surrounded by white), while a matrix is like a <b>chocolate chip cookie</b>.</p>
+<div class="why"><b>★ Why can't a matrix give zero order?</b> D and K stay constant, and ΔC can stay constant with excess drug. But drug near the surface leaves first, and drug deeper inside must travel through the already-emptied outer layer, and movement through the polymer is slow. The <b>diffusion distance (h) keeps increasing</b>, so the rate keeps <b>falling</b>. Matrices give <b>sustained (not controlled) release</b>, usually following the <b>Higuchi model</b> (amount released ∝ √t).</div>
+<div class="tbl"><table>
+  <tr><th>Matrix: advantages</th><th>Matrix: disadvantages</th></tr>
+  <tr><td><ul style="margin:0">
+    <li><b>Easier to produce</b>: just mix drug and polymer</li>
+    <li><b>Can deliver high-MW drugs</b>: at high loading, released drug leaves holes that join into <b>channels</b> through which proteins can escape (percolation, Lecture IV)</li>
+  </ul></td>
+  <td><ul style="margin:0">
+    <li><b>Cannot achieve zero-order release</b></li>
+    <li>Polymer is non-degradable, so it must be removed (or a ghost appears in the stool)</li>
+  </ul></td></tr>
+</table></div>
+<p><b>Examples</b> (all transdermal): <b>Nitro-Dur</b> and <b>Deponit</b> (nitroglycerin), <b>Nicotrol</b> (nicotine).</p>
+</section>
+
+<!-- 5 -->
+<section id="diss">
+<h2>5. Dissolution-Controlled Systems</h2>
+<p>Release is slowed by slow <b>dissolution</b>. This can be dissolution of the drug itself (e.g., using a less soluble salt or prodrug) or of a <b>soluble coating</b>. Unlike a reservoir, here <b>the coat dissolves</b>.</p>
+<ul>
+  <li><b>Type A: layered (alternating drug and dissolving coat).</b> Each coat dissolves and releases one drug layer, then the next coat dissolves, and so on. The result is <b>pulses</b> of drug, i.e., <b>repeat action</b>.</li>
+  <li><b>Type B: beads with different coat thicknesses</b>, mixed in one capsule (like Spansule). Thin-coated beads dissolve first and release early; thicker ones release later. Together they give <b>sustained release</b>.
+    <ul><li>The same bead-in-capsule idea is also used just to keep two incompatible drugs apart in one capsule.</li></ul></li>
+</ul>
+</section>
+
+<!-- 6 -->
+<section id="deg">
+<h2><span class="star">★</span> 6. Degradation-Controlled (Biodegradable) Systems</h2>
+<p>The polymer itself is <b>destroyed</b> during use: chopped up by water (hydrolysis), enzymes or pH. Release follows one of two patterns depending on the polymer:</p>
+<figure>
+<svg viewBox="0 0 520 180" role="img" aria-label="Bulk erosion keeps size but forms pores; surface erosion shrinks the device">
+  <text x="130" y="18" text-anchor="middle" class="t" font-weight="700">Bulk erosion (e.g., PLGA)</text>
+  <rect x="30" y="40" width="55" height="85" rx="6" class="polyf"/>
+  <rect x="105" y="40" width="55" height="85" rx="6" class="polyf"/>
+  <circle cx="118" cy="60" r="4" class="hole"/><circle cx="140" cy="85" r="5" class="hole"/><circle cx="122" cy="108" r="4" class="hole"/>
+  <rect x="180" y="40" width="55" height="85" rx="6" class="polyf"/>
+  <circle cx="192" cy="55" r="6" class="hole"/><circle cx="215" cy="70" r="7" class="hole"/><circle cx="198" cy="92" r="6" class="hole"/><circle cx="222" cy="108" r="6" class="hole"/><circle cx="200" cy="118" r="4" class="hole"/>
+  <text x="130" y="148" text-anchor="middle" class="tm">same size; pores form inside</text>
+  <text x="130" y="162" text-anchor="middle" class="tm">(visible only under a microscope)</text>
+  <text x="400" y="18" text-anchor="middle" class="t" font-weight="700">Surface erosion (e.g., PCL)</text>
+  <rect x="300" y="40" width="55" height="85" rx="6" class="polyf"/>
+  <rect x="378" y="58" width="42" height="67" rx="6" class="polyf"/>
+  <rect x="445" y="80" width="28" height="45" rx="5" class="polyf"/>
+  <text x="400" y="148" text-anchor="middle" class="tm">no pores; device shrinks</text>
+  <text x="400" y="162" text-anchor="middle" class="tm">(visible by eye)</text>
+</svg>
+</figure>
+<div class="tbl"><table>
+  <tr><th></th><th>Bulk erosion</th><th>Surface erosion</th></tr>
+  <tr><td>Polymer type</td><td><b>More hydrophilic</b>: water enters the whole device</td><td><b>Very hydrophobic</b> but (bio)degradable: water can't get in</td></tr>
+  <tr><td>Where degradation happens</td><td><b>Throughout</b>. Chains are cut from inside until the MW is low enough for drug (and oligomers) to escape.</td><td><b>Only at the surface</b>, often enzyme-mediated. Each new layer becomes the surface in turn.</td></tr>
+  <tr><td>What you see</td><td><b>Size unchanged</b>; pores visible under a microscope</td><td><b>Device shrinks</b>; no pores</td></tr>
+  <tr><td>Example</td><td><b>PLGA</b> microspheres</td><td><b>PCL</b> (polycaprolactone) microspheres</td></tr>
+</table></div>
+<p><b>Release profile hint:</b> for bulk erosion you often see little release at first, then release once enough chains are cut, then a plateau: a sigmoidal (S-shaped) curve.</p>
+<div class="tbl"><table>
+  <tr><th>Advantages</th><th>Disadvantages</th></tr>
+  <tr><td><ul style="margin:0"><li>Easier to produce</li><li><b>Can deliver high-MW drugs</b> (proteins and peptides escape once the polymer is cut)</li><li><b>No need to remove</b> the device</li></ul></td>
+  <td><ul style="margin:0"><li><b>Hard to control kinetics</b>. Rarely zero or first order: enzymes, ionic strength and pH at the site all change the degradation rate.</li><li><b>Toxicity of the degradation products</b>, not just the polymer itself</li></ul></td></tr>
+</table></div>
+</section>
+
+<!-- 7 -->
+<section id="osm">
+<h2><span class="star">★</span> 7. Osmotic and Vapor-Pressure Systems</h2>
+<p><b>Osmotic pumps</b> were introduced by Alza. They can be given orally or implanted subcutaneously, and researchers use them to dose animals with drugs that are hard to inject. The device has a <b>semipermeable membrane</b> (like a dialysis bag: water in, larger molecules can't get out) with a tiny <b>laser-drilled orifice</b>. Water enters by osmosis and <b>pushes drug solution out</b> through the hole.</p>
+<div class="key"><b>Equations</b> (for the concept; no equation questions will be asked):
+  <ul style="margin:6px 0 0">
+    <li><b>dm/dt = (dV/dt)·C₀</b>: release rate = water inflow rate × drug concentration</li>
+    <li><b>dV/dt = (kA/h)·ΔΠ</b>, where k = membrane permeability, A = area, h = thickness, ΔΠ = osmotic pressure difference</li>
+  </ul></div>
+<figure>
+<svg viewBox="0 0 540 190" role="img" aria-label="Osmotic pump Type A versus Type B">
+  <text x="120" y="18" text-anchor="middle" class="t" font-weight="700">Type A (single core)</text>
+  <circle cx="120" cy="100" r="62" class="core"/>
+  <g class="drugf"><circle cx="95" cy="80" r="5"/><circle cx="130" cy="75" r="5"/><circle cx="110" cy="115" r="5"/><circle cx="145" cy="110" r="5"/></g>
+  <g class="osm"><circle cx="110" cy="92" r="4"/><circle cx="140" cy="92" r="4"/><circle cx="95" cy="130" r="4"/><circle cx="125" cy="135" r="4"/><circle cx="85" cy="100" r="4"/></g>
+  <circle cx="120" cy="100" r="62" class="memb"/>
+  <rect x="177" y="94" width="10" height="12" fill="var(--card)"/>
+  <line x1="185" y1="100" x2="225" y2="100" class="arrow"/>
+  <text x="120" y="182" text-anchor="middle" class="tm">drug + agent leave → ΔΠ falls</text>
+  <text x="395" y="18" text-anchor="middle" class="t" font-weight="700">Type B (two chambers, push)</text>
+  <circle cx="395" cy="100" r="62" class="core"/>
+  <g class="osm"><circle cx="360" cy="65" r="4"/><circle cx="375" cy="140" r="4"/><circle cx="350" cy="110" r="4"/><circle cx="405" cy="150" r="4"/><circle cx="420" cy="58" r="4"/><circle cx="345" cy="88" r="4"/></g>
+  <ellipse cx="415" cy="100" rx="36" ry="24" class="flex"/>
+  <g class="drugf"><circle cx="405" cy="95" r="5"/><circle cx="425" cy="105" r="5"/><circle cx="415" cy="90" r="4"/></g>
+  <circle cx="395" cy="100" r="62" class="memb"/>
+  <rect x="452" y="94" width="10" height="12" fill="var(--card)"/>
+  <line x1="460" y1="100" x2="505" y2="100" class="arrow"/>
+  <text x="395" y="182" text-anchor="middle" class="tm">osmotic agent stays → ΔΠ constant → zero order</text>
+  <text x="15" y="60" class="tm">H₂O →</text><text x="290" y="60" class="tm">H₂O →</text>
+</svg>
+<figcaption>Orange = drug; blue = osmotic agent (electrolyte). Type B's flexible bag holds the drug and is squeezed by the swelling osmotic compartment.</figcaption>
+</figure>
+<div class="why"><b>★ Why is Type A not zero order but Type B is?</b> In <b>Type A</b>, drug and electrolyte are mixed in one core and leave together. The inside osmotic pressure keeps falling, so water inflow (dV/dt) and release keep slowing. In <b>Type B</b>, the osmotic agent sits in a <b>separate chamber</b> and isn't released. With enough of it, ΔΠ stays <b>constant</b>, so water inflow and drug release are <b>constant</b> (zero order).</div>
+<div class="tbl"><table>
+  <tr><th>Advantages</th><th>Disadvantages</th></tr>
+  <tr><td><ul style="margin:0"><li><b>Zero-order release</b> (especially Type B)</li><li><b>No reformulation for different drugs</b>: put any drug in the drug chamber</li><li><b>Release rate independent of the environment</b> (pH, GI conditions)</li></ul></td>
+  <td><ul style="margin:0"><li><b>Expensive</b></li><li><b>Not suitable for drugs unstable in solution</b> (the drug sits in solution inside)</li></ul></td></tr>
+</table></div>
+<p><b>Examples:</b></p>
+<ul>
+  <li><b>DUROS</b>: implantable pump for peptides and proteins.</li>
+  <li><b>OROS</b>: oral, e.g., nifedipine (<b>Procardia XL</b>, Type B) and pseudoephedrine (<b>Efidac 24</b>).</li>
+</ul>
+<p><b>Vapor-pressure systems (InfusAID):</b> same idea, but the driving force is <b>vapor pressure</b>. A chamber holds a fluid that <b>vaporizes at body temperature</b>, and the gas squeezes the drug chamber. It is implanted (e.g., in the abdomen) with a catheter to the target, such as the spinal cord or a tumor site, for <b>local anticancer drugs or pain medication</b>.</p>
+</section>
+
+<!-- 8 -->
+<section id="ion">
+<h2>8. Electrostatic Interactions: Ion-Exchange Systems</h2>
+<ul>
+  <li><b>Salt-forming (charged) groups</b> repeat along a <b>water-insoluble</b> polymer, and an oppositely charged drug binds to them.</li>
+  <li><b>Release:</b> a <b>competing ion</b> from the environment swaps in and displaces the drug.</li>
+  <li>So release <b>depends on the ionic strength</b> of the environment, and the systems can be made <b>pH-responsive</b> (e.g., along the GI tract). Some "smart" systems are built this way.</li>
+  <li>Example in research: <b>nucleic acid delivery</b>. Positively charged carriers (e.g., PEI) bind negatively charged DNA, RNA or oligonucleotides, and the cargo is released by ion exchange.</li>
+</ul>
+</section>
+
+<!-- 9 -->
+<section id="gel">
+<h2>9. Swelling and Expansion: Hydrogels</h2>
+<ul>
+  <li>A <b>water-soluble polymer</b> is <b>cross-linked</b>. Cross-linking raises the molecular weight and makes it <b>insoluble</b>.</li>
+  <li>The polymer still has an affinity for water, so it <b>absorbs water and swells</b>, forming a gel (a hydrogel when the liquid is water).</li>
+  <li>It can be built as a reservoir or a monolithic system. <b>Swelling and expansion trigger and control release</b>.</li>
+  <li><b>Factors affecting diffusion in gels:</b>
+    <ul>
+      <li>type of cross-linkage</li>
+      <li>degree of cross-linking</li>
+      <li>stiffness of the polymer chains</li>
+      <li>size of the solute relative to the polymer chain (mesh)</li>
+    </ul></li>
+</ul>
+</section>
+
+<!-- 10 -->
+<section id="should">
+<h2><span class="star">★</span> 10. Is There a Reason to Make Every Drug SR or CR? No.</h2>
+<ul>
+  <li>Some drugs must act <b>fast</b> (emergencies, acute pain). Slow release is wrong for them.</li>
+  <li>Often <b>sustained</b> release is enough to cut dosing frequency; full <b>controlled</b> release isn't necessary.</li>
+  <li>The reason for making an SR product is <b>not always scientific</b> (marketing, patent life), and SR products cost more. The lecturer said to take company claims "with a grain of salt".</li>
+</ul>
+<h3>Drug properties to consider before converting IR → modified release</h3>
+<div class="tbl"><table>
+  <tr><th>Property</th><th>Why it matters</th></tr>
+  <tr><td><b>Short biological half-life</b></td><td>The main candidates. A drug with an already <b>long</b> t½ doesn't need SR. A <b>very short</b> t½ (e.g., 30 min) would need a huge dose packed in to cover 24 h, which is impractical.</td></tr>
+  <tr><td><b>First-pass metabolism</b></td><td>An IR dose can <b>saturate</b> first-pass enzymes so part escapes. Slow SR release <b>doesn't saturate</b> them, so more is destroyed and bioavailability falls. That is a poor case for SR.</td></tr>
+  <tr><td><b>Dose size</b></td><td>A high dose plus short t½ means an enormous SR dose, which isn't practical to swallow or inject.</td></tr>
+  <tr><td><b>Water solubility</b></td><td>A poorly soluble drug already dissolves slowly. Dissolution is rate-limiting and it is effectively "SR" already.</td></tr>
+  <tr><td><b>Partition coefficient / absorption</b></td><td>The drug must still permeate and be absorbed where and when it is released.</td></tr>
+</table></div>
+</section>
+
+<!-- 11 -->
+<section id="cheat">
+<h2>11. One-Page Cheat Sheet</h2>
+<ol>
+  <li><b>CR</b> = zero order, constant plasma level (rate in = rate out). <b>SR</b> = extended but declining. <b>Repeat action</b> = pulses. <b>Delayed</b> = starts later (enteric coat).</li>
+  <li><b>Six mechanisms:</b> diffusion, dissolution, degradation, osmotic/vapor pressure, electrostatic, swelling.</li>
+  <li><b>Reservoir:</b> J = DKΔC/h. D, K and h are constant, and excess drug keeps ΔC constant, giving <b>zero order</b>. Fresh device → <b>lag</b>; stored device → <b>burst</b>. Can't deliver proteins; must be removed; dose dumping is a risk.</li>
+  <li><b>Matrix:</b> h grows as the outer layer empties, so √t (<b>Higuchi</b>) release with no zero order. Easier to make; can deliver proteins through channels.</li>
+  <li><b>Dissolution:</b> layered coats give pulses (repeat action); beads with varied coat thickness give SR.</li>
+  <li><b>Bulk erosion</b> (hydrophilic, PLGA): same size, internal pores. <b>Surface erosion</b> (hydrophobic, PCL): shrinks, no pores. Biodegradable systems are hard to control and their degradation products may be toxic.</li>
+  <li><b>Osmotic:</b> dm/dt = (dV/dt)C₀. Type A: ΔΠ falls, release slows. Type B: separate osmotic chamber, ΔΠ constant, zero order. Expensive; drug must be stable in solution. OROS, DUROS. Vapor pressure: InfusAID.</li>
+  <li><b>Ion exchange:</b> release depends on ionic strength and pH. <b>Hydrogels:</b> cross-linked water-soluble polymer that swells.</li>
+  <li><b>Not every drug should be SR.</b> Consider t½, first pass, dose size, solubility and partition coefficient.</li>
+</ol>
+</section>
+
+<!-- 12 -->
+<section id="qa">
+<h2>12. Practice Short-Answer Questions</h2>
+<p>Try to answer each question yourself, then click it to see a model answer.</p>
+<details><summary>1. Distinguish controlled, sustained, repeat-action and delayed release.</summary>Controlled release delivers drug at a constant, predetermined (zero-order) rate, giving flat plasma levels (rate in = rate out). Sustained release slows and extends release, but the rate is not constant and plasma levels slowly decline. Repeat action releases separate doses at intervals (pulses). Delayed release begins only after a lag following administration (e.g., enteric coating).</details>
+<details><summary>2. List the six mechanisms used to control drug release.</summary>Diffusion; dissolution (of the drug or a coating or matrix); degradation of the polymer; osmotic or vapor pressure; electrostatic interactions (ion exchange); swelling and expansion (hydrogels). Combinations are possible.</details>
+<details><summary>3. Using Fick's law, explain how a reservoir system can achieve zero-order release.</summary>J = DKΔC/h. The polymer does not dissolve, swell or degrade, so D, K and h stay constant for a given drug and polymer. If the reservoir holds excess drug (above its solubility in the membrane), released drug is replaced from the excess and the concentration at the membrane stays saturated, so ΔC is constant. The rate is then independent of concentration: zero order.</details>
+<details><summary>4. Explain the lag time and burst effect in reservoir systems.</summary>A lag occurs when the device is used soon after manufacture: the membrane initially contains no drug, so release starts only after drug partitions into it. A burst (dose dumping) occurs when the device has been stored: drug has already saturated the membrane and is released all at once at first. Both then settle into steady-state release.</details>
+<details><summary>5. Give the advantages and disadvantages of reservoir systems.</summary>Advantages: zero-order release is possible; the rate can be tuned by choice of polymer. Disadvantages: non-degradable, so it must be removed (or a ghost appears in the stool); unsuitable for high-MW drugs (low diffusion coefficient); costly; potential toxicity from dose dumping because of the high drug load.</details>
+<details><summary>6. Why does a monolithic (matrix) system not give zero-order release?</summary>Drug and polymer are mixed. Drug at the surface leaves first, and inner drug must diffuse through the depleted outer layer. Because movement in the polymer is slow, the diffusion path (h) grows with time and the release rate falls. Release follows the Higuchi model (∝ √t): sustained, not controlled.</details>
+<details><summary>7. Compare reservoir and matrix systems (advantages, disadvantages, examples).</summary>Reservoir: zero order possible, rate tunable; but must be removed, no proteins, costly, dose-dumping risk. Examples: Norplant, Ocusert, Vitrasert, Transderm Scop, Catapres-TTS, Estring. Matrix: easier to produce and can deliver high-MW drugs (via pore and channel formation); but no zero order and still must be removed. Examples: Nitro-Dur, Deponit, Nicotrol.</details>
+<details><summary>8. Describe two dissolution-controlled designs.</summary>(A) Alternating layers of drug and a soluble coat: each coat dissolves and releases one drug layer, giving pulsed (repeat-action) release. (B) Drug beads with coats of different thickness mixed in one capsule (e.g., Spansule): thin coats dissolve and release first, thicker ones later, giving sustained release.</details>
+<details><summary>9. Compare bulk and surface erosion.</summary>Bulk erosion happens with more hydrophilic degradable polymers (e.g., PLGA): water penetrates the whole device and cleaves chains throughout. The device keeps its size but develops internal pores (seen under a microscope), and drug and oligomers escape once the MW falls enough. Surface erosion happens with hydrophobic degradable polymers (e.g., PCL): water can't penetrate, so degradation (often enzymatic) occurs only at the surface, the device shrinks visibly, no pores form, and drug is released as each layer erodes.</details>
+<details><summary>10. Advantages and disadvantages of biodegradable systems?</summary>Advantages: easy to produce; can deliver high-MW drugs; no removal needed. Disadvantages: release kinetics are hard to control (rarely zero or first order) because enzymes, pH and ionic strength alter the degradation rate; degradation products may be toxic.</details>
+<details><summary>11. Explain how an osmotic pump works and why Type B gives zero order but Type A doesn't.</summary>A rigid semipermeable membrane lets water in but not solutes out, and there is a small orifice. Water enters by osmosis and pushes drug solution out: dm/dt = (dV/dt)C₀ with dV/dt = (kA/h)ΔΠ. In Type A, drug and osmotic agent are in one core and leave together, so ΔΠ falls and release slows. In Type B, the osmotic agent is in a separate compartment that isn't released and squeezes a flexible drug compartment, so ΔΠ stays constant and release is zero order.</details>
+<details><summary>12. Advantages and disadvantages of osmotic systems? Give examples.</summary>Advantages: zero-order release; the same device works for different drugs without reformulation; release is independent of the environment (pH, GI conditions). Disadvantages: expensive; not suitable for drugs unstable in solution. Examples: OROS (Procardia XL nifedipine, Efidac 24 pseudoephedrine), DUROS implant (peptides and proteins).</details>
+<details><summary>13. What is a vapor-pressure-activated device?</summary>An implantable device (e.g., InfusAID) with a chamber holding a fluid that vaporizes at body temperature. The vapor pressure squeezes the drug chamber and forces drug out, e.g., via a catheter to the spinal cord or a tumor, for local chemotherapy or pain relief.</details>
+<details><summary>14. How do ion-exchange systems release drug?</summary>Charged, salt-forming groups on a water-insoluble polymer bind an oppositely charged drug. Competing ions in the environment displace the drug, so release depends on ionic strength and can be pH-responsive (e.g., in the GI tract). Example: cationic carriers releasing nucleic acids.</details>
+<details><summary>15. What are hydrogels, and what factors affect diffusion through them?</summary>Hydrogels are cross-linked water-soluble polymers: insoluble because of the cross-links, but they swell by absorbing water, and swelling triggers and controls release. Diffusion depends on the type and degree of cross-linking, chain stiffness, and the size of the solute relative to the polymer mesh.</details>
+<details><summary>16. Should every drug be made into an SR or CR form? Which drug properties must be considered?</summary>No. Some drugs need rapid action, SR alone may suffice without CR, and the motivation is sometimes commercial rather than therapeutic. Consider: biological half-life (short t½ drugs benefit; long t½ drugs don't need it; very short t½ needs an impractically large dose); first-pass metabolism (slow release fails to saturate the enzymes, so more drug is metabolized); dose size; water solubility (poorly soluble drugs are already dissolution-limited); and partition coefficient / absorption.</details>
+</section>
+</div>
+</body>
+</html>

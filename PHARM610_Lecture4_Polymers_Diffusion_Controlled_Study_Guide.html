@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Polymers and Diffusion Delivery</title>
+<style>
+:root{
+  --bg:#f7f7f5; --card:#ffffff; --ink:#1d1f23; --muted:#5d6470; --line:#e3e4e8;
+  --accent:#0b6e4f; --accent-soft:#e3f2ec; --star:#b45309; --star-soft:#fff4e0;
+  --th:#f0f2f4; --info-soft:#eaf1fb; --info:#2b5fad;
+  --lipid:#f3d9a4; --head:#c8862b; --water:#d7ecf7; --blue:#2b6cb0; --orange:#d9622b;
+  --green:#2f8f4e; --peg:#7a5cc4; --cell:#f1d3cf; --cellline:#c98b84;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+    --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a;
+    --th:#262a2f; --info-soft:#1b2534; --info:#7fa8e6;
+    --lipid:#6b5428; --head:#e0a24c; --water:#1f3644; --blue:#6aa5ea; --orange:#f0884f;
+    --green:#5cc07c; --peg:#a98ff0; --cell:#4a2f2c; --cellline:#b07870;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+  --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a;
+  --th:#262a2f; --info-soft:#1b2534; --info:#7fa8e6;
+  --lipid:#6b5428; --head:#e0a24c; --water:#1f3644; --blue:#6aa5ea; --orange:#f0884f;
+  --green:#5cc07c; --peg:#a98ff0; --cell:#4a2f2c; --cellline:#b07870;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-size:1.6rem;line-height:1.25;margin:0 0 4px}
+header p{margin:0;color:var(--muted);font-size:.92rem}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px}
+nav a{font-size:.82rem;text-decoration:none;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:999px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+h2{font-size:1.25rem;margin:0 0 10px;color:var(--accent)}
+h3{font-size:1.05rem;margin:20px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:6px 0;padding-left:22px}
+li{margin:3px 0}
+.star{color:var(--star);font-weight:700}
+.key{background:var(--star-soft);border-left:4px solid var(--star);padding:10px 14px;border-radius:6px;margin:12px 0}
+.key b:first-child{color:var(--star)}
+.why{background:var(--info-soft);border-left:4px solid var(--info);padding:10px 14px;border-radius:6px;margin:12px 0}
+.why b:first-child{color:var(--info)}
+.tbl{overflow-x:auto;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--th)}
+.steps{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px;margin:10px 0}
+.steps div{flex:1 1 140px;background:var(--th);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.88rem;position:relative}
+.steps div b{display:block;font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+figure{margin:12px 0;text-align:center}
+figure svg{width:100%;max-width:560px;height:auto}
+figcaption{font-size:.84rem;color:var(--muted);margin-top:4px}
+.spectrum{margin:12px 0 4px}
+.bar{height:12px;border-radius:6px;background:linear-gradient(90deg,#d9534f,#e8a33d,#0b6e4f)}
+.labels{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--muted);margin-top:4px}
+details{border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:8px 0;background:var(--card)}
+summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:6px}
+.glossary dt{font-weight:700;margin-top:6px}
+.glossary dd{margin:0 0 4px 0;color:var(--ink)}
+/* svg */
+.t{fill:var(--ink);font-size:12px;font-family:inherit}
+.tm{fill:var(--muted);font-size:11px;font-family:inherit}
+.tail{fill:var(--lipid)} .core{fill:var(--water)}
+.head{fill:none;stroke:var(--head);stroke-width:6;stroke-dasharray:2 3}
+.phil{fill:var(--blue)} .phob{fill:var(--orange)} .amph{fill:var(--green)}
+.peg{fill:none;stroke:var(--peg);stroke-width:2;stroke-linecap:round}
+.ab{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round}
+.ln{stroke:var(--muted);stroke-width:1;fill:none}
+.ax{stroke:var(--ink);stroke-width:1.2;fill:none}
+.cx{fill:none;stroke:var(--green);stroke-width:2.5}
+.fx{fill:none;stroke:var(--orange);stroke-width:2.5}
+.cell{fill:var(--cell);stroke:var(--cellline);stroke-width:1}
+.vessel{fill:#c0392b;opacity:.75}
+.lipo{fill:var(--lipid);stroke:var(--head);stroke-width:1.5}
+.poly{fill:var(--water);stroke:var(--blue);stroke-width:2}
+.shell{stroke:var(--peg);stroke-width:2;fill:none;stroke-linecap:round}
+.mcore{fill:var(--lipid);stroke:var(--orange);stroke-width:1.5}
+.arrow{stroke:var(--ink);stroke-width:1.5;fill:none;marker-end:url(#ah)}
+@media print{body{background:#fff} section{break-inside:avoid;border-color:#ccc} nav{display:none} details{break-inside:avoid}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs></svg>
+<style>
+.polyf{fill:var(--water);stroke:var(--blue);stroke-width:2}
+.drugf{fill:var(--orange);opacity:.85}
+.cryst{fill:var(--muted);opacity:.45}
+.path{fill:none;stroke:var(--orange);stroke-width:2.2;stroke-dasharray:5 3}
+.solid{fill:none;stroke:var(--ink);stroke-width:2.5}
+.lagl{fill:none;stroke:var(--green);stroke-width:2;stroke-dasharray:5 3}
+.burl{fill:none;stroke:var(--orange);stroke-width:2;stroke-dasharray:5 3}
+.c1{fill:none;stroke:var(--orange);stroke-width:2.5}
+.c2{fill:none;stroke:var(--green);stroke-width:2.5}
+.c3{fill:none;stroke:var(--blue);stroke-width:2;stroke-dasharray:4 3}
+.seg1{fill:var(--water)} .seg2{fill:var(--accent-soft)} .seg3{fill:var(--star-soft)} .seg4{fill:var(--info-soft)}
+.segline{stroke:var(--line);stroke-width:1;fill:none}
+.pore{fill:var(--card);stroke:var(--blue);stroke-width:1}
+</style>
+<div class="wrap">
+<header>
+  <h1>PHARM 610 · Lecture IV: Polymers in Drug Delivery &amp; Diffusion-Controlled Systems</h1>
+  <p>Dr. Lavasanifar · Midterm 2 · Full study guide (based mainly on the transcripts, with the slides as support). Part A (polymers) is from the end of the first recording; Part B (diffusion-controlled delivery) is the second recording.
+     <span class="star">★</span> = stressed in lecture / likely exam. <b style="color:var(--info)">Why?</b> boxes explain the reasoning behind a fact.
+     <b>The lecturer said she won't ask about the equations themselves.</b> Know what each term means and the concept behind it.</p>
+</header>
+
+<nav>
+  <a href="#conv">Polymers everywhere</a><a href="#class">Classes</a><a href="#feat">Key features</a>
+  <a href="#elim">Requirements</a><a href="#app">Diffusion: uses</a><a href="#fick">Fick &amp; solubility</a>
+  <a href="#D">Diffusivity factors</a><a href="#nss">Lag / burst</a><a href="#sink">Sink condition</a>
+  <a href="#res">Reservoir math</a><a href="#mono">Monolithic types</a><a href="#perc">Percolation</a>
+  <a href="#pep">Peppas n</a><a href="#cheat">Cheat sheet</a><a href="#qa">Practice Qs</a>
+</nav>
+
+<!-- ===================== PART A ===================== -->
+<section id="conv">
+<h2>Part A · 1. Polymers Are Everywhere in Dosage Forms</h2>
+<p>Polymers aren't only used in advanced delivery systems. Conventional dosage forms are full of them:</p>
+<div class="tbl"><table>
+  <tr><th>Dosage form</th><th>Polymer role</th></tr>
+  <tr><td>Tablets</td><td><b>Coatings</b> (enteric, film), <b>disintegrants</b> (make the tablet break apart after swallowing), <b>binders/adhesives</b> (hold ingredients together for compression)</td></tr>
+  <tr><td>Capsules</td><td>The shell is <b>gelatin</b>, a natural polymer</td></tr>
+  <tr><td>Suspensions / emulsions</td><td><b>Suspending agents</b> / <b>emulsifying agents</b></td></tr>
+  <tr><td>Semisolids</td><td><b>Gels</b> are polymers; cream and ointment bases may contain polymers</td></tr>
+  <tr><td>Suppositories</td><td>Some <b>bases</b> are polymers</td></tr>
+</table></div>
+<p>People often think "polymer = plastic = toxic", but our own <b>proteins are polymers</b>. Changing molecular weight and structure changes properties completely.</p>
+<div class="tbl"><table>
+  <tr><th>Polymers as excipients: advantages</th><th>Disadvantages</th></tr>
+  <tr><td><b>Flexible chemical structure</b>: easy to modify and tune properties</td><td><b>Toxicity and immunogenicity</b> concerns; <b>public perception</b> of "plastic in drugs"</td></tr>
+</table></div>
+</section>
+
+<section id="class">
+<h2>2. Classes and Structures of Polymers</h2>
+<h3>Natural polymers</h3>
+<ul>
+  <li><b>Polysaccharides:</b> chitosan, cellulose (and derivatives), dextran, alginic acid.</li>
+  <li><b>Proteins and peptides:</b> gelatin, collagen.</li>
+  <li><b>Nucleic acids:</b> DNA structures, e.g., DNA scaffolds.</li>
+  <li><b>Hydrocarbons:</b> natural rubber (cis-polyisoprene).</li>
+</ul>
+<h3>Synthetic polymers</h3>
+<div class="tbl"><table>
+  <tr><th>Category</th><th>Examples</th><th>Notes</th></tr>
+  <tr><td>Hydrocarbon chains</td><td>Polyethylene (PE), polypropylene (PP)</td><td>Not degradable; mostly packaging, little drug-delivery use</td></tr>
+  <tr><td>Halogen-containing</td><td>PVC, PTFE (Teflon)</td><td>Tubing; non-stick pans</td></tr>
+  <tr><td>Polar side groups</td><td>PMMA, PHEMA (acrylic derivatives)</td><td>Used in drug delivery</td></tr>
+  <tr><td>Heteroatom in backbone</td><td><b>PEG / PEO</b></td><td>Same chemistry. The lecturer: called PEG at lower MW (&lt; ~5,000) and PEO at higher MW.</td></tr>
+  <tr><td><b>Polyesters</b></td><td><b>PLA, PLGA, PCL</b></td><td><b>Biodegradable</b>; widely used; absorbable sutures</td></tr>
+  <tr><td><b>Polyanhydrides</b></td><td>—</td><td>Degrade <b>faster than polyesters</b></td></tr>
+  <tr><td><b>Polyamides</b></td><td>Proteins and peptides are polyamides</td><td>Degradable but <b>much slower</b> than polyesters</td></tr>
+  <tr><td>Polyurethanes</td><td>—</td><td>Degradable</td></tr>
+  <tr><td>Inorganic backbone</td><td><b>PDMS</b> (silicone), polyphosphazenes</td><td>PDMS was used in Norplant</td></tr>
+</table></div>
+<h3>Architecture</h3>
+<ul>
+  <li><b>Homopolymer:</b> one type of monomer.</li>
+  <li><b>Copolymer:</b> two or more monomers, arranged as:
+    <ul>
+      <li><b>alternating</b> (ABABAB)</li>
+      <li><b>random</b></li>
+      <li><b>block</b> (AAA-BBB)</li>
+    </ul></li>
+  <li><b>Shapes:</b> linear, branched, comb, star.</li>
+</ul>
+</section>
+
+<section id="feat">
+<h2><span class="star">★</span> 3. Polymer Features That Affect Drug Loading and Release</h2>
+<div class="tbl"><table>
+  <tr><th>Feature</th><th>What to know</th></tr>
+  <tr><td><b>Molecular weight</b></td><td>Every polymer sample has a <b>distribution</b> of MW: "PEI 2,000" is an <i>average</i>, and individual chains might be 1,900 or 2,100. There are different averages (number-average, weight-average). Measured by <b>GPC</b> (also MALDI).</td></tr>
+  <tr><td><b>Crystallinity</b></td><td>Ordered chain packing. Depends on whether chains can pack, which <b>tacticity</b> controls. Crystalline regions have a <b>melting point</b>, detected by <b>DSC</b> (also XRD). Most polymers are amorphous or semi-crystalline.</td></tr>
+  <tr><td><b>Glass transition temperature (Tg)</b></td><td>Seen in <b>amorphous</b> regions: below Tg the polymer is <b>glassy</b> (rigid); above Tg it is <b>rubbery</b>. What matters is Tg relative to <b>body temperature (37 °C)</b> (see section 7).</td></tr>
+  <tr><td><b>Hydrophilicity / hydrophobicity</b></td><td>Controls water uptake, swelling, erosion mode and drug compatibility</td></tr>
+</table></div>
+</section>
+
+<section id="elim">
+<h2><span class="star">★</span> 4. Requirements for Polymers Used In Vivo</h2>
+<p><b>Non-toxic (biocompatible):</b></p>
+<ul>
+  <li>no <b>acute</b> toxicity (e.g., immediate allergic reaction)</li>
+  <li>no <b>chronic</b> toxicity (no long-term organ damage)</li>
+  <li><b>non-carcinogenic</b>, <b>non-mutagenic</b> and <b>non-allergic</b></li>
+</ul>
+<p><b>The body must be able to get rid of it</b>, in one of three ways:</p>
+<div class="tbl"><table>
+  <tr><th></th><th>Biodegradable</th><th>Bio-eliminable</th><th>Removable (least attractive)</th></tr>
+  <tr><td>Meaning</td><td>Chopped up by water, enzymes or pH in the body</td><td>Doesn't degrade, but is small enough (below the kidney threshold) to be <b>excreted by the kidneys</b></td><td>Neither; must be <b>physically removed</b></td></tr>
+  <tr><td>Examples</td><td><b>PLGA</b>, polypeptides</td><td><b>PEG</b> (low MW; slide: &lt; 10 kDa), <b>dextran</b>, PEI 2,000</td><td><b>EVA</b> (poly(ethylene-co-vinyl acetate)), metal/semiconductor devices</td></tr>
+  <tr><td>Character</td><td>Hydrophilic or hydrophobic; <b>chemically unstable in water</b></td><td><b>Hydrophilic (water-soluble)</b>; chemically stable in water</td><td><b>Hydrophobic / insoluble</b>; chemically stable in water</td></tr>
+  <tr><td>Typical use</td><td>Degradation-controlled systems</td><td>—</td><td><b>Diffusion-controlled systems</b></td></tr>
+</table></div>
+<div class="why"><b>Why can't you state one MW cut-off for elimination?</b> What decides whether the kidney can filter a polymer is its <b>hydrodynamic size</b> (how big the coil is in solution), not its MW. The threshold differs for each polymer.</div>
+</section>
+
+<!-- ===================== PART B ===================== -->
+<section id="app">
+<h2>Part B · 5. Diffusion-Controlled Delivery Systems: Uses and Geometry</h2>
+<p>The polymers are <b>neither soluble nor degradable</b> in the body, so release is by <b>diffusion only</b> and the device must be removed afterwards.</p>
+<ul>
+  <li><b>Controlled systemic release:</b> e.g., <b>contraception</b> (Norplant, IUDs, vaginal rings).</li>
+  <li><b>Localized delivery:</b>
+    <ul>
+      <li><b>cancer</b>, e.g., 5-fluorouracil device for colorectal cancer that has spread to the liver</li>
+      <li><b>pain relief</b></li>
+      <li><b>prevention of post-surgical infection</b> (local antibiotics)</li>
+    </ul></li>
+  <li><b>Geometries:</b> cylinders, rods, beads, pellets, fibers, films, disks, wafers. Geometry affects the release rate.</li>
+</ul>
+<div class="key"><b>Norplant example:</b> <b>levonorgestrel</b> (contraceptive) in <b>polydimethylsiloxane (PDMS, silicone)</b>, implanted as <b>6 rods</b> under the skin (later reduced to 3). It came to market in the 1970s (South America, then Europe, then the US) and was <b>discontinued in 2008</b> when better options appeared.</div>
+</section>
+
+<section id="fick">
+<h2><span class="star">★</span> 6. Fick's First Law and Drug Solubility in the Polymer</h2>
+<p>At <b>steady state</b> (equilibrium has been reached), release follows <b>Fick's first law</b>:</p>
+<div class="key"><b>J = −D (dc/dx)</b>. J = flux (amount per area per time), in the direction of decreasing concentration. D = diffusion coefficient of the drug in the polymer (units: area/time). dc/dx = concentration gradient across the membrane. At steady state, concentration falls <b>linearly</b> across the membrane.</div>
+
+<h3>Step 1: the drug must first dissolve in the polymer</h3>
+<p>The gradient in Fick's law is the drug concentration <i>inside the membrane</i>, so the drug has to <b>dissolve in the polymer</b>, which acts as a solvent. This happens in two steps:</p>
+<div class="steps">
+  <div><b>1 · "Melting"</b>Cohesive forces between drug molecules break: the solid drug becomes liquid-like (A(s) → A(l))</div>
+  <div><b>2 · Mixing</b>The "liquid" drug mixes with the polymer → drug dissolved in polymer (A + P → AP)</div>
+</div>
+<p>Slide equation (concept only): <b>ln φ<sub>A</sub> = −(ΔH<sub>f</sub>/R)(1/T − 1/T<sub>f</sub>) − (1 + χ<sub>AP</sub>)</b>.</p>
+<ul>
+  <li>The first term is the <b>melting</b> part.
+    <ul><li>ΔH<sub>f</sub> = heat of fusion; T<sub>f</sub> = melting point; T = temperature (K); R = gas constant.</li></ul></li>
+  <li>The second term is the <b>mixing</b> part.</li>
+  <li>φ<sub>A</sub> = <b>saturation solubility</b> of the drug in the polymer, as a <b>volume fraction</b>: the maximum drug the polymer can hold.</li>
+  <li><b>χ<sub>AP</sub> = Flory–Huggins interaction parameter</b>, a measure of how similar drug and polymer are.
+    <ul>
+      <li><b>Lower χ means more similar</b>, so the polymer is a good solvent for the drug (χ below 0 = very compatible).</li>
+      <li><b>Higher χ</b> means the drug is poorly soluble in the polymer.</li>
+      <li>χ depends on the solubility parameters of drug and polymer, the drug's molar volume (size), and temperature.</li>
+    </ul></li>
+</ul>
+<div class="why"><b>Practical takeaway:</b> if a drug and a polymer <b>dissolve in the same (common) solvents</b>, they are likely compatible. The polymer can then dissolve a lot of drug and is a good candidate carrier. If the drug barely dissolves in the polymer, the polymer saturates at a very low concentration and there is <b>no useful concentration gradient</b> to drive release.</div>
+</section>
+
+<section id="D">
+<h2><span class="star">★</span> 7. What Controls the Diffusion Coefficient (D)?</h2>
+<h3>7.1 Stokes–Einstein equation</h3>
+<div class="key"><b>D = kT / (6πηr)</b>. k = Boltzmann constant (R / Avogadro's number); T = temperature (K); η = <b>viscosity</b> of the medium (polymer); r = <b>radius (size) of the diffusing drug</b>. (The slide prints r²; the standard form uses r. The concept is the same.)</div>
+<ul>
+  <li><b>D ∝ 1/viscosity:</b> a more rigid or viscous polymer gives slower diffusion.</li>
+  <li><b>D ∝ 1/size:</b> bigger drug molecules diffuse slower. This is why <b>reservoir systems can't deliver proteins and peptides</b>.</li>
+</ul>
+
+<h3><span class="star">★</span> 7.2 Glass transition temperature (Tg) and free-volume theory</h3>
+<ul>
+  <li>D increases with temperature, but only <b>above Tg</b>. <b>Below Tg (glassy), diffusivity ≈ 0.</b></li>
+  <li><b>Free-volume theory:</b> the drug moves by <b>jumping between empty spaces ("holes")</b> in the polymer.
+    <ul>
+      <li>If you plot polymer volume against temperature, the slope is <b>steeper above Tg</b>: rubbery polymers expand easily when heated, creating <b>free volume</b> for the drug to jump through.</li>
+      <li>Glassy polymers barely expand, so there is little free volume.</li>
+    </ul></li>
+  <li><b>Limitation of free-volume theory:</b> it ignores <b>drug–polymer interactions</b>, which also affect release.</li>
+</ul>
+<div class="key"><b>Bottom line (37 °C is what matters):</b> a polymer with <b>Tg &lt; 37 °C</b> is <b>rubbery</b> in the body, so the drug can diffuse and release works. A polymer with <b>Tg &gt; 37 °C</b> is <b>glassy</b> in the body, and release is <b>far too slow</b>. Glassy polymers at body temperature are <b>poor choices</b>, even for sustained release.</div>
+
+<h3><span class="star">★</span> 7.3 Polymer crystallinity</h3>
+<figure>
+<svg viewBox="0 0 460 170" role="img" aria-label="Drug path winds around crystalline regions through amorphous polymer">
+  <rect x="20" y="20" width="420" height="120" rx="8" class="polyf"/>
+  <rect x="70" y="20" width="40" height="80" class="cryst"/><rect x="160" y="60" width="40" height="80" class="cryst"/>
+  <rect x="250" y="20" width="40" height="80" class="cryst"/><rect x="340" y="60" width="40" height="80" class="cryst"/>
+  <circle cx="40" cy="120" r="7" class="drugf"/>
+  <path d="M47 120 L130 120 L130 40 L220 40 L220 120 L310 120 L310 40 L410 40" class="path"/>
+  <text x="230" y="160" text-anchor="middle" class="tm">grey = crystalline (impassable) · blue = amorphous · dashed = the drug's tortuous route</text>
+</svg>
+<figcaption>Drug can only diffuse through amorphous regions. More crystallinity means a longer, winding path and slower release.</figcaption>
+</figure>
+<ul>
+  <li>No polymer is 100% crystalline. Polymers are either <b>amorphous</b> or <b>semi-crystalline</b> (mixed regions).</li>
+  <li><b>DSC:</b> an amorphous polymer shows <b>only a Tg</b> (a step). A crystalline region shows a <b>melting point (Tm)</b> peak.</li>
+  <li><b>Drugs cannot pass through crystalline regions</b>, only amorphous ones.</li>
+  <li><b>Higher crystallinity</b> gives a <b>longer diffusion path</b> and <b>slower release</b>. Semi-crystalline polymers release more slowly than amorphous ones.</li>
+  <li><b>Design use:</b> if release is too fast, choose a polymer with <b>higher crystallinity</b> to slow it down.</li>
+</ul>
+
+<h3>7.4 Drug size (molar volume)</h3>
+<ul>
+  <li><b>Rubbery polymers</b> (above Tg): D falls <b>linearly</b> as drug molar volume increases.</li>
+  <li><b>Glassy polymers</b> (below Tg): D falls <b>exponentially</b> with size. Large drugs barely move, which is another reason glassy polymers are poor carriers.</li>
+</ul>
+</section>
+
+<section id="nss">
+<h2><span class="star">★</span> 8. Non-Steady State: Where Lag and Burst Come From</h2>
+<figure>
+<svg viewBox="0 0 470 220" role="img" aria-label="Concentration profile across membrane at steady state, lag and burst">
+  <line x1="190" y1="20" x2="190" y2="185" class="ax"/><line x1="310" y1="20" x2="310" y2="185" class="ax"/>
+  <line x1="60" y1="50" x2="190" y2="50" class="solid"/><text x="70" y="42" class="t">Donor (Cd)</text>
+  <line x1="310" y1="170" x2="440" y2="170" class="solid"/><text x="345" y="190" class="t">Receiver (Cr)</text>
+  <line x1="190" y1="70" x2="310" y2="160" class="solid"/>
+  <text x="196" y="66" class="tm">C1 = K·Cd</text><text x="318" y="152" class="tm">C2 = K·Cr</text>
+  <path d="M190 160 Q240 168 310 168" class="lagl"/>
+  <path d="M190 72 L300 74 Q308 120 310 160" class="burl"/>
+  <text x="250" y="200" text-anchor="middle" class="t">membrane thickness (h)</text>
+  <text x="20" y="120" class="tm" style="fill:var(--green)">fresh device:</text><text x="20" y="134" class="tm" style="fill:var(--green)">membrane empty → lag</text>
+  <text x="330" y="100" class="tm" style="fill:var(--orange)">aged device: membrane</text><text x="330" y="114" class="tm" style="fill:var(--orange)">saturated → burst</text>
+</svg>
+<figcaption>Solid line = steady state (linear gradient). Over time both dashed profiles move toward the solid line.</figcaption>
+</figure>
+<ul>
+  <li><b>Freshly made device:</b> no drug has dissolved in the membrane yet, so there is no gradient at first. Drug concentration builds up in the membrane over time until steady state. The result is a <b>lag time</b>.</li>
+  <li><b>Device made long ago:</b> the whole membrane is <b>saturated</b> with drug. At first that stored drug floods out (<b>burst release / dose dumping</b>), and the profile then falls back to the steady-state line.</li>
+</ul>
+</section>
+
+<section id="sink">
+<h2><span class="star">★</span> 9. Limitation of Fick's Law (Activity vs Concentration) and Sink Conditions</h2>
+<p>Fick's law uses <b>concentration</b>, not <b>activity</b>, and doesn't account for the medium's capacity to dissolve the drug.</p>
+<div class="why"><b>The lecturer's example:</b> the device contains 10 mg/mL drug, and the drug's solubility in water is 1 mg/mL. By Fick's law, 10 &gt; 1, so release should continue. But once the water reaches <b>1 mg/mL (saturation)</b>, it can't take any more. There is <b>no driving force</b> and release stops, even though a "gradient" still exists on paper.</div>
+<ul>
+  <li>With <b>poorly water-soluble drugs</b>, this produces an <b>artifact</b>. The release curve plateaus early and looks like sustained release, when it is really just the drug's solubility limit. This can happen even with <b>no delivery system at all</b>.</li>
+  <li><b>Sink condition:</b> the release medium must have far more capacity than needed. When all the drug has been released, the concentration in the medium should be <b>well below saturation</b> (about 10-fold below, per the lecturer).
+    <ul><li>Example: 10 mg of drug in 10 mL gives 1 mg/mL, which equals the solubility, so this is <b>not</b> sink. Using 100 mL gives sink conditions.</li></ul></li>
+</ul>
+<div class="key"><b>How to achieve sink conditions:</b> (1) <b>increase the volume</b> of release medium; or (2) add something that acts like a <b>sponge or solubilizer</b> (surfactant, albumin) to raise the drug's solubility. <b>How to check:</b> calculate from the saturation solubility, or run the release test with the <b>free drug alone</b>. The free drug should release fast; if it doesn't, the test conditions are limiting.</div>
+</section>
+
+<section id="res">
+<h2>10. From Fick's Law to Practical Equations (Reservoir Systems)</h2>
+<p>The concentration <i>inside</i> the membrane (C1, C2) can't be measured easily, but donor (Cd) and receiver (Cr) concentrations can. They are linked by the <b>partition coefficient K</b>:</p>
+<div class="steps">
+  <div><b>Start</b>dm/(A·dt) = D·ΔC/l = D(C1 − C2)/l</div>
+  <div><b>Partition</b>K = C1/Cd = C2/Cr, so C1 = K·Cd and C2 = K·Cr</div>
+  <div><b>Result</b><b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">dm/dt = D·A·K·(Cd − Cr)/l</b></div>
+</div>
+<ul>
+  <li>Slab, sphere and cylinder geometries each have their own form of the equation, but all simplify to <b>M<sub>t</sub> = k·t</b>: amount released is <b>proportional to time</b> (zero order).</li>
+</ul>
+<h3>Two ways to plot release</h3>
+<ul>
+  <li><b>Amount released per interval vs time:</b> e.g., you sample and replace with fresh medium each time, so each sample shows only what was released since the last one.</li>
+  <li><b>Cumulative release (M<sub>t</sub>/M<sub>∞</sub>) vs time:</b> the most common and most reported. You add up everything released so far (or don't replace the medium, so each sample already includes earlier release). M<sub>∞</sub> = total drug that can be released.</li>
+</ul>
+</section>
+
+<section id="mono">
+<h2><span class="star">★</span> 11. Monolithic (Matrix) Systems: Higuchi and the Four Types</h2>
+<p>Fick's law still applies. But as drug leaves, the <b>distance it has to travel (l) keeps growing</b> (a depleted zone forms from the surface inward), so release slows.</p>
+<div class="key"><b>Higuchi model:</b> <b>M = k·t<sup>½</sup></b>. The amount released is proportional to the <b>square root of time</b>. Plot release against <b>√t</b> to get a straight line (before the plateau).</div>
+<figure>
+<svg viewBox="0 0 480 220" role="img" aria-label="Zero order line versus square-root-of-time curve">
+  <line x1="50" y1="15" x2="50" y2="190" class="ax"/><line x1="50" y1="190" x2="460" y2="190" class="ax"/>
+  <line x1="50" y1="190" x2="430" y2="40" class="c2"/>
+  <path d="M50 190 C60 120 120 85 220 70 S 400 45 450 42" class="c1"/>
+  <text x="300" y="115" class="t" style="fill:var(--green)">I · zero order (reservoir)</text>
+  <text x="90" y="72" class="t" style="fill:var(--orange)">II · √t (matrix, Higuchi)</text>
+  <text x="255" y="210" text-anchor="middle" class="t">Time</text>
+  <text x="18" y="105" class="t" transform="rotate(-90 18 105)" text-anchor="middle">Cumulative released</text>
+</svg>
+<figcaption>Either curve eventually plateaus, ideally at 100%. Sometimes a device can't release all its drug, and it plateaus lower.</figcaption>
+</figure>
+
+<h3>The four monolithic types (by drug volume fraction φ<sub>A</sub>)</h3>
+<figure>
+<svg viewBox="0 0 560 205" role="img" aria-label="Four monolithic types by drug loading">
+  <rect x="10" y="20" width="130" height="24" class="seg1"/><rect x="145" y="20" width="130" height="24" class="seg2"/>
+  <rect x="280" y="20" width="130" height="24" class="seg3"/><rect x="415" y="20" width="135" height="24" class="seg4"/>
+  <text x="75" y="37" text-anchor="middle" class="t">Solution</text><text x="210" y="37" text-anchor="middle" class="t">Simple dispersion</text>
+  <text x="345" y="37" text-anchor="middle" class="t">Complex dispersion</text><text x="482" y="37" text-anchor="middle" class="t">Matrix</text>
+  <text x="75" y="60" text-anchor="middle" class="tm">below saturation</text><text x="210" y="60" text-anchor="middle" class="tm">0 &lt; φ &lt; 0.05</text>
+  <text x="345" y="60" text-anchor="middle" class="tm">0.05 &lt; φ &lt; 0.3</text><text x="482" y="60" text-anchor="middle" class="tm">0.3 &lt; φ &lt; 0.7</text>
+  <!-- mini panels -->
+  <rect x="20" y="72" width="110" height="60" class="polyf"/>
+  <g fill="var(--orange)" opacity=".5"><circle cx="35" cy="85" r="1.5"/><circle cx="55" cy="100" r="1.5"/><circle cx="80" cy="90" r="1.5"/><circle cx="100" cy="115" r="1.5"/><circle cx="45" cy="120" r="1.5"/><circle cx="115" cy="82" r="1.5"/><circle cx="70" cy="110" r="1.5"/><circle cx="90" cy="125" r="1.5"/></g>
+  <rect x="155" y="72" width="110" height="60" class="polyf"/>
+  <g class="drugf"><circle cx="175" cy="90" r="4"/><circle cx="220" cy="110" r="4"/><circle cx="245" cy="85" r="4"/></g>
+  <rect x="290" y="72" width="110" height="60" class="polyf"/>
+  <g class="drugf"><circle cx="305" cy="85" r="4"/><circle cx="330" cy="110" r="4"/><circle cx="360" cy="90" r="4"/><circle cx="385" cy="118" r="4"/></g>
+  <g class="pore"><circle cx="320" cy="95" r="4"/><circle cx="345" cy="80" r="4"/><circle cx="372" cy="105" r="4"/><circle cx="300" cy="122" r="4"/></g>
+  <rect x="425" y="72" width="115" height="60" class="polyf"/>
+  <path d="M430 85 Q455 95 470 82 T 510 90 L535 86" stroke="var(--card)" stroke-width="7" fill="none"/>
+  <path d="M432 118 Q450 105 475 120 T 520 110 L538 120" stroke="var(--card)" stroke-width="7" fill="none"/>
+  <path d="M480 72 Q470 95 490 132" stroke="var(--card)" stroke-width="6" fill="none"/>
+  <text x="75" y="150" text-anchor="middle" class="tm">all dissolved</text><text x="210" y="150" text-anchor="middle" class="tm">a few solid particles</text>
+  <text x="345" y="150" text-anchor="middle" class="tm">drug leaves pores</text><text x="482" y="150" text-anchor="middle" class="tm">channels form</text>
+  <text x="75" y="166" text-anchor="middle" class="t">D</text><text x="210" y="166" text-anchor="middle" class="t">D</text>
+  <text x="345" y="166" text-anchor="middle" class="t">Dp = D(1+2ε)/(1−ε)</text><text x="482" y="166" text-anchor="middle" class="t">De = D/τ²</text>
+  <line x1="40" y1="188" x2="520" y2="188" class="arrow"/><text x="280" y="202" text-anchor="middle" class="tm">drug loading ↑ → release faster</text>
+</svg>
+<figcaption>ε = porosity (= C₀/ρ, drug concentration ÷ drug density); τ = tortuosity of the channels.</figcaption>
+</figure>
+<div class="tbl"><table>
+  <tr><th>Type</th><th>Drug loading</th><th>What happens</th><th>Release profile</th></tr>
+  <tr><td><b>Monolithic solution</b></td><td>All drug <b>dissolved</b> (below saturation solubility in the polymer)</td><td>Pure diffusion of dissolved drug</td><td>Linear vs √t up to <b>~60%</b> released (short-time approximation), then levels off (long-time approximation). May not reach 100%.</td></tr>
+  <tr><td><b>Simple monolithic dispersion</b></td><td><b>0 &lt; φ &lt; 0.05</b>: some drug present as <b>solid particles</b>, but little</td><td>A drug-depleted zone moves inward</td><td>Similar shape; linear only up to <b>~40%</b>. May not reach 100%.</td></tr>
+  <tr><td><b>Complex monolithic dispersion</b></td><td><b>0.05 &lt; φ &lt; 0.3</b></td><td>Released drug leaves <b>pores</b>, increasing porosity. D is replaced by <b>Dp</b> (D of the porous polymer, which rises with porosity ε).</td><td>Same shape, but <b>faster</b> than the first two</td></tr>
+  <tr><td><b>Monolithic matrix</b></td><td><b>0.3 &lt; φ &lt; 0.7</b>: most of the device is drug</td><td>Pores <b>connect into channels</b>. D is replaced by <b>De = D/τ²</b>, where <b>tortuosity τ</b> describes how bent and winding the random channels are (drug can get trapped in bends).</td><td><b>Fastest</b> of all</td></tr>
+</table></div>
+<ul>
+  <li><b>Geometry matters:</b> for the same system, the fraction released is <b>sphere &gt; cylinder &gt; slab</b> (slide graphs), and the release <b>rate decreases</b> with time.</li>
+  <li><b>Loading matters:</b> higher drug loading (2% vs 0.2%) gives faster release (slide).</li>
+</ul>
+</section>
+
+<section id="perc">
+<h2><span class="star">★</span> 12. Percolation Theory: Protein Release from a Non-Degradable Matrix</h2>
+<p>Reservoir systems can't release proteins, which are too big to diffuse through the polymer. A <b>monolithic matrix</b> can, by <b>percolation</b>.</p>
+<ol>
+  <li>A large drug molecule at the surface dissolves away and leaves a <b>large pore</b>.</li>
+  <li>Water enters that pore and washes out the next molecule, which leaves another pore connected to the first.</li>
+  <li>Pores join into <b>channels</b>, and water carries the protein out through them.</li>
+</ol>
+<p>The polymer itself <b>never degrades or changes</b>; it is still removed after use (IUD, vaginal ring, Norplant-type devices).</p>
+<ul>
+  <li>This only works above a <b>critical drug loading (critical φ)</b>, typically <b>φ &gt; ~0.3</b>, where enough particles touch to form connected channels.</li>
+  <li><b>Critical φ depends on solute size.</b> The lecturer's question: if drug size increases, does critical φ go up or down? <b>Down (it shifts to lower values)</b>. A bigger molecule leaves a bigger hole, so channels connect at a lower loading.</li>
+</ul>
+<figure>
+<svg viewBox="0 0 470 220" role="img" aria-label="Release versus drug loading curves shift left with larger solute size">
+  <line x1="50" y1="15" x2="50" y2="185" class="ax"/><line x1="50" y1="185" x2="450" y2="185" class="ax"/>
+  <path d="M60 182 L240 180 C270 175 280 60 310 40 L440 35" class="c1"/>
+  <path d="M60 182 L170 180 C200 175 210 60 240 40 L440 35" class="c2"/>
+  <path d="M60 182 L110 180 C140 175 150 60 180 40 L440 35" class="c3"/>
+  <text x="330" y="70" class="t" style="fill:var(--orange)">small molecule</text>
+  <text x="240" y="100" class="t" style="fill:var(--green)">larger</text>
+  <text x="105" y="100" class="t" style="fill:var(--blue)">protein</text>
+  <text x="250" y="205" text-anchor="middle" class="t">drug loading φ<tspan font-size="9">A</tspan> →</text>
+  <text x="18" y="100" class="t" transform="rotate(-90 18 100)" text-anchor="middle">Mt/M0 released</text>
+</svg>
+<figcaption>As solute size increases, the curve shifts left: less loading is needed before connected channels allow release.</figcaption>
+</figure>
+</section>
+
+<section id="pep">
+<h2><span class="star">★</span> 13. Identifying the Release Mechanism: Korsmeyer–Peppas (M<sub>t</sub>/M<sub>0</sub> = k·tⁿ)</h2>
+<p>In practice you measure a release profile and want to know <b>what is controlling release</b>. Fit cumulative release vs time to <b>M<sub>t</sub>/M<sub>0</sub> = k·tⁿ</b> (Korsmeyer and Peppas; Nicholas Peppas) and read off n:</p>
+<figure>
+<svg viewBox="0 0 470 210" role="img" aria-label="Peppas exponent n curves">
+  <line x1="50" y1="15" x2="50" y2="185" class="ax"/><line x1="50" y1="185" x2="450" y2="185" class="ax"/>
+  <path d="M50 185 C60 110 140 60 380 45" class="c1"/>
+  <line x1="50" y1="185" x2="380" y2="45" class="c2"/>
+  <path d="M50 185 C90 130 200 80 380 45" class="c3"/>
+  <text x="250" y="132" class="t" style="fill:var(--orange)">n = 0.5 → diffusion (Higuchi)</text>
+  <text x="250" y="152" class="t" style="fill:var(--green)">n = 1 → erosion / swelling</text>
+  <text x="250" y="172" class="t" style="fill:var(--blue)">0.5 &lt; n &lt; 1 → anomalous</text>
+  <text x="250" y="202" text-anchor="middle" class="t">Time</text>
+</svg>
+</figure>
+<div class="tbl"><table>
+  <tr><th>n</th><th>Meaning</th></tr>
+  <tr><td><b>0.5</b></td><td><b>Pure diffusion</b> (Higuchi, √t). The polymer isn't changing.</td></tr>
+  <tr><td><b>1</b></td><td>Linear (zero order). In a matrix that should be diffusion-only, this means <b>something else compensates for slowing diffusion</b>: the polymer is <b>swelling or eroding</b>.</td></tr>
+  <tr><td><b>Between 0.5 and 1</b></td><td><b>Anomalous</b>: diffusion <b>plus</b> another process (swelling or erosion) together</td></tr>
+</table></div>
+</section>
+
+<section id="cheat">
+<h2>14. One-Page Cheat Sheet</h2>
+<ol>
+  <li><b>Polymers in conventional forms:</b> coatings, disintegrants, binders, gelatin capsules, suspending and emulsifying agents, gels, suppository bases. Pro: tunable chemistry. Con: toxicity and immunogenicity, public perception.</li>
+  <li><b>Natural:</b> polysaccharides, proteins, nucleic acids, rubber. <b>Synthetic:</b> polyesters (PLA, PLGA, PCL; degradable), polyanhydrides (degrade faster), polyamides (degrade slower), PEG, PDMS, and others.</li>
+  <li><b>Key features:</b> MW (a distribution; GPC), crystallinity (tacticity; DSC/XRD), Tg (glassy vs rubbery at 37 °C), hydrophilicity.</li>
+  <li><b>In vivo requirements:</b> non-toxic (acute and chronic, non-carcinogenic, non-mutagenic, non-allergic) and one of: biodegradable (PLGA), bio-eliminable (PEG, dextran; depends on hydrodynamic size), or removable (EVA; least attractive; used for diffusion devices).</li>
+  <li><b>Diffusion devices:</b> used for systemic contraception (Norplant = levonorgestrel in PDMS, 6 rods, discontinued 2008) and local cancer, pain and anti-infective delivery.</li>
+  <li><b>Fick:</b> J = −D dc/dx. The drug must <b>dissolve in the polymer</b> (melting + mixing; Flory–Huggins χ: low = compatible; common solvents mean compatible).</li>
+  <li><b>D = kT/6πηr:</b> D falls with higher viscosity and larger drug size. <b>D ≈ 0 below Tg</b>; need <b>Tg &lt; 37 °C</b>. Free volume: drug jumps through holes (ignores drug–polymer interactions). Crystallinity gives a longer path and slower release. Size: D falls linearly (rubbery) or exponentially (glassy).</li>
+  <li><b>Non-steady state:</b> fresh device → lag; aged device → burst.</li>
+  <li><b>Activity vs concentration:</b> release stops when the medium saturates, which looks like fake sustained release. <b>Sink:</b> bigger volume or a solubilizer; check with free drug.</li>
+  <li><b>dm/dt = DAK(Cd − Cr)/l</b>; reservoir M<sub>t</sub> = kt; matrix M = kt<sup>½</sup> (Higuchi). Cumulative M<sub>t</sub>/M<sub>∞</sub> plot.</li>
+  <li><b>Monolithic types:</b> solution → simple (&lt;0.05) → complex (0.05–0.3, pores, Dp) → matrix (0.3–0.7, channels, De = D/τ²). Release gets faster down the list.</li>
+  <li><b>Percolation:</b> large drugs at φ above critical (~0.3) form channels, so proteins can be released from a non-degradable matrix. <b>Bigger solute means lower critical φ.</b></li>
+  <li><b>Peppas:</b> n = 0.5 diffusion; n = 1 erosion or swelling; in between = anomalous.</li>
+</ol>
+</section>
+
+<section id="qa">
+<h2>15. Practice Short-Answer Questions</h2>
+<p>Try to answer each question yourself, then click it to see a model answer.</p>
+<details><summary>1. Give examples of polymer use in conventional dosage forms.</summary>Tablets (enteric or film coatings, disintegrants, binders); capsules (gelatin shell); suspensions (suspending agents); emulsions (emulsifying agents); semisolids (gels; cream and ointment bases); suppository bases.</details>
+<details><summary>2. What are the advantages and disadvantages of polymers as excipients?</summary>Advantage: flexible chemical structure, so properties are easy to tune. Disadvantages: possible toxicity and immunogenicity, and negative public perception ("plastics").</details>
+<details><summary>3. Name the polymer characteristics that affect drug loading and release, and how each is measured.</summary>Molecular weight (a distribution with several averages; GPC, MALDI); crystallinity (depends on tacticity; melting point by DSC, also XRD); glass transition temperature (Tg; glassy below, rubbery above, compared with 37 °C); hydrophilicity/hydrophobicity.</details>
+<details><summary>4. What general characteristics must a polymer have for in vivo drug delivery?</summary>It must be non-toxic: no acute or chronic toxicity, and non-carcinogenic, non-mutagenic and non-allergic. It must also be biodegradable, bio-eliminable or removable (the least attractive option).</details>
+<details><summary>5. Compare biodegradable, bio-eliminable and removable polymers, with examples.</summary>Biodegradable polymers are broken down by water, enzymes or pH; they can be hydrophilic or hydrophobic but are chemically unstable in water (PLGA, polypeptides). Bio-eliminable polymers don't degrade but are small enough (by hydrodynamic size) for renal excretion; they are hydrophilic and chemically stable (low-MW PEG, dextran). Removable polymers are insoluble, hydrophobic and stable, and must be physically removed; they are used in diffusion-controlled devices (EVA).</details>
+<details><summary>6. Describe Norplant.</summary>A diffusion-controlled subdermal implant of levonorgestrel (contraceptive) in polydimethylsiloxane (silicone), given as six rods (later three) under the skin. Marketed from the 1970s (South America, then Europe, then the US); discontinued in 2008.</details>
+<details><summary>7. Why must the drug dissolve in the polymer for diffusion-controlled release, and what determines this solubility?</summary>Fick's law is driven by the concentration gradient inside the membrane, so drug must dissolve in the polymer to create that gradient. Dissolution involves "melting" (breaking drug–drug cohesive forces, which depends on heat of fusion and melting point) and mixing with the polymer, governed by the Flory–Huggins interaction parameter χ. A low χ means drug and polymer are similar and solubility is high. Drug and polymer sharing common solvents suggests good compatibility.</details>
+<details><summary>8. What does the Stokes–Einstein equation tell you about drug diffusivity?</summary>D = kT/(6πηr): diffusivity rises with temperature and falls with medium viscosity and with the size of the diffusing molecule. Large molecules such as proteins diffuse very slowly, so reservoir systems can't deliver them.</details>
+<details><summary>9. How does Tg affect release from a diffusion-controlled system? Explain with free-volume theory.</summary>Diffusion occurs only above Tg; below Tg (glassy) diffusivity is about zero. Free-volume theory says drug moves by jumping between holes (free volume) in the polymer. Above Tg the polymer expands much more with temperature, creating free volume. So the polymer's Tg should be below 37 °C, making it rubbery in the body; a polymer that is glassy at 37 °C releases too slowly. Limitation: the theory ignores drug–polymer interactions.</details>
+<details><summary>10. How does polymer crystallinity affect drug release?</summary>Drug can only diffuse through amorphous regions, not crystalline ones. Higher crystallinity forces a longer, winding diffusion path, so release slows; semi-crystalline polymers release more slowly than amorphous ones. Raising crystallinity is one way to slow release that is too fast.</details>
+<details><summary>11. How does drug size affect D in rubbery vs glassy polymers?</summary>In rubbery polymers (above Tg), D decreases linearly with increasing molar volume. In glassy polymers (below Tg), D decreases exponentially, so large drugs are severely restricted.</details>
+<details><summary>12. Explain non-steady-state release: lag time and burst effect.</summary>In a freshly made device, the membrane initially contains no drug, so the gradient builds up gradually, giving a lag time. In a device stored for a long time, the membrane is saturated with drug, which is released all at once (burst or dose dumping). Both approach the linear steady-state gradient over time.</details>
+<details><summary>13. What is the activity-vs-concentration limitation of Fick's law, and what is a sink condition?</summary>Fick's law predicts release whenever a concentration difference exists, but release actually stops once the release medium is saturated with drug (e.g., 1 mg/mL solubility reached), even if the device holds 10 mg/mL. For poorly soluble drugs this creates an artificial plateau that looks like sustained release. A sink condition means the medium has excess capacity: the drug concentration after full release stays well below saturation (about ten-fold). It is achieved by increasing the medium volume or adding a solubilizer (surfactant, albumin), and verified by calculation or by showing that the free drug alone releases rapidly.</details>
+<details><summary>14. Why is a partition coefficient included in the practical form of Fick's law?</summary>The gradient in Fick's law is inside the membrane (C1, C2), which can't easily be measured. The measurable donor and receiver concentrations are related to them by the partition coefficient: K = C1/Cd = C2/Cr. Substituting gives dm/dt = DAK(Cd − Cr)/l.</details>
+<details><summary>15. Compare release kinetics of reservoir and monolithic systems and how you would plot them.</summary>Reservoir (excess drug): Mt = kt, zero order, linear vs time. Monolithic: Mt = kt½ (Higuchi), because the diffusion path lengthens; it is linear only when plotted vs √t. Both usually plateau, ideally at 100%. Release is usually reported as cumulative Mt/M∞ vs time.</details>
+<details><summary>16. Describe the four types of monolithic systems and how release changes between them.</summary>Monolithic solution: all drug dissolved (below saturation); linear vs √t up to ~60%. Simple monolithic dispersion (0 &lt; φ &lt; 0.05): a little solid drug; linear up to ~40%. Complex monolithic dispersion (0.05–0.3): released drug leaves pores that increase porosity, with D replaced by Dp, so release is faster. Monolithic matrix (0.3–0.7): pores connect into channels, with D replaced by De = D/τ² (tortuosity), so release is fastest. Not all drug may be released in the lower-loading types.</details>
+<details><summary>17. What is percolation theory, and how does solute size affect the critical drug loading?</summary>In a non-degradable matrix with high loading of a large drug, each released molecule leaves a large pore. Water enters and washes out neighbors, so pores join into channels through which the drug, even a protein, is released. This requires loading above a critical φ (typically above ~0.3). Larger solutes leave bigger holes, so channels form at lower loading: the critical φ decreases and the release-vs-φ curve shifts left.</details>
+<details><summary>18. How do you use Mt/M0 = k·tⁿ to identify the release mechanism?</summary>Fit the cumulative release data (Korsmeyer–Peppas). n = 0.5 means Fickian diffusion (Higuchi) with an unchanging polymer. n = 1 means linear release, implying erosion or swelling compensates for slowing diffusion. 0.5 &lt; n &lt; 1 means anomalous transport: diffusion combined with swelling or erosion.</details>
+</section>
+</div>
+</body>
+</html>
