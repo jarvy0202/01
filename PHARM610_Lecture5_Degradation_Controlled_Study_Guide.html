@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Degradation-Controlled Delivery</title>
+<style>
+:root{
+  --bg:#f7f7f5; --card:#ffffff; --ink:#1d1f23; --muted:#5d6470; --line:#e3e4e8;
+  --accent:#0b6e4f; --accent-soft:#e3f2ec; --star:#b45309; --star-soft:#fff4e0;
+  --th:#f0f2f4; --info-soft:#eaf1fb; --info:#2b5fad;
+  --lipid:#f3d9a4; --head:#c8862b; --water:#d7ecf7; --blue:#2b6cb0; --orange:#d9622b;
+  --green:#2f8f4e; --peg:#7a5cc4; --cell:#f1d3cf; --cellline:#c98b84;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+    --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a;
+    --th:#262a2f; --info-soft:#1b2534; --info:#7fa8e6;
+    --lipid:#6b5428; --head:#e0a24c; --water:#1f3644; --blue:#6aa5ea; --orange:#f0884f;
+    --green:#5cc07c; --peg:#a98ff0; --cell:#4a2f2c; --cellline:#b07870;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+  --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a;
+  --th:#262a2f; --info-soft:#1b2534; --info:#7fa8e6;
+  --lipid:#6b5428; --head:#e0a24c; --water:#1f3644; --blue:#6aa5ea; --orange:#f0884f;
+  --green:#5cc07c; --peg:#a98ff0; --cell:#4a2f2c; --cellline:#b07870;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-size:1.6rem;line-height:1.25;margin:0 0 4px}
+header p{margin:0;color:var(--muted);font-size:.92rem}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px}
+nav a{font-size:.82rem;text-decoration:none;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:999px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+h2{font-size:1.25rem;margin:0 0 10px;color:var(--accent)}
+h3{font-size:1.05rem;margin:20px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:6px 0;padding-left:22px}
+li{margin:3px 0}
+.star{color:var(--star);font-weight:700}
+.key{background:var(--star-soft);border-left:4px solid var(--star);padding:10px 14px;border-radius:6px;margin:12px 0}
+.key b:first-child{color:var(--star)}
+.why{background:var(--info-soft);border-left:4px solid var(--info);padding:10px 14px;border-radius:6px;margin:12px 0}
+.why b:first-child{color:var(--info)}
+.tbl{overflow-x:auto;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--th)}
+.steps{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px;margin:10px 0}
+.steps div{flex:1 1 140px;background:var(--th);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.88rem;position:relative}
+.steps div b{display:block;font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+figure{margin:12px 0;text-align:center}
+figure svg{width:100%;max-width:560px;height:auto}
+figcaption{font-size:.84rem;color:var(--muted);margin-top:4px}
+.spectrum{margin:12px 0 4px}
+.bar{height:12px;border-radius:6px;background:linear-gradient(90deg,#d9534f,#e8a33d,#0b6e4f)}
+.labels{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--muted);margin-top:4px}
+details{border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:8px 0;background:var(--card)}
+summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:6px}
+.glossary dt{font-weight:700;margin-top:6px}
+.glossary dd{margin:0 0 4px 0;color:var(--ink)}
+/* svg */
+.t{fill:var(--ink);font-size:12px;font-family:inherit}
+.tm{fill:var(--muted);font-size:11px;font-family:inherit}
+.tail{fill:var(--lipid)} .core{fill:var(--water)}
+.head{fill:none;stroke:var(--head);stroke-width:6;stroke-dasharray:2 3}
+.phil{fill:var(--blue)} .phob{fill:var(--orange)} .amph{fill:var(--green)}
+.peg{fill:none;stroke:var(--peg);stroke-width:2;stroke-linecap:round}
+.ab{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round}
+.ln{stroke:var(--muted);stroke-width:1;fill:none}
+.ax{stroke:var(--ink);stroke-width:1.2;fill:none}
+.cx{fill:none;stroke:var(--green);stroke-width:2.5}
+.fx{fill:none;stroke:var(--orange);stroke-width:2.5}
+.cell{fill:var(--cell);stroke:var(--cellline);stroke-width:1}
+.vessel{fill:#c0392b;opacity:.75}
+.lipo{fill:var(--lipid);stroke:var(--head);stroke-width:1.5}
+.poly{fill:var(--water);stroke:var(--blue);stroke-width:2}
+.shell{stroke:var(--peg);stroke-width:2;fill:none;stroke-linecap:round}
+.mcore{fill:var(--lipid);stroke:var(--orange);stroke-width:1.5}
+.arrow{stroke:var(--ink);stroke-width:1.5;fill:none;marker-end:url(#ah)}
+@media print{body{background:#fff} section{break-inside:avoid;border-color:#ccc} nav{display:none} details{break-inside:avoid}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs></svg>
+<style>
+.polyf{fill:var(--water);stroke:var(--blue);stroke-width:2}
+.bead{fill:var(--blue)}
+.xl{stroke:var(--orange);stroke-width:3}
+.sc{fill:var(--orange)}
+.c1{fill:none;stroke:var(--orange);stroke-width:2.5}
+.c2{fill:none;stroke:var(--green);stroke-width:2.5}
+.c3{fill:none;stroke:var(--blue);stroke-width:2;stroke-dasharray:4 3}
+.chain{stroke:var(--blue);stroke-width:4;fill:none;stroke-linecap:round}
+</style>
+<div class="wrap">
+<header>
+  <h1>PHARM 610 · Lecture V: Degradation-Controlled Delivery Systems</h1>
+  <p>Dr. Lavasanifar · Midterm 2 · Full study guide (based mainly on the transcript, with the slides as support).
+     <span class="star">★</span> = stressed in lecture / likely exam. <b style="color:var(--info)">Why?</b> boxes explain the reasoning behind a fact.
+     The lecturer asked the class several questions in this lecture (which pathway, how mass and MW change, PLGA ratio); those are marked as likely exam material.</p>
+</header>
+
+<nav>
+  <a href="#def">Definition</a><a href="#path">3 pathways</a><a href="#bond">Degradable bonds</a>
+  <a href="#poly">Polyesters</a><a href="#erode">Bulk vs surface</a><a href="#fact">Rate factors</a>
+  <a href="#plga">PLGA ratio</a><a href="#fab">Fabrication</a><a href="#rel">Release profiles</a>
+  <a href="#cheat">Cheat sheet</a><a href="#qa">Practice Qs</a>
+</nav>
+
+<section id="def">
+<h2>1. What Is a Biodegradable Polymer?</h2>
+<div class="key"><b>Definition:</b> a solid polymer that is reduced to <b>soluble fragments</b>, which are then either <b>excreted</b> (e.g., by the kidney) or <b>metabolized</b> under physiological conditions.</div>
+<p><b>Drug can be loaded physically or chemically.</b> If chemically (covalently), the drug–polymer bond can also be degradable. Possible arrangements (C = monomer, D = drug):</p>
+<div class="tbl"><table>
+  <tr><th>Pattern</th><th>Meaning</th></tr>
+  <tr><td>C-D-C-D-C-D</td><td>Drug built <b>into the backbone</b></td></tr>
+  <tr><td>C-C-C-C-C with D hanging off each unit</td><td>Drug <b>grafted as side chains</b> (pendant)</td></tr>
+  <tr><td>D-C-C-C-C-D</td><td>Drug at the <b>chain ends</b></td></tr>
+  <tr><td>D-D-D-D-D-D</td><td>The drug <b>itself forms the polymer</b></td></tr>
+</table></div>
+</section>
+
+<section id="path">
+<h2><span class="star">★</span> 2. Three Pathways of Biodegradation</h2>
+<figure>
+<svg viewBox="0 0 560 270" role="img" aria-label="Three biodegradation pathways: cross-link cleavage, side-chain transformation, chain scission">
+  <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs>
+  <!-- I -->
+  <text x="10" y="20" class="t" font-weight="700">I · Cross-link cleavage</text>
+  <line x1="20" y1="45" x2="200" y2="45" class="chain"/><line x1="20" y1="80" x2="200" y2="80" class="chain"/>
+  <line x1="55" y1="45" x2="55" y2="80" class="xl"/><line x1="110" y1="45" x2="110" y2="80" class="xl"/><line x1="165" y1="45" x2="165" y2="80" class="xl"/>
+  <text x="110" y="100" text-anchor="middle" class="tm">insoluble network</text>
+  <line x1="215" y1="62" x2="285" y2="62" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#ah2)"/>
+  <line x1="300" y1="45" x2="480" y2="45" class="chain"/><line x1="300" y1="80" x2="480" y2="80" class="chain"/>
+  <line x1="335" y1="50" x2="335" y2="57" class="xl"/><line x1="335" y1="68" x2="335" y2="75" class="xl"/>
+  <line x1="390" y1="50" x2="390" y2="57" class="xl"/><line x1="445" y1="68" x2="445" y2="75" class="xl"/>
+  <text x="390" y="100" text-anchor="middle" class="tm">original water-soluble chains</text>
+  <!-- II -->
+  <text x="10" y="128" class="t" font-weight="700">II · Side-chain transformation</text>
+  <line x1="20" y1="155" x2="200" y2="155" class="chain"/>
+  <g class="sc"><rect x="45" y="160" width="12" height="12"/><rect x="95" y="160" width="12" height="12"/><rect x="145" y="160" width="12" height="12"/></g>
+  <text x="110" y="190" text-anchor="middle" class="tm">hydrophobic side groups</text>
+  <line x1="215" y1="160" x2="285" y2="160" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#ah2)"/>
+  <line x1="300" y1="155" x2="480" y2="155" class="chain"/>
+  <text x="331" y="174" class="t">COO⁻</text><text x="381" y="174" class="t">COO⁻</text><text x="431" y="174" class="t">COO⁻</text>
+  <text x="390" y="190" text-anchor="middle" class="tm">ionized/polar → now water-soluble</text>
+  <!-- III -->
+  <text x="10" y="218" class="t" font-weight="700">III · Chain scission (backbone)</text>
+  <line x1="20" y1="240" x2="200" y2="240" class="chain"/>
+  <line x1="215" y1="240" x2="285" y2="240" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#ah2)"/>
+  <line x1="300" y1="240" x2="330" y2="240" class="chain"/><line x1="345" y1="240" x2="375" y2="240" class="chain"/>
+  <line x1="390" y1="240" x2="420" y2="240" class="chain"/><line x1="435" y1="240" x2="465" y2="240" class="chain"/>
+  <text x="390" y="262" text-anchor="middle" class="tm">short soluble fragments / monomers</text>
+</svg>
+<figcaption>I is used for biodegradable hydrogels. III is the main mechanism in solid polymers (PLGA, PCL).</figcaption>
+</figure>
+<div class="tbl"><table>
+  <tr><th>Pathway</th><th>What happens</th><th>Examples</th></tr>
+  <tr><td><b>I. Degradation of cross-links</b></td><td>A water-soluble polymer was made insoluble only by <b>cross-linking</b> through degradable links. The links break and the original <b>water-soluble polymer</b> comes back. A biodegradable system becomes a <b>bio-eliminable</b> one.</td><td>Poly(methacrylic acid) cross-linked with a <b>diacid</b> (ester or carbamate links) → PMAA + diacid; a polymer cross-linked with <b>PEG</b> via ester bonds</td></tr>
+  <tr><td><b>II. Chemical (side-chain) transformation</b></td><td>A hydrophobic side group is converted (by water, enzymes) into an <b>ionizable or polar</b> group, turning an insoluble polymer into a soluble one. The backbone stays intact.</td><td><b>Poly(methyl vinyl ether-co-maleic anhydride)</b>: the anhydride opens into <b>2 carboxyl groups</b>. <b>Poly(alkyl cyanoacrylate)</b>: the side-chain ester → carboxylate.</td></tr>
+  <tr><td><b>III. Chain scission</b></td><td>Bonds in the <b>backbone</b> are cleaved and the polymer is chopped into monomers/oligomers</td><td>See below</td></tr>
+</table></div>
+<h3>Chain-scission examples and their end products</h3>
+<ul>
+  <li><b>PLGA</b> + water → <b>lactic acid + glycolic acid</b>, both natural body compounds → <b>Krebs cycle</b> → CO₂ + H₂O.</li>
+  <li><b>PCL</b> + water → <b>6-hydroxycaproic acid</b> → citric acid cycle → CO₂ + H₂O.</li>
+  <li><b>Poly(hydroxybutyrate)</b> → <b>D-3-hydroxybutyrate</b>, a normal blood constituent.</li>
+  <li>Also: <b>polyanhydrides</b>, <b>poly(ortho esters)</b>, and <b>polyamides/polypeptides</b>. Polyamides usually need <b>enzymes</b>; water alone isn't enough.</li>
+</ul>
+<div class="why"><b>Class exercise ("What is this one?"):</b> The lecturer showed two structures. (1) A carbohydrate network linked by short chains, cut by chondroitinase → <b>cross-link degradation</b>. (2) A PEG–polyester block copolymer with <b>benzyl ester side groups</b> → <b>chain scission</b> (backbone esters) <b>and</b> side-chain transformation (benzyl esters → acids). <b>Both can happen in the same polymer.</b> Practise identifying the pathway from a structure.</div>
+</section>
+
+<section id="bond">
+<h2><span class="star">★</span> 3. How to Recognize a Degradable Bond</h2>
+<p>If you see one of these groups in a polymer, guess that it is <b>hydrolytically degradable</b>. Water attacks the carbonyl carbon.</p>
+<div class="tbl"><table>
+  <tr><th>Pattern</th><th>X = O</th><th>X = N</th><th>X = S</th></tr>
+  <tr><td><b>A.</b> Carbonyl bonded to an electronegative atom: R–C(=O)–X–R</td><td><b>Ester</b></td><td><b>Amide</b></td><td><b>Thioester</b></td></tr>
+  <tr><td><b>B.</b> Carbonyl with an electronegative atom on <b>both</b> sides: R–X–C(=O)–X′–R</td><td><b>Carbonate</b> (O, O)</td><td><b>Urethane</b> (N, O)</td><td><b>Urea</b> (N, N)</td></tr>
+  <tr><td><b>C.</b> Two carbonyls with an atom between them: R–C(=O)–X–C(=O)–R</td><td><b>Anhydride</b></td><td><b>Imide</b></td><td>—</td></tr>
+</table></div>
+<p>Less common but also degradable (often slowly or needing enzymes): <b>acetal / hemiacetal</b>, <b>ether</b>, <b>nitrile</b>, <b>phosphonate</b>, <b>polycyanoacrylate</b>.</p>
+<p><b>Commonly used biodegradable polymers:</b></p>
+<ul>
+  <li>PGA</li>
+  <li>PLA: poly(L-lactide), poly(D,L-lactide)</li>
+  <li>PLGA</li>
+  <li>PCL</li>
+  <li>Polyanhydrides</li>
+  <li>Poly(β-hydroxybutyrate)</li>
+  <li>Poly(ortho esters)</li>
+  <li>Polyphosphazenes</li>
+  <li>Polycarbonates</li>
+</ul>
+</section>
+
+<section id="poly">
+<h2>4. Polyesters: The Workhorses</h2>
+<p>PGA, PLA, PLGA and PCL are made by <b>ring-opening polymerization</b> of cyclic monomers (glycolide, lactide, ε-caprolactone) with a <b>catalyst and heat</b>. They can be homopolymers or copolymers. Their structure determines their thermal properties:</p>
+<div class="tbl"><table>
+  <tr><th>Polymer</th><th>Tg (°C)</th><th>Tm (°C)</th><th>State</th><th>At 37 °C</th></tr>
+  <tr><td><b>PGA</b></td><td>35</td><td>210</td><td>Semi-crystalline</td><td>Around Tg</td></tr>
+  <tr><td><b>L-PLA</b> (all L-lactic acid)</td><td>~54–59</td><td>~160–178</td><td><b>Semi-crystalline</b></td><td><b>Glassy</b> (Tg above body temp)</td></tr>
+  <tr><td><b>D,L-PLA</b> (random D and L)</td><td>~50–53</td><td><b>none</b></td><td><b>Amorphous</b> (only a Tg)</td><td>Glassy</td></tr>
+  <tr><td><b>PCL</b></td><td><b>−62</b></td><td>~57–60</td><td>Semi-crystalline</td><td>Rubbery amorphous regions</td></tr>
+</table></div>
+<div class="why"><b>Why is D,L-PLA amorphous but L-PLA crystalline?</b> All-L chains are stereoregular and pack into ordered crystals. A random mix of D and L units disrupts packing, so no crystals form and there is <b>no melting point</b>.</div>
+</section>
+
+<section id="erode">
+<h2><span class="star">★</span> 5. Bulk vs Surface Erosion: How to Tell Them Apart</h2>
+<div class="tbl"><table>
+  <tr><th></th><th>Bulk erosion (e.g., <b>PLGA</b>)</th><th>Surface erosion (hydrophobic degradable polymers, e.g., <b>polyanhydrides</b>; Lecture III used <b>PCL</b>)</th></tr>
+  <tr><td>Mechanism</td><td>Water penetrates the <b>whole device</b> and cuts chains <b>from inside</b></td><td>Water can't get in, so degradation happens <b>only at the surface</b></td></tr>
+  <tr><td>Appearance</td><td>No visible change until it suddenly falls apart. Microscopy shows <b>pores</b>.</td><td>No pores; the device <b>shrinks / gets thinner</b> over time</td></tr>
+</table></div>
+<p><b>Characterizing biodegradation:</b></p>
+<ul>
+  <li>morphology by <b>microscopy</b></li>
+  <li><b>mass loss</b> (loss of soluble species)</li>
+  <li><b>molecular weight</b> over time (GPC, MALDI): the most important measure</li>
+  <li><b>mechanical properties</b></li>
+  <li><b>viscosity</b> (lower MW means lower viscosity)</li>
+</ul>
+<figure>
+<svg viewBox="0 0 560 330" role="img" aria-label="Molecular weight and mass versus time for bulk and surface erosion">
+  <text x="140" y="16" text-anchor="middle" class="t" font-weight="700">Bulk erosion</text>
+  <text x="420" y="16" text-anchor="middle" class="t" font-weight="700">Surface erosion</text>
+  <!-- MW bulk -->
+  <line x1="50" y1="30" x2="50" y2="140" class="ax"/><line x1="50" y1="140" x2="250" y2="140" class="ax"/>
+  <text x="20" y="90" class="t" transform="rotate(-90 20 90)" text-anchor="middle">MW</text>
+  <path d="M52 35 C80 110 120 132 245 136" class="c1"/>
+  <text x="150" y="80" class="tm">steep, early drop</text>
+  <!-- MW surface -->
+  <line x1="330" y1="30" x2="330" y2="140" class="ax"/><line x1="330" y1="140" x2="530" y2="140" class="ax"/>
+  <text x="300" y="90" class="t" transform="rotate(-90 300 90)" text-anchor="middle">MW</text>
+  <line x1="332" y1="38" x2="525" y2="62" class="c2"/>
+  <text x="430" y="90" class="tm">little change (gradual)</text>
+  <!-- mass bulk -->
+  <line x1="50" y1="185" x2="50" y2="295" class="ax"/><line x1="50" y1="295" x2="250" y2="295" class="ax"/>
+  <text x="20" y="245" class="t" transform="rotate(-90 20 245)" text-anchor="middle">Mass</text>
+  <path d="M52 190 L170 205 C185 210 190 280 205 290 L245 292" class="c1"/>
+  <text x="70" y="230" class="tm">little loss, then</text><text x="70" y="244" class="tm">sudden drop</text>
+  <!-- mass surface -->
+  <line x1="330" y1="185" x2="330" y2="295" class="ax"/><line x1="330" y1="295" x2="530" y2="295" class="ax"/>
+  <text x="300" y="245" class="t" transform="rotate(-90 300 245)" text-anchor="middle">Mass</text>
+  <line x1="332" y1="190" x2="520" y2="290" class="c2"/>
+  <text x="440" y="215" class="tm">steady, ~linear</text>
+  <text x="150" y="315" text-anchor="middle" class="tm">time →</text><text x="430" y="315" text-anchor="middle" class="tm">time →</text>
+</svg>
+<figcaption>The lecturer asked the class to fill in these four blank graphs from the slide. Expect this question.</figcaption>
+</figure>
+<div class="why"><b>Why?</b>
+<ul style="margin:6px 0 0">
+  <li><b>MW in bulk erosion drops steeply</b> because water attacks <b>every chain</b> in the device. If you dissolve a sample in THF and run GPC, the average MW keeps falling.</li>
+  <li><b>MW in surface erosion barely changes</b> because only surface chains are cut. The inside is intact, so the <i>average</i> MW of what remains stays similar.</li>
+  <li><b>Mass in bulk erosion</b> changes little at first, since fragments and water are still inside. When enough chains are cut, the device <b>disintegrates</b> and the mass drops suddenly.</li>
+  <li><b>Mass in surface erosion</b> falls <b>steadily (can be linear)</b> as layer after layer is removed.</li>
+</ul></div>
+</section>
+
+<section id="fact">
+<h2><span class="star">★</span> 6. Factors Controlling Rate and Mechanism of Degradation</h2>
+<p>The slide lists: nature of the bond, hydrophilicity/hydrophobicity, crystallinity, Tg, molecular weight, manufacturing process/geometry, and additives.</p>
+
+<h3>6.1 Nature of the bond (hydrolysis half-lives)</h3>
+<div class="tbl"><table>
+  <tr><th>Polymer class</th><th>Half-life</th></tr>
+  <tr><td>Poly(anhydrides)</td><td><b>0.1 h</b> (fastest)</td></tr>
+  <tr><td>Poly(ortho esters)</td><td>4 h</td></tr>
+  <tr><td>Poly(esters)</td><td>3.3 years</td></tr>
+  <tr><td>Poly(amides)</td><td>83,000 years (needs enzymes in practice)</td></tr>
+</table></div>
+<p>Esters, anhydrides and carbamates degrade much faster than amides. Adding enzymes speeds things up.</p>
+<div class="why"><b>★ Autocatalysis: why polyester degradation speeds up over time.</b> PLGA, PLA and PGA degrade to <b>acids</b> (lactic, glycolic). If the acid isn't washed away, the local pH drops. Protons associate with the carbonyl oxygen, making the C=O bond <b>more polarized</b> and the carbon more positive, so water attacks it more easily. The acidic products therefore <b>catalyze further degradation</b>. If body fluids wash the acid away and the pH returns to 7.4, there is no such effect.</div>
+
+<h3>6.2 Hydrophobicity</h3>
+<ul>
+  <li><b>More hydrophobic means slower degradation</b>: less water gets in.</li>
+  <li>Polyester degradation rate: <b>PCL &lt; PDLA &lt; PLGA</b>.</li>
+  <li>In polyanhydride blends and copolymers, increasing the hydrophobic monomer increases the degradation time (e.g., 3 days → 496 days).</li>
+</ul>
+
+<h3>6.3 Crystallinity</h3>
+<ul>
+  <li><b>Amorphous polymers degrade faster</b> than crystalline ones. Example: amorphous vs crystalline PGA-co-PLA, where the amorphous one loses weight much sooner.</li>
+  <li>In <b>semi-crystalline</b> polymers, degradation happens in the <b>amorphous regions first</b>. As those are removed, the remaining polymer is proportionally more crystalline, so the <b>degree of crystallinity increases during degradation</b>.</li>
+  <li><b>Consequence:</b> since diffusion only happens through amorphous regions, rising crystallinity makes <b>drug release slow down</b> over time (slide: crystallinity ↑ from ~45 to ~51% as release rate falls).</li>
+</ul>
+
+<h3>6.4 Molecular weight</h3>
+<ul>
+  <li><b>Not very significant.</b> Going from 10⁶ to 10⁵ Da barely changes degradation rate. Changes at the lower end (e.g., 10⁵ to 10⁴) matter a little more.</li>
+  <li>Higher MW gives slightly slower degradation.</li>
+  <li>MW can still have an <b>indirect</b> effect through other properties.</li>
+</ul>
+
+<h3>6.5 Additives and blends</h3>
+<ul>
+  <li><b>Additives</b> (plasticizers, residual solvents) change the degradation rate.</li>
+  <li><b>Polymer blends</b> are physical mixtures, usually made by melt-mixing; polymers are miscible in the amorphous state.
+    <ul>
+      <li>They are used to modify properties.</li>
+      <li>The added polymer often <b>disrupts the crystallinity</b> of the first, making it more amorphous.</li>
+      <li>Example: adding more <b>PEO to PLA</b> gives <b>faster degradation</b>.</li>
+    </ul></li>
+</ul>
+<div class="key"><b>★ Copolymer vs blend (same PLLA and PEO, 30% PEO):</b> the <b>blend degrades faster</b>, because mixing in PEO disrupts PLLA crystallinity. A <b>block copolymer</b> degrades <b>slower</b>, because each block can still form its own ordered, crystalline domains. (It depends on the polymers; sometimes a block disrupts the other's crystallinity.)</div>
+
+<h3>Side question from class: can polymers be given by any route?</h3>
+<ul>
+  <li><b>Oral, intranasal:</b> the polymer isn't absorbed. It just carries the drug and is eliminated (e.g., in feces), so any MW is fine.</li>
+  <li><b>IV:</b> the polymer must be <b>soluble</b> or a <b>colloid</b> (particles below about <b>500 nm</b>, roughly cell-sized or smaller). Insoluble particles can't be injected IV.</li>
+  <li><b>SC / IM:</b> insoluble polymers can be injected, but they must be degradable, removable, or non-toxic if left in place (no coagulation or other adverse effects).</li>
+</ul>
+</section>
+
+<section id="plga">
+<h2><span class="star">★</span> 7. The PLGA Lactide:Glycolide Ratio Paradox</h2>
+<figure>
+<svg viewBox="0 0 460 230" role="img" aria-label="PLGA degradation half-life versus copolymer ratio is U-shaped with minimum at 50:50">
+  <line x1="60" y1="20" x2="60" y2="180" class="ax"/><line x1="60" y1="180" x2="420" y2="180" class="ax"/>
+  <path d="M62 70 C100 150 160 175 240 176 S 380 150 418 35" class="c1"/>
+  <circle cx="240" cy="176" r="5" fill="var(--orange)"/>
+  <text x="240" y="165" text-anchor="middle" class="t">50:50 fastest</text>
+  <text x="66" y="62" class="tm">100% PGA ~5 mo</text><text x="415" y="30" text-anchor="end" class="tm">100% PLA ~6.5 mo</text>
+  <text x="40" y="198" class="tm">PLA 0 / PGA 100</text><text x="420" y="198" text-anchor="end" class="tm">PLA 100 / PGA 0</text>
+  <text x="240" y="220" text-anchor="middle" class="t">Copolymer ratio</text>
+  <text x="22" y="100" class="t" transform="rotate(-90 22 100)" text-anchor="middle">Degradation t½ (months)</text>
+</svg>
+<figcaption>Based on the slide figure (JBMR 1977). The minimum half-life is at 50:50.</figcaption>
+</figure>
+<ul>
+  <li><b>Expectation:</b> lactic acid is more hydrophobic than glycolic acid, so more lactide should mean slower degradation.</li>
+  <li><b>Reality:</b> <b>50:50 PLGA degrades fastest</b> (shortest t½). Moving toward 100% PGA <i>or</i> 100% PLA, degradation gets slower.</li>
+</ul>
+<div class="why"><b>Why?</b> <b>Crystallinity.</b> PLA alone and PGA alone can each crystallize. Mixing the two monomers randomly disrupts the ordered structure, so the copolymer becomes amorphous, and it is <b>most amorphous at 50:50</b>, which means fastest degradation. Between the two homopolymers, <b>100% PLA lasts longer than 100% PGA</b> because PLA is more hydrophobic.</div>
+</section>
+
+<section id="fab">
+<h2>8. Fabrication and Sterilization Affect Degradation</h2>
+<div class="tbl"><table>
+  <tr><th>Method</th><th>How</th><th>Effect</th></tr>
+  <tr><td><b>Compression molding</b></td><td>Drug and polymer milled to <b>90–150 µm</b> particles, then compressed at ~<b>30,000 psi</b> into a tablet or matrix</td><td>—</td></tr>
+  <tr><td><b>Melt molding</b></td><td>Polymer heated ~<b>10 °C above Tm</b> into a viscous liquid, drug mixed into the melt, shaped by injection molding</td><td>—</td></tr>
+  <tr><td><b>Solvent casting</b></td><td>Drug and polymer co-dissolved in organic solvent, poured into a mold chilled on dry ice, solvent evaporated</td><td>Evaporating solvent leaves <b>pores</b>, so <b>higher porosity</b> and potentially <b>faster degradation</b> than the other two</td></tr>
+</table></div>
+<ul>
+  <li><b>Sterilization:</b> implants are often sterilized with <b>gamma radiation</b>.</li>
+  <li>Studies show a <b>dose-dependent increase in PLGA degradation</b> after gamma radiation. The slide example: 25 kGy-irradiated microspheres released drug faster.</li>
+</ul>
+</section>
+
+<section id="rel">
+<h2><span class="star">★</span> 9. Three Types of Biodegradable Delivery System and Their Release Profiles</h2>
+<div class="tbl"><table>
+  <tr><th>Type</th><th>What controls release</th></tr>
+  <tr><td><b>1. Degradation-controlled monolithic</b></td><td>Drug is released <b>only when the polymer degrades</b>. No diffusion before that.</td></tr>
+  <tr><td><b>2. Diffusion-controlled monolithic</b></td><td>Polymer is degradable, but drug <b>diffuses out at the same time</b> as degradation occurs. It doesn't wait.</td></tr>
+  <tr><td><b>3. Diffusion-controlled reservoir</b></td><td>Drug core inside a degradable coat. Drug diffuses out first; the <b>coat degrades after release</b>.</td></tr>
+</table></div>
+
+<h3>9.1 Degradation-controlled, bulk erosion</h3>
+<figure>
+<svg viewBox="0 0 470 220" role="img" aria-label="Release profiles: degradation-controlled bulk erosion is sigmoidal with lag; adding diffusion removes the lag">
+  <line x1="50" y1="15" x2="50" y2="185" class="ax"/><line x1="50" y1="185" x2="450" y2="185" class="ax"/>
+  <path d="M50 184 L190 182 C230 178 240 50 290 40 L440 36" class="c1"/>
+  <path d="M50 184 C70 140 110 125 170 118 C220 112 240 55 290 42 L440 36" class="c2"/>
+  <text x="445" y="160" text-anchor="end" class="t" style="fill:var(--orange)">degradation only (lag → burst)</text>
+  <text x="70" y="60" class="t" style="fill:var(--green)">diffusion + degradation</text>
+  <text x="250" y="205" text-anchor="middle" class="t">Time</text>
+  <text x="18" y="100" class="t" transform="rotate(-90 18 100)" text-anchor="middle">Mt/M0</text>
+</svg>
+<figcaption>Pure degradation control: no release until enough chains are cut, then a sudden rise (sigmoidal). Adding diffusion fills in the early dip.</figcaption>
+</figure>
+<ul>
+  <li><b>Profile:</b> <b>no release for a while</b> (water is cutting chains inside but not enough yet), then <b>sudden release</b> once the matrix has degraded enough, then a plateau. The curve is <b>sigmoidal with a lag</b>.</li>
+  <li><b>When does a drug not diffuse at all, so release is purely degradation-controlled?</b> The lecturer asked the class this.
+    <ul>
+      <li><b>High-MW drugs (proteins, peptides, antigens).</b> Example: <b>vaccines</b> in PLGA micro/nanospheres don't release until antigen-presenting cells (e.g., dendritic cells) take up and degrade the particle inside the cell.</li>
+      <li><b>Drugs that bind strongly to the polymer.</b> Example: the lecturer's lab found <b>rapamycin</b> in PLGA gave this profile despite being a small molecule, because it interacts strongly with PLGA.</li>
+    </ul></li>
+  <li><b>Advantage over non-degradable matrices:</b> almost <b>100% of the drug is released</b>, because the polymer disappears. In a non-degradable matrix, some drug can stay trapped forever.</li>
+</ul>
+
+<h3>9.2 Degradation-controlled, surface erosion</h3>
+<ul>
+  <li>Drug is released as each surface layer erodes. The profile depends on <b>geometry</b> (B = erosion rate constant):
+    <ul>
+      <li><b>Slab:</b> M<sub>t</sub>/M<sub>∞</sub> = (B/l)·t, which is <b>linear (zero order)</b>.</li>
+      <li><b>Sphere:</b> M<sub>t</sub>/M<sub>∞</sub> = 1 − [1 − Bt/r₀]³</li>
+      <li><b>Cylinder:</b> M<sub>t</sub>/M<sub>∞</sub> = 2(tB/r₀) − (tB/r₀)²</li>
+    </ul></li>
+  <li><b>Sphere</b> curves most (fast early, then slows), the <b>cylinder</b> is intermediate, and the <b>slab</b> is a straight line.</li>
+</ul>
+<div class="why"><b>Why is a surface-eroding slab zero order?</b> Its surface area stays constant as it thins, so the same amount erodes per unit time. A sphere's surface area shrinks as it erodes, so the release rate falls.</div>
+
+<h3>9.3 Diffusion-controlled monolithic (degradable)</h3>
+<ul>
+  <li>Diffusion and degradation work <b>at the same time</b>, so there is <b>no lag</b> (the early dip is filled in).</li>
+  <li><b>Erosion + diffusion releases faster than diffusion alone.</b> On the slide graph, the combined curve rises more steeply later as erosion kicks in.</li>
+  <li>If degradation is very slow, the profile looks like diffusion alone.</li>
+</ul>
+
+<h3>9.4 Diffusion-controlled reservoir (degradable coat)</h3>
+<ul>
+  <li>Release looks like an ordinary <b>reservoir</b> system: diffusion through the coat.</li>
+  <li>The coat degrades <b>after</b> drug release.</li>
+  <li><b>Differences from the non-degradable reservoir:</b> <b>100%</b> of the drug is released, and <b>nothing has to be removed</b>.</li>
+</ul>
+<p class="tm" style="color:var(--muted);font-size:.88rem">M<sub>t</sub>/M<sub>0</sub> = M<sub>t</sub>/M<sub>∞</sub>: amount released divided by the amount loaded. For example, 10 µg released out of 100 µg loaded is 10%.</p>
+</section>
+
+<section id="cheat">
+<h2>10. One-Page Cheat Sheet</h2>
+<ol>
+  <li><b>Biodegradable</b> = reduced to soluble fragments that are excreted or metabolized. Drug can be physically or chemically loaded (backbone, pendant, chain ends, or the drug as polymer).</li>
+  <li><b>Pathways:</b>
+    <ul>
+      <li><b>I. Cross-link cleavage</b> (hydrogels; biodegradable becomes bio-eliminable)</li>
+      <li><b>II. Side-chain transformation</b> (maleic anhydride → 2 COOH; cyanoacrylate ester → COO⁻)</li>
+      <li><b>III. Chain scission</b> (PLGA → lactic + glycolic acid → Krebs; PCL → 6-hydroxycaproic acid; PHB → 3-hydroxybutyrate)</li>
+    </ul></li>
+  <li><b>Degradable bonds:</b> C=O attached to O/N/S (ester, amide, thioester); X–C(=O)–X (carbonate, urethane, urea); C(=O)–X–C(=O) (anhydride, imide).</li>
+  <li><b>Half-lives:</b> anhydride 0.1 h &lt; ortho ester 4 h &lt; ester 3.3 yr &lt; amide 83,000 yr. Acidic products <b>autocatalyze</b> ester hydrolysis.</li>
+  <li><b>Thermal properties:</b> L-PLA is semi-crystalline and glassy at 37 °C; D,L-PLA is amorphous; PCL has Tg −62 °C and is semi-crystalline.</li>
+  <li><b>Bulk vs surface:</b>
+    <ul>
+      <li>Bulk: MW drops steeply; mass stays flat then drops suddenly; pores form.</li>
+      <li>Surface: MW barely changes; mass falls linearly; the device shrinks.</li>
+    </ul></li>
+  <li><b>Factors:</b>
+    <ul>
+      <li>bond type</li>
+      <li>more hydrophobic → slower (PCL &lt; PDLA &lt; PLGA)</li>
+      <li>amorphous → faster (crystallinity ↑ during degradation, so release ↓)</li>
+      <li>MW: minor effect</li>
+      <li>blends → faster (crystallinity disrupted); block copolymer → slower</li>
+      <li>solvent casting → porous → faster</li>
+      <li>gamma radiation → faster</li>
+    </ul></li>
+  <li><b>PLGA:</b> 50:50 degrades fastest (least crystalline). 100% PLA lasts longer than 100% PGA (more hydrophobic).</li>
+  <li><b>Release profiles:</b>
+    <ul>
+      <li>Degradation-controlled bulk: lag then burst (sigmoidal). Seen with proteins/vaccines or strongly bound drugs (rapamycin). About 100% released.</li>
+      <li>Surface: slab linear; sphere curved.</li>
+      <li>Diffusion + degradation: no lag, faster than diffusion alone.</li>
+      <li>Degradable reservoir: reservoir-like release, 100% released, no removal.</li>
+    </ul></li>
+</ol>
+</section>
+
+<section id="qa">
+<h2>11. Practice Short-Answer Questions</h2>
+<p>Try to answer each question yourself, then click it to see a model answer.</p>
+<details><summary>1. Define a biodegradable polymer. How can drugs be incorporated?</summary>A solid polymer that is reduced to soluble fragments, which are excreted or metabolized under physiological conditions. Drugs can be loaded physically (dispersed) or chemically (covalently) by being built into the backbone, grafted as side chains, attached at chain ends, or polymerized as the drug itself. The drug–polymer bond may itself be degradable.</details>
+<details><summary>2. Describe the three pathways of biodegradation, with examples.</summary>(I) Cross-link degradation: degradable cross-links between water-soluble chains break, releasing the soluble polymer (e.g., PMAA cross-linked with a diacid via ester bonds). This is used for hydrogels and turns a biodegradable system into a bio-eliminable one. (II) Side-chain transformation: hydrophobic side groups become ionizable or polar, solubilizing the polymer without breaking the backbone (e.g., poly(methyl vinyl ether-co-maleic anhydride) → two carboxyl groups; poly(alkyl cyanoacrylate) ester → carboxylate). (III) Chain scission: backbone bonds are cleaved into monomers or oligomers (e.g., PLGA → lactic + glycolic acid → Krebs cycle → CO₂ + H₂O; PCL → 6-hydroxycaproic acid; also polyanhydrides, poly(ortho esters), and polyamides, which need enzymes).</details>
+<details><summary>3. Which chemical linkages make a polymer degradable?</summary>A carbonyl bonded to an electronegative atom (O, N, S): ester, amide, thioester. A carbonyl flanked by two heteroatoms: carbonate, urethane, urea. Two carbonyls separated by a heteroatom: anhydride, imide. Less common: acetal/hemiacetal, ether, nitrile, phosphonate, cyanoacrylate.</details>
+<details><summary>4. Compare how molecular weight and mass change over time in bulk vs surface erosion. Explain.</summary>Bulk erosion: water penetrates the whole device and cleaves all chains, so average MW falls steeply and early. Mass changes little at first (fragments and water stay inside) and then drops suddenly when the device disintegrates. Pores form and are seen by microscopy. Surface erosion: only surface chains are cleaved, so the average MW of the remaining device changes little. Mass decreases gradually and roughly linearly as the device shrinks, with no pores.</details>
+<details><summary>5. List the methods used to characterize biodegradation.</summary>Morphology by microscopy (pores vs shrinking), mass loss over time, molecular weight over time (GPC, MALDI), mechanical properties, and viscosity.</details>
+<details><summary>6. What factors affect the rate and mechanism of polymer degradation?</summary>Nature of the bond (anhydride 0.1 h, ortho ester 4 h, ester 3.3 yr, amide 83,000 yr); hydrophobicity (more hydrophobic is slower; PCL &lt; PDLA &lt; PLGA); crystallinity (amorphous is faster); Tg; molecular weight (minor effect); manufacturing process and geometry (solvent casting gives porous, faster-degrading devices; gamma sterilization accelerates PLGA degradation); additives and blends (e.g., PEO in PLA speeds degradation).</details>
+<details><summary>7. Explain autocatalysis in polyester degradation.</summary>Polyesters such as PLGA degrade to lactic and glycolic acids. If these aren't removed, the local pH drops. Protons associate with the carbonyl oxygen, making the C=O more polarized and the carbon more susceptible to nucleophilic attack by water, so hydrolysis accelerates. Washing away the acid (pH back to 7.4) removes the effect.</details>
+<details><summary>8. How does crystallinity change during degradation of a semi-crystalline polymer, and how does that affect drug release?</summary>Degradation occurs preferentially in amorphous regions, so as they are removed the remaining polymer becomes proportionally more crystalline: crystallinity increases with time. Because drug diffuses only through amorphous regions, release slows as crystallinity rises.</details>
+<details><summary>9. Why does 50:50 PLGA degrade faster than either PLA or PGA?</summary>PLA and PGA homopolymers can each crystallize. Random copolymerization disrupts chain packing, making the copolymer amorphous, and it is least crystalline at 50:50. Amorphous polymer takes up water and degrades fastest, so 50:50 has the shortest half-life. Of the two homopolymers, PLA degrades more slowly than PGA because it is more hydrophobic.</details>
+<details><summary>10. Compare degradation of a polymer blend and a block copolymer made from the same two polymers.</summary>In a blend (physical mixture, e.g., PLLA + PEO), the added polymer disrupts the crystalline structure of the other, giving faster degradation. In a block copolymer, each block can still form its own ordered or crystalline domains, so degradation is slower. This depends on the polymers; sometimes one block hinders the other's crystallization.</details>
+<details><summary>11. Describe three fabrication methods and how they influence degradation.</summary>Compression molding: drug and polymer milled to 90–150 µm and compressed at ~30,000 psi. Melt molding: polymer heated ~10 °C above Tm, drug mixed into the melt, then injection-molded. Solvent casting: drug and polymer co-dissolved in organic solvent, poured into a chilled mold, solvent evaporated. Solvent casting leaves pores (higher porosity), which can increase the degradation rate. Gamma sterilization also increases PLGA degradation in a dose-dependent way.</details>
+<details><summary>12. Name the three classes of biodegradable delivery systems.</summary>(1) Degradation-controlled monolithic: drug released only as the polymer degrades. (2) Diffusion-controlled monolithic: drug diffuses out while the polymer degrades simultaneously. (3) Diffusion-controlled reservoir: drug diffuses through a degradable coat, which degrades after release.</details>
+<details><summary>13. Draw and explain the release profile of a degradation-controlled, bulk-eroding monolithic system. When does it occur?</summary>A sigmoidal curve: little or no release initially (chains are being cleaved internally but the matrix is still intact), then a sudden rise once degradation is sufficient, then a plateau near 100%. It occurs when the drug can't diffuse through the polymer: high-MW drugs (proteins, peptides, vaccine antigens in PLGA particles, released after uptake and degradation by antigen-presenting cells) or drugs strongly bound to the polymer (e.g., rapamycin in PLGA). Advantage: nearly all the drug is released, unlike non-degradable matrices that can trap drug.</details>
+<details><summary>14. How does geometry affect release from surface-eroding systems?</summary>For a slab, Mt/M∞ = (B/l)t: linear, zero order, because the surface area stays constant. For a sphere, Mt/M∞ = 1 − (1 − Bt/r₀)³: the rate falls as the surface area shrinks. A cylinder is intermediate.</details>
+<details><summary>15. How does release from a diffusion-controlled degradable monolith differ from a purely degradation-controlled one?</summary>Diffusion begins immediately, so there is no lag (the early dip is filled in). As degradation proceeds it adds to diffusion, so release with erosion plus diffusion is faster than diffusion alone.</details>
+<details><summary>16. Compare a diffusion-controlled reservoir with a degradable coat to one with a non-degradable coat.</summary>Release kinetics are similar (diffusion through the membrane). With a degradable coat, the coat degrades after drug release, so 100% of the drug is released and the device needn't be removed.</details>
+<details><summary>17. What are the requirements for administering polymers by different routes?</summary>Oral or intranasal: the polymer isn't absorbed and acts only as a vehicle, so MW is not an issue. IV: it must be soluble or colloidal (particles below about 500 nm). SC/IM: insoluble polymers can be used if degradable, removable, or non-toxic at the site.</details>
+</section>
+</div>
+</body>
+</html>

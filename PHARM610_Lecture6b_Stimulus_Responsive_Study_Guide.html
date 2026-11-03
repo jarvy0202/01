@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Delivery Systems</title>
+<style>
+:root{
+  --bg:#f7f7f5; --card:#ffffff; --ink:#1d1f23; --muted:#5d6470; --line:#e3e4e8;
+  --accent:#0b6e4f; --accent-soft:#e3f2ec; --star:#b45309; --star-soft:#fff4e0;
+  --th:#f0f2f4; --info-soft:#eaf1fb; --info:#2b5fad;
+  --lipid:#f3d9a4; --head:#c8862b; --water:#d7ecf7; --blue:#2b6cb0; --orange:#d9622b;
+  --green:#2f8f4e; --peg:#7a5cc4; --cell:#f1d3cf; --cellline:#c98b84;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+    --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a;
+    --th:#262a2f; --info-soft:#1b2534; --info:#7fa8e6;
+    --lipid:#6b5428; --head:#e0a24c; --water:#1f3644; --blue:#6aa5ea; --orange:#f0884f;
+    --green:#5cc07c; --peg:#a98ff0; --cell:#4a2f2c; --cellline:#b07870;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171a; --card:#1e2125; --ink:#e7e9ec; --muted:#a2a9b3; --line:#30343a;
+  --accent:#4fc59a; --accent-soft:#1c3129; --star:#f2a64a; --star-soft:#33281a;
+  --th:#262a2f; --info-soft:#1b2534; --info:#7fa8e6;
+  --lipid:#6b5428; --head:#e0a24c; --water:#1f3644; --blue:#6aa5ea; --orange:#f0884f;
+  --green:#5cc07c; --peg:#a98ff0; --cell:#4a2f2c; --cellline:#b07870;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-size:1.6rem;line-height:1.25;margin:0 0 4px}
+header p{margin:0;color:var(--muted);font-size:.92rem}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px}
+nav a{font-size:.82rem;text-decoration:none;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:999px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+h2{font-size:1.25rem;margin:0 0 10px;color:var(--accent)}
+h3{font-size:1.05rem;margin:20px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:6px 0;padding-left:22px}
+li{margin:3px 0}
+.star{color:var(--star);font-weight:700}
+.key{background:var(--star-soft);border-left:4px solid var(--star);padding:10px 14px;border-radius:6px;margin:12px 0}
+.key b:first-child{color:var(--star)}
+.why{background:var(--info-soft);border-left:4px solid var(--info);padding:10px 14px;border-radius:6px;margin:12px 0}
+.why b:first-child{color:var(--info)}
+.tbl{overflow-x:auto;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--th)}
+.steps{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px;margin:10px 0}
+.steps div{flex:1 1 140px;background:var(--th);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.88rem;position:relative}
+.steps div b{display:block;font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+figure{margin:12px 0;text-align:center}
+figure svg{width:100%;max-width:560px;height:auto}
+figcaption{font-size:.84rem;color:var(--muted);margin-top:4px}
+.spectrum{margin:12px 0 4px}
+.bar{height:12px;border-radius:6px;background:linear-gradient(90deg,#d9534f,#e8a33d,#0b6e4f)}
+.labels{display:flex;justify-content:space-between;gap:8px;font-size:.8rem;color:var(--muted);margin-top:4px}
+details{border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:8px 0;background:var(--card)}
+summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:6px}
+.glossary dt{font-weight:700;margin-top:6px}
+.glossary dd{margin:0 0 4px 0;color:var(--ink)}
+/* svg */
+.t{fill:var(--ink);font-size:12px;font-family:inherit}
+.tm{fill:var(--muted);font-size:11px;font-family:inherit}
+.tail{fill:var(--lipid)} .core{fill:var(--water)}
+.head{fill:none;stroke:var(--head);stroke-width:6;stroke-dasharray:2 3}
+.phil{fill:var(--blue)} .phob{fill:var(--orange)} .amph{fill:var(--green)}
+.peg{fill:none;stroke:var(--peg);stroke-width:2;stroke-linecap:round}
+.ab{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round}
+.ln{stroke:var(--muted);stroke-width:1;fill:none}
+.ax{stroke:var(--ink);stroke-width:1.2;fill:none}
+.cx{fill:none;stroke:var(--green);stroke-width:2.5}
+.fx{fill:none;stroke:var(--orange);stroke-width:2.5}
+.cell{fill:var(--cell);stroke:var(--cellline);stroke-width:1}
+.vessel{fill:#c0392b;opacity:.75}
+.lipo{fill:var(--lipid);stroke:var(--head);stroke-width:1.5}
+.poly{fill:var(--water);stroke:var(--blue);stroke-width:2}
+.shell{stroke:var(--peg);stroke-width:2;fill:none;stroke-linecap:round}
+.mcore{fill:var(--lipid);stroke:var(--orange);stroke-width:1.5}
+.arrow{stroke:var(--ink);stroke-width:1.5;fill:none;marker-end:url(#ah)}
+@media print{body{background:#fff} section{break-inside:avoid;border-color:#ccc} nav{display:none} details{break-inside:avoid}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs></svg>
+<style>
+.c1{fill:none;stroke:var(--orange);stroke-width:2.5}
+.c2{fill:none;stroke:var(--green);stroke-width:2.5}
+.c3{fill:none;stroke:var(--blue);stroke-width:2.5}
+.twop{fill:var(--star-soft)}
+.onep{fill:var(--accent-soft)}
+.chain{stroke:var(--blue);stroke-width:3.5;fill:none;stroke-linecap:round}
+.chainr{stroke:var(--orange);stroke-width:3.5;fill:none;stroke-linecap:round}
+.wat{fill:var(--info)}
+.cona{fill:var(--muted);opacity:.55}
+.glu{fill:var(--card);stroke:var(--ink);stroke-width:1.2}
+.fglu{fill:var(--orange)}
+.ins{fill:var(--green)}
+</style>
+<div class="wrap">
+<header>
+  <h1>PHARM 610 · Lecture VI (b): Stimulus-Responsive ("Smart") Delivery Systems</h1>
+  <p>Dr. Lavasanifar · Midterm 2 · Full study guide (based mainly on the transcript, with the slides as support).
+     <span class="star">★</span> = stressed in lecture / likely exam. <b style="color:var(--info)">Why?</b> boxes explain the reasoning behind a fact.
+     The recording starts at "thermoplastic pastes". The first five slides (definition, applications, limitations) come from the slides only. The few minutes of nanomedicine introduction at the end are covered in the separate Lecture VI Nano-Medicine guide.</p>
+</header>
+
+<nav>
+  <a href="#intro">Concept</a><a href="#inj">Injectable implants</a><a href="#ucst">UCST / LCST</a>
+  <a href="#gel">Hydrogels</a><a href="#nipam">PNIPAM</a><a href="#plur">Pluronics</a><a href="#regel">ReGel</a>
+  <a href="#hb">H-bond &amp; ionic gels</a><a href="#rel">Release from gels</a><a href="#ph">pH-responsive</a>
+  <a href="#both">Temp + pH</a><a href="#app">Applications</a><a href="#cheat">Cheat sheet</a><a href="#qa">Practice Qs</a>
+</nav>
+
+<section id="intro">
+<h2>1. The Concept (slides only)</h2>
+<div class="steps">
+  <div><b>Stimulus</b>Physical, mechanical or chemical; <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">internal</b> (pH, glucose, temperature at a site) or <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">external</b> (heat, light, magnet)</div>
+  <div><b>Biomaterial changes</b>Conformation, configuration, hydrophilic ↔ hydrophobic, bond cleavage</div>
+  <div><b>Response</b>Gel formation, change in viscosity, change in drug release, change in cell/tissue interaction</div>
+</div>
+<ul>
+  <li><b>Applications:</b>
+    <ul>
+      <li>controlled drug delivery</li>
+      <li>biosensors</li>
+      <li>modulation of tissue response</li>
+      <li>immobilized biomolecules</li>
+      <li>intelligent scaffolds</li>
+      <li>cellular engineering</li>
+    </ul></li>
+  <li><b>Limitations:</b>
+    <ul>
+      <li>the <b>response is too slow</b></li>
+      <li><b>biodegradation</b>: most smart polymers (PNIPAM, Pluronics) aren't biodegradable</li>
+    </ul></li>
+  <li><b>Temperature-responsive uses:</b>
+    <ul>
+      <li><b>injectable implants</b></li>
+      <li><b>on–off controlled release</b> at lower or higher temperature</li>
+      <li><b>cell/tissue culture</b>: cell sheets grown on PNIPAM detach when the temperature is lowered</li>
+      <li><b>drug targeting</b></li>
+    </ul></li>
+</ul>
+</section>
+
+<section id="inj">
+<h2><span class="star">★</span> 2. Injectable Implants: Three Approaches</h2>
+<h3>2.1 Thermoplastic pastes</h3>
+<ul>
+  <li><b>Injected as a melt</b> and form a <b>semi-solid depot</b> when they cool to body temperature.</li>
+  <li><b>Low melting point, 25–65 °C</b>. The higher it is, the harder to inject without pain or tissue harm.</li>
+  <li>Made from biodegradable polymers or oligomers of <b>D,L-lactide, glycolide, caprolactone</b>, trimethylene carbonate, dioxanone and ortho esters.</li>
+  <li><b>Organic-solvent variant (degradable injectable implants):</b>
+    <ul>
+      <li>The polymer is dissolved in a <b>body-compatible solvent</b>: <b>N-methylpyrrolidone (NMP)</b> or <b>benzyl benzoate / benzyl alcohol (BB/BA)</b>.</li>
+      <li>After injection the solvent diffuses away into body water and the polymer precipitates into a depot.</li>
+    </ul></li>
+  <li><b>Commercial products:</b>
+    <ul>
+      <li><b>Atrigel</b> (Atrix, now a Pfizer partner): an <b>NMP solution of water-insoluble PLA</b> plus drug. Developed by Richard Dunn in the 1990s.</li>
+      <li><b>Alzamer</b> (Alza): a <b>benzyl benzoate solution of poly(ortho ester)</b> plus drug.</li>
+    </ul></li>
+</ul>
+<h3>2.2 In situ cross-linked systems (thermosets)</h3>
+<ul>
+  <li><b>Thermoset</b> means they don't respond to temperature; they are chemically cross-linked <b>in the body</b> after injection.</li>
+  <li><b>Materials:</b> oligomers of PLA, PDLA and PCL, with <b>stannous octoate as catalyst</b> and <b>polyols as initiators / cross-linkers</b>.</li>
+</ul>
+<h3>Disadvantages of 2.1 and 2.2</h3>
+<ul>
+  <li><b>High injection temperature</b> (melts).</li>
+  <li><b>Slow and incomplete drug release</b>.</li>
+  <li><b>Burst effect</b>: drug escapes during the time it takes to precipitate or cross-link.</li>
+  <li><b>Toxicity</b> of the solvent, the catalyst, and degradation products.</li>
+  <li>Toxicity of <b>unreacted monomers</b> left behind.</li>
+  <li>Formation of <b>radicals</b> (because of the high temperature).</li>
+</ul>
+<div class="key"><b>Lecturer's conclusion:</b> the <b>best</b> injectable systems are the third type, which use <b>temperature-induced phase separation / sol–gel transition</b> in an aqueous polymer solution. No melt, no harmful solvent, no catalyst.</div>
+</section>
+
+<section id="ucst">
+<h2><span class="star">★</span> 3. Thermally Induced Phase Separation: UCST vs LCST</h2>
+<figure>
+<svg viewBox="0 0 520 228" role="img" aria-label="UCST and LCST phase diagrams">
+  <text x="130" y="18" text-anchor="middle" class="t" font-weight="700">UCST</text>
+  <rect x="40" y="30" width="180" height="140" class="onep"/>
+  <path d="M45 170 C60 70 200 70 215 170 Z" class="twop"/>
+  <path d="M45 170 C60 70 200 70 215 170" class="c1"/>
+  <text x="130" y="55" text-anchor="middle" class="t">PS (one phase)</text>
+  <text x="130" y="140" text-anchor="middle" class="t">P + S (two phases)</text>
+  <line x1="40" y1="30" x2="40" y2="170" class="ax"/><line x1="40" y1="170" x2="220" y2="170" class="ax"/>
+  <text x="25" y="100" class="t">T</text>
+  <text x="130" y="190" text-anchor="middle" class="tm">heat → dissolves ("thermo-melting")</text>
+  <text x="390" y="18" text-anchor="middle" class="t" font-weight="700">LCST</text>
+  <rect x="300" y="30" width="180" height="140" class="onep"/>
+  <path d="M305 30 C320 130 460 130 475 30 Z" class="twop"/>
+  <path d="M305 30 C320 130 460 130 475 30" class="c2"/>
+  <text x="390" y="62" text-anchor="middle" class="t">P + S (two phases)</text>
+  <text x="390" y="150" text-anchor="middle" class="t">PS (one phase)</text>
+  <line x1="300" y1="30" x2="300" y2="170" class="ax"/><line x1="300" y1="170" x2="480" y2="170" class="ax"/>
+  <text x="285" y="100" class="t">T</text>
+  <text x="390" y="190" text-anchor="middle" class="tm">heat → comes out of solution ("thermo-gelling")</text>
+  <text x="260" y="222" text-anchor="middle" class="tm">x-axis = composition. PS = polymer solution; P + S = polymer-rich + polymer-poor phases.</text>
+</svg>
+</figure>
+<div class="tbl"><table>
+  <tr><th></th><th>UCST (upper critical solution temperature)</th><th>LCST (lower critical solution temperature)</th></tr>
+  <tr><td>Behavior</td><td><b>Low T: two phases or gel; high T: dissolves</b></td><td><b>Low T: dissolved; high T: phase-separates or gels</b></td></tr>
+  <tr><td>Name</td><td><b>Thermo-melting</b> (gel melts on heating)</td><td><b>Thermo-gelling</b> (solution gels on heating)</td></tr>
+  <tr><td>Examples</td><td><b>Gelatin</b> (Jell-O: dissolve hot, set in the fridge), <b>Na-CMC</b></td><td><b>Pluronics</b>, <b>methyl cellulose</b>, PNIPAM, HPMC</td></tr>
+  <tr><td>Use as injectable depot</td><td>Poor (gel at room temp, liquid when warm)</td><td><b>Ideal</b>: liquid in the syringe (fridge or room temp), <b>gel at 37 °C</b></td></tr>
+</table></div>
+</section>
+
+<section id="gel">
+<h2><span class="star">★</span> 4. Hydrogels: Basics</h2>
+<ul>
+  <li><b>Water-soluble polymers that have been cross-linked</b>. They are insoluble, but still attract water, so they <b>swell</b> and trap water in a 3D network.</li>
+  <li><b>Physical gels:</b> non-covalent cross-links, from <b>hydrophobic interactions</b>, <b>hydrogen bonding</b>, dipole–dipole or <b>ionic</b> interactions and entanglements.</li>
+  <li><b>Chemical gels:</b> a <b>covalent cross-linker</b> joins the chains (or monomers polymerize with a cross-linker).</li>
+</ul>
+<div class="key"><b>Critical gelation concentration (CGC):</b> the minimum polymer concentration at which enough physical interactions or entanglements form to make a gel. <b>CGC is inversely related to molecular weight</b>: bigger chains entangle and interact more easily, so they gel at lower concentration.</div>
+<p><b>Degree of swelling</b> is the key hydrogel characterization. It can be expressed by <b>volume</b> or by <b>weight</b>. Expose the gel to water, weigh or measure it over time until it <b>plateaus at equilibrium swelling</b>.</p>
+</section>
+
+<section id="nipam">
+<h2><span class="star">★</span> 5. Poly(N-isopropylacrylamide) (PNIPAM) and HPMC: LCST Gels</h2>
+<figure>
+<svg viewBox="0 0 520 170" role="img" aria-label="PNIPAM hydrated coil below LCST collapses into hydrophobic globule above LCST">
+  <path d="M30 110 q20 -50 40 -10 q20 40 40 -20 q20 -50 40 0 q20 40 40 -20" class="chain"/>
+  <g class="wat"><circle cx="40" cy="80" r="4"/><circle cx="62" cy="115" r="4"/><circle cx="85" cy="70" r="4"/><circle cx="110" cy="112" r="4"/><circle cx="135" cy="62" r="4"/><circle cx="160" cy="105" r="4"/><circle cx="183" cy="72" r="4"/><circle cx="75" cy="95" r="4"/><circle cx="150" cy="82" r="4"/></g>
+  <text x="115" y="145" text-anchor="middle" class="t">T &lt; LCST: hydrated coil,</text><text x="115" y="161" text-anchor="middle" class="t">H-bonded to water</text>
+  <text x="260" y="78" text-anchor="middle" class="t">T &gt; LCST →</text>
+  <text x="260" y="98" text-anchor="middle" class="t">← T &lt; LCST</text>
+  <circle cx="400" cy="88" r="24" fill="var(--orange)" opacity=".8"/>
+  <g class="wat"><circle cx="345" cy="50" r="4"/><circle cx="460" cy="60" r="4"/><circle cx="350" cy="125" r="4"/><circle cx="455" cy="120" r="4"/><circle cx="400" cy="40" r="4"/><circle cx="440" cy="30" r="4"/></g>
+  <text x="400" y="145" text-anchor="middle" class="t">T &gt; LCST: bound water lost →</text>
+  <text x="400" y="161" text-anchor="middle" class="t">collapsed, hydrophobic</text>
+</svg>
+<figcaption>At high enough concentration, the collapsed chains stick together by hydrophobic interaction and form a physical gel.</figcaption>
+</figure>
+<ul>
+  <li><b>Mechanism (LCST):</b>
+    <ul>
+      <li><b>Below ~32 °C:</b> PNIPAM forms <b>hydrogen bonds with water</b>, so it is hydrophilic and in solution.</li>
+      <li><b>Above 32 °C:</b> those H-bonds <b>break</b>. The polymer looks hydrophobic and collapses.</li>
+      <li>If the concentration is high enough, chains associate by <b>hydrophobic interactions</b> into a <b>physical gel</b>.</li>
+    </ul></li>
+  <li><b>HPMC</b> (hydroxypropyl methylcellulose) gels by the same mechanism.</li>
+  <li><b>LCST ≈ 32 °C</b>. It can be shifted to body temperature with salts or surfactants, or by making <b>derivatives and copolymers</b> (e.g., with carboxyl or ionic groups), which also aim to reduce toxicity.</li>
+</ul>
+<div class="tbl"><table>
+  <tr><th>PNIPAM advantage</th><th>PNIPAM disadvantage</th></tr>
+  <tr><td><b>Sharp</b> LCST (switches over a narrow temperature range)</td><td><b>Toxicity</b> (the lecturer mentioned coagulation), and <b>not biodegradable</b>, so it is little used for drug delivery. It is used for <b>cell-sheet culture</b> coatings.</td></tr>
+</table></div>
+</section>
+
+<section id="plur">
+<h2><span class="star">★</span> 6. Pluronics (Poloxamers): Gelling by Micelle Aggregation</h2>
+<ul>
+  <li><b>Block copolymers of PEO (PEG) and PPO</b> (or PBO), e.g., <b>PEO–PPO–PEO</b>. PEO is hydrophilic; PPO/PBO is hydrophobic.</li>
+  <li>Names like L64, F68, P105 and <b>F127</b> reflect different PEO/PPO block sizes. <b>F127</b> is the gelling agent in compounded <b>PLO (Pluronic lecithin organogel) gels</b>, e.g., 10% diclofenac PLO gel.</li>
+  <li><b>Gel mechanism, which differs from PNIPAM:</b>
+    <ol>
+      <li>As <b>concentration and temperature</b> increase, unimers self-assemble into <b>micelles</b> (critical aggregation temperature).</li>
+      <li>Further warming breaks H-bonds with water, so the micelles become more hydrophobic.</li>
+      <li>The micelles <b>aggregate / pack together</b> (inter-micelle bridges or entangled coronas), and the result is a <b>gel</b>.</li>
+    </ol></li>
+  <li>The hydrophobic block can be in the middle (PEO–PPO–PEO) or at the ends (PPO–PEO–PPO). Both can gel.</li>
+  <li>Pluronic solutions are <b>liquid in the fridge</b> and <b>gel at room or body temperature</b>, depending on concentration.</li>
+  <li><b>Limitation:</b> <b>not biodegradable</b>.</li>
+</ul>
+</section>
+
+<section id="regel">
+<h2><span class="star">★</span> 7. ReGel: The Biodegradable Thermogel (PLGA–PEG–PLGA / PEG–PLGA–PEG)</h2>
+<ul>
+  <li><b>Jeong, Kim et al., University of Utah, 1997.</b> The breakthrough was the first <b>injectable, thermo-responsive and biodegradable</b> hydrogel.</li>
+  <li>Commercial <b>ReGel</b> (Macromed): an <b>aqueous solution of PLGA–PEG–PLGA</b> triblock containing <b>paclitaxel</b>. It is liquid at room temperature and a <b>gel at 37 °C</b>.</li>
+  <li><b>Why it beat earlier systems:</b>
+    <ul>
+      <li>injected as a <b>water solution</b>, with no melting, harmful solvent or catalyst</li>
+      <li>gels at body temperature</li>
+      <li><b>biodegrades</b>, so nothing has to be removed</li>
+    </ul></li>
+  <li>Later versions used other degradable blocks with PEG, and peptide blocks that gel by packing into β-sheets.</li>
+</ul>
+<h3>Reading a sol–gel phase diagram (concentration vs temperature)</h3>
+<p>Gelation is tested at different concentrations and temperatures. The simplest test is to <b>tilt or invert the vial: if it doesn't flow for ~1 min, it's a gel</b>. More quantitative options are viscosity and rheology (loss modulus).</p>
+<ul>
+  <li><b>1st generation PEG–PLGA–PEG (5000–2000/3000/5000–5000):</b> gels at about <b>≥10–15 wt%</b>. It was a gel at <b>lower</b> temperature and solution at higher: <b>thermo-melting</b>, like gelatin.</li>
+  <li><b>2nd generation (550–2810–550):</b> <b>sol at low T → gel around 30–45 °C (body temperature) → sol again above ~50–70 °C</b>, at about 15–40 wt%. This is <b>thermo-gelling at body temperature</b>, like PNIPAM, but biodegradable.</li>
+</ul>
+</section>
+
+<section id="hb">
+<h2>8. Other Physical Gels: Hydrogen-Bonded and Ionic</h2>
+<ul>
+  <li><b>H-bonded gels</b> (gelatin, PVA, PVA/PEO blends): the gel is held together by <b>hydrogen bonds between chains</b>. Heating <b>breaks</b> them, so these are usually <b>thermo-melting</b> (gel cold, liquid warm), the opposite of hydrophobically driven gels.</li>
+  <li><b>Ionic bridges:</b> <b>alginate</b> (anionic polysaccharide) forms stiffer gels with <b>divalent cations (Ca²⁺)</b> as salt bridges, or with a <b>cationic polymer</b> (chitosan, polylysine). Here the stimulus is the presence of the ion.</li>
+  <li><b>Chemical gelation:</b> monomers plus cross-linker polymerize into a covalent network.</li>
+</ul>
+<div class="why"><b>Why do some gels form on heating and others on cooling?</b> If gelation is driven by <b>hydrophobic interaction</b>, heating breaks polymer–water H-bonds and exposes hydrophobic parts, so <b>gel at high T</b> (PNIPAM, Pluronic, ReGel). If gelation is driven by <b>polymer–polymer H-bonds</b>, heating breaks the cross-links, so <b>gel at low T</b> (gelatin, PVA).</div>
+</section>
+
+<section id="rel">
+<h2>9. Drug Release from Hydrogels</h2>
+<ul>
+  <li><b>Stimulus-triggered release:</b> a change in <b>pH, temperature or ionic strength</b> makes the gel swell, and swelling speeds up release. The gel can be a <b>reservoir</b> (drug core coated by a hydrogel) or <b>monolithic</b> (drug mixed in the gel).</li>
+  <li><b>Water migration</b> into the gel is driven by the activity gradient, polar groups and charged groups.</li>
+  <li><b>Drug diffusion depends on:</b>
+    <ul>
+      <li><b>Chain mobility / cross-link density:</b> more cross-linking means less mobile chains and slower release.</li>
+      <li><b>Chain thickness:</b> bulky groups, or a bound water layer around hydrophilic chains, restrict drug movement near the chain.</li>
+      <li><b>Solute size:</b> larger drugs diffuse more slowly.</li>
+    </ul></li>
+</ul>
+<div class="tbl"><table>
+  <tr><th>Release model</th><th>Idea</th></tr>
+  <tr><td><b>Obstruction</b></td><td>Probability that the drug finds an <b>opening between polymer chains</b> (relates to chain mobility and mesh)</td></tr>
+  <tr><td><b>Hydrodynamic</b></td><td>Fluid near chains moves less, so <b>frictional drag</b> on the drug increases (relates to chain thickness)</td></tr>
+  <tr><td><b>Free volume</b></td><td>Polymer chains <b>reduce the free volume of water</b> available for the drug to move through</td></tr>
+</table></div>
+<p>None of the three models is perfect on its own; real release is a <b>combination</b>.</p>
+</section>
+
+<section id="ph">
+<h2><span class="star">★</span> 10. pH-Responsive Polymers</h2>
+<p>These contain <b>ionizable groups</b>. A change in pH changes ionization, which changes hydrophilicity, conformation and swelling (or cleaves a pH-sensitive link). They gel or swell in their <b>ionized</b> form, because charged chains become hydrated, extend and entangle.</p>
+<div class="tbl"><table>
+  <tr><th></th><th>Anionic (polyacids)</th><th>Cationic (polybases)</th></tr>
+  <tr><td>Examples</td><td><b>Poly(acrylic acid)</b> (Carbopol / carbomer), poly(methacrylic acid)</td><td><b>PDEAEMA</b> (poly(N,N-diethylaminoethyl methacrylate)), poly(4-vinylpyridine), poly(vinyl imidazole)</td></tr>
+  <tr><td>Ionized at</td><td><b>High pH</b> (–COOH → –COO⁻)</td><td><b>Low pH</b> (amine protonated)</td></tr>
+  <tr><td>Max swelling / gel at</td><td><b>High pH</b> (~7–8)</td><td><b>Low pH</b></td></tr>
+</table></div>
+<figure>
+<svg viewBox="0 0 460 210" role="img" aria-label="Equilibrium swelling vs pH: anionic rises at high pH, cationic falls">
+  <line x1="60" y1="20" x2="60" y2="175" class="ax"/><line x1="60" y1="175" x2="430" y2="175" class="ax"/>
+  <path d="M62 160 L200 155 C240 150 250 50 290 42 L425 38" class="c1"/>
+  <path d="M62 42 L170 46 C210 52 220 150 260 157 L425 160" class="c3"/>
+  <text x="425" y="28" text-anchor="end" class="t" style="fill:var(--orange)">Anionic (e.g., carbomer)</text>
+  <text x="80" y="36" class="t" style="fill:var(--blue)">Cationic</text>
+  <text x="245" y="200" text-anchor="middle" class="t">pH →</text>
+  <text x="25" y="100" class="t" transform="rotate(-90 25 100)" text-anchor="middle">Equilibrium swelling</text>
+</svg>
+<figcaption>The lecturer asked the class to draw this. Anionic gels swell when ionized (high pH); cationic gels swell when protonated (low pH).</figcaption>
+</figure>
+<div class="why"><b>Carbomer anecdote (a practical exam point):</b> dissolved in water, poly(acrylic acid) brings the pH down to about 3–4 and gives only a thick solution. You must <b>add a base (e.g., NaOH) to bring the pH to ~7–8</b> before it ionizes and forms a <b>gel</b>, as in hand-sanitizer gels. In a national pharmacy compounding competition, teams that didn't add the NaOH they were given didn't get a gel.</div>
+
+<h3>Body pH values exploited by pH-responsive systems</h3>
+<div class="tbl"><table>
+  <tr><th>Site</th><th>pH</th></tr>
+  <tr><td>Blood</td><td>7.34–7.45</td></tr>
+  <tr><td>Stomach</td><td><b>1.0–3.0</b></td></tr>
+  <tr><td>Upper small intestine</td><td>4.8–8.2</td></tr>
+  <tr><td>Colon</td><td>7.0–7.5</td></tr>
+  <tr><td>Tumor extracellular</td><td><b>6.5–7.2</b></td></tr>
+  <tr><td>Early / late endosome</td><td><b>6.0–6.5 / 4.5–5.0</b></td></tr>
+  <tr><td>Vagina</td><td>3.8–4.5</td></tr>
+  <tr><td>Inflamed tissue / wound</td><td>5.4–7</td></tr>
+</table></div>
+<p><b>Uses:</b></p>
+<ul>
+  <li>Avoid release in the stomach and release in the intestine.</li>
+  <li>Release in the acidic tumor environment (~pH 6) instead of blood (7.4).</li>
+  <li>Release or escape at <b>endosomal pH</b> for gene delivery.</li>
+  <li>Target acidic wounds.</li>
+</ul>
+
+<h3>Example: colon-targeted oral hydrogel (anionic + azo cross-links)</h3>
+<div class="steps">
+  <div><b>Stomach, pH 1–3</b>COOH not ionized → <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">low swelling, no release</b></div>
+  <div><b>Small intestine, pH 4.8–8.2</b>COO⁻ ionized → <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">high swelling</b>, but still held together by <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">azo cross-links</b></div>
+  <div><b>Colon, pH 7–8</b><b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">Azo bonds degraded</b> → network broken → <b style="display:inline;color:inherit;text-transform:none;letter-spacing:0;font-size:inherit">drug released</b>; soluble remains excreted</div>
+</div>
+<p>This combines a <b>physical</b> response (pH-driven swelling) with <b>biodegradation</b> of the cross-links. Other pH applications include <b>biosensors</b> and <b>permeation switches</b> (which incorporate enzymes). To overcome poor biodegradability, modified dextran and polyamino acids are used.</p>
+</section>
+
+<section id="both">
+<h2>11. Dual Temperature- and pH-Responsive Polymers</h2>
+<ul>
+  <li>These need <b>both hydrophobic groups</b> (for temperature response) <b>and ionizable groups</b> (for pH response).</li>
+  <li>The <b>LCST then depends on pH</b>. For a polyacid:
+    <ul>
+      <li><b>pH &gt; pKa:</b> ionized, more hydrophilic, so the <b>LCST rises</b> (it needs more heat to collapse).</li>
+      <li><b>pH &lt; pKa:</b> un-ionized, more hydrophobic, so the <b>LCST falls</b>.</li>
+    </ul></li>
+  <li><b>Slide example (cationic pH block + temperature block):</b> the material gels <b>only at 37 °C and pH 7.4</b>. It stays a solution at 5 °C (either pH) and at 37 °C, pH 6.0.</li>
+  <li><b>Other stimuli:</b>
+    <ul>
+      <li><b>light</b>: photo-responsive changes in wettability or polymerization</li>
+      <li><b>magnetic fields</b>: magnetic beads in elastomers</li>
+      <li>free radicals and oxygen</li>
+    </ul>
+    pH and temperature are the most common.</li>
+</ul>
+</section>
+
+<section id="app">
+<h2><span class="star">★</span> 12. Example Applications ("Smart" Designs)</h2>
+<ul>
+  <li><b>Thermo-responsive hydrogel for multidrug cancer therapy:</b> DOX, cisplatin and MTX co-loaded, injected next to the tumor, gels in place and releases the drugs at different rates, aimed at overcoming drug resistance.</li>
+  <li><b>pH-responsive "schizophrenic" micelles:</b> an AB diblock in which one block is a carboxylic acid and the other a morpholino (base). At acidic pH the acid block is un-ionized and forms the core. At basic pH the micelle <b>inverts</b> so the other block becomes the core. When the core turns into the shell, the <b>loaded drug is released</b>.</li>
+</ul>
+
+<h3><span class="star">★</span> Glucose-responsive insulin delivery (three designs)</h3>
+<p><b>1. pH-sensitive membrane (glucose → acid):</b></p>
+<ul>
+  <li>The device contains <b>glucose oxidase</b> (the "permeation switch with enzyme"). The lecturer said "glucuronic acid"; glucose oxidase actually produces <b>gluconic acid</b>.</li>
+  <li>At normal glucose (pH 7.4), the <b>poly(methacrylic acid)</b> chains in the membrane pores are ionized and <b>extended</b>, blocking the pores.</li>
+  <li>At high glucose, more gluconic acid is made and the pH drops to ~4. PMAA is protonated and <b>collapses</b>, the pores open, and <b>insulin is released</b>.</li>
+</ul>
+<figure>
+<svg viewBox="0 0 540 200" role="img" aria-label="Con A cross-linked glucose hydrogel dissolves when free glucose competes">
+  <text x="130" y="18" text-anchor="middle" class="t" font-weight="700">Gel (normal glucose)</text>
+  <path d="M20 50 L240 50" class="chain"/><path d="M20 130 L240 130" class="chain"/>
+  <ellipse cx="80" cy="90" rx="22" ry="28" class="cona"/><ellipse cx="180" cy="90" rx="22" ry="28" class="cona"/>
+  <circle cx="80" cy="58" r="6" class="glu"/><circle cx="80" cy="122" r="6" class="glu"/>
+  <circle cx="180" cy="58" r="6" class="glu"/><circle cx="180" cy="122" r="6" class="glu"/>
+  <g class="ins"><circle cx="130" cy="80" r="5"/><circle cx="130" cy="100" r="5"/><circle cx="40" cy="90" r="5"/><circle cx="225" cy="90" r="5"/></g>
+  <text x="130" y="160" text-anchor="middle" class="tm">Con A bridges glucose groups on two chains</text>
+  <text x="130" y="175" text-anchor="middle" class="tm">→ cross-linked gel traps insulin</text>
+  <text x="270" y="95" text-anchor="middle" class="t">+ glucose →</text>
+  <text x="410" y="18" text-anchor="middle" class="t" font-weight="700">Sol (high glucose)</text>
+  <path d="M300 40 L520 50" class="chain"/><path d="M300 145 L520 135" class="chain"/>
+  <circle cx="350" cy="48" r="6" class="glu"/><circle cx="460" cy="51" r="6" class="glu"/><circle cx="350" cy="140" r="6" class="glu"/><circle cx="460" cy="137" r="6" class="glu"/>
+  <ellipse cx="370" cy="95" rx="22" ry="28" class="cona"/><ellipse cx="470" cy="95" rx="22" ry="28" class="cona"/>
+  <g class="fglu"><circle cx="370" cy="72" r="5"/><circle cx="370" cy="118" r="5"/><circle cx="350" cy="95" r="5"/><circle cx="390" cy="95" r="5"/>
+  <circle cx="470" cy="72" r="5"/><circle cx="470" cy="118" r="5"/><circle cx="450" cy="95" r="5"/><circle cx="490" cy="95" r="5"/></g>
+  <g class="ins"><circle cx="525" cy="30" r="5"/><circle cx="525" cy="95" r="5"/><circle cx="310" cy="170" r="5"/><circle cx="420" cy="170" r="5"/></g>
+  <text x="410" y="190" text-anchor="middle" class="tm">free glucose fills Con A → cross-links lost</text>
+</svg>
+<figcaption>Grey = concanavalin A (4 glucose-binding sites); white = polymer-bound glucose; orange = free glucose; green = insulin.</figcaption>
+</figure>
+<p><b>2. Concanavalin A (Con A) cross-linked gel (competitive binding):</b></p>
+<ul>
+  <li><b>Con A</b> has <b>4 glucose-binding sites</b>. The polymer carries <b>glucose side groups</b>, and Con A binding to glucose on different chains acts as a <b>physical cross-link</b>, giving a gel that traps insulin.</li>
+  <li>When blood glucose rises, <b>free glucose competes</b> for Con A's binding sites and displaces the polymer-bound glucose.</li>
+  <li>The cross-links break, the gel turns to sol, and <b>insulin is released</b>. When glucose falls, the gel re-forms.</li>
+</ul>
+<p><b>3. Phenylboronic acid / PVA sol–gel:</b></p>
+<ul>
+  <li>A polymer with <b>phenylboronic acid</b> groups cross-links PVA by binding its diols, forming a gel.</li>
+  <li><b>Glucose</b> (also a diol) competes for the boronic acid, the cross-links are lost, and the gel becomes a sol that releases insulin.</li>
+</ul>
+<h3>Antigen-responsive hydrogels (biosensors)</h3>
+<ul>
+  <li>An <b>antigen</b> is attached to one set of chains and an <b>antibody</b> to another. Antigen–antibody binding acts as the cross-link.</li>
+  <li><b>Free antigen</b> (the biomarker) competes and breaks the cross-links, so the gel <b>swells</b>. That change can be read out (e.g., by a colour change), so it works as a <b>biosensor</b>. It is the same competition logic as Con A.</li>
+</ul>
+<h3>Other uses</h3>
+<ul>
+  <li>Responsive polymers for <b>targeted delivery</b> (e.g., thermo-responsive liposomes).</li>
+  <li><b>Gene delivery</b> (pH-responsive lipids and polymers for endosomal escape).</li>
+  <li><b>Cell adhesion</b> (PNIPAM culture surfaces).</li>
+</ul>
+</section>
+
+<section id="cheat">
+<h2>13. One-Page Cheat Sheet</h2>
+<ol>
+  <li><b>Smart system:</b> stimulus (internal or external) → material change → response. Limitations: <b>slow response</b> and <b>poor biodegradability</b>.</li>
+  <li><b>Injectable implants:</b>
+    <ul>
+      <li>Thermoplastic paste: melt, mp 25–65 °C, or polymer in NMP or BB/BA (<b>Atrigel</b> = PLA in NMP; <b>Alzamer</b> = poly(ortho ester) in BB).</li>
+      <li>In situ thermosets: PLA/PCL oligomers + stannous octoate + polyols.</li>
+      <li>Shared drawbacks: hot injection, slow and incomplete release, burst, toxic solvent/catalyst/monomers/degradation products, radicals.</li>
+      <li><b>Best option:</b> aqueous sol–gel systems.</li>
+    </ul></li>
+  <li><b>UCST</b> = gel cold, dissolves warm (thermo-melting: gelatin, NaCMC). <b>LCST</b> = solution cold, gel warm (thermo-gelling: PNIPAM, HPMC, methyl cellulose, Pluronics).</li>
+  <li><b>Hydrogels:</b> cross-linked water-soluble polymers that swell. Physical (hydrophobic, H-bond, ionic) or chemical. <b>CGC ∝ 1/MW</b>. Characterized by degree of swelling (volume or weight, at equilibrium).</li>
+  <li><b>PNIPAM:</b> LCST 32 °C; above it, H-bonds with water break → collapse → hydrophobic association → gel. Sharp transition, but toxic and non-degradable.</li>
+  <li><b>Pluronic (PEO–PPO–PEO, F127 in PLO gels):</b> micelles form, then micelles aggregate into a gel as concentration and temperature rise. Non-degradable.</li>
+  <li><b>ReGel (PLGA–PEG–PLGA + paclitaxel, Jeong/Kim 1997):</b> first injectable, biodegradable thermogel. 2nd-generation PEG–PLGA–PEG is sol → gel near 37 °C → sol at higher T.</li>
+  <li>Hydrophobic-driven gels set on heating; <b>H-bond-driven gels</b> (gelatin, PVA) melt on heating. <b>Alginate + Ca²⁺</b> forms ionic gels.</li>
+  <li><b>Release from gels</b> depends on cross-link density (chain mobility), chain thickness and solute size. Models: obstruction, hydrodynamic, free volume (a combination applies).</li>
+  <li><b>pH:</b> anionic (PAA/carbomer) swells at high pH (carbomer needs NaOH to gel); cationic (PDEAEMA) swells at low pH. Body pH map: stomach 1–3, tumor ~6.5–7.2, endosome 4.5–6.5, wound 5.4–7.</li>
+  <li><b>Colon delivery:</b> anionic gel + azo cross-links → no swelling in stomach, swelling in intestine, azo cleaved in colon → release.</li>
+  <li><b>Dual pH/temperature:</b> LCST depends on pH (polyacid: pH &gt; pKa → LCST ↑).</li>
+  <li><b>Glucose-responsive insulin:</b>
+    <ul>
+      <li>Glucose oxidase → acid → PMAA collapses → pores open.</li>
+      <li>Con A–glucose cross-links displaced by free glucose → gel to sol.</li>
+      <li>Phenylboronic acid–PVA displaced by glucose.</li>
+    </ul>
+    <b>Antigen–antibody</b> gels work the same way as biosensors.</li>
+</ol>
+</section>
+
+<section id="qa">
+<h2>14. Practice Short-Answer Questions</h2>
+<p>Try to answer each question yourself, then click it to see a model answer.</p>
+<details><summary>1. What is a stimulus-responsive delivery system? Give its limitations.</summary>A biomaterial that responds to a physical, mechanical or chemical stimulus (internal, e.g., pH or glucose; or external, e.g., heat, light or a magnetic field) with a change in conformation, configuration or hydrophilicity, or with bond cleavage. The result is gel formation, a viscosity change, altered drug release or altered cell interaction. Limitations: the response is often too slow, and many smart polymers (PNIPAM, Pluronics) aren't biodegradable.</details>
+<details><summary>2. Describe thermoplastic pastes and solvent-based injectable implants, with examples.</summary>Thermoplastic pastes are low-melting (25–65 °C) biodegradable polymers or oligomers (lactide, glycolide, caprolactone, etc.) injected as a melt that solidify into a depot at body temperature. Solvent-based versions dissolve a water-insoluble polymer in a biocompatible solvent (NMP or benzyl benzoate/benzyl alcohol); after injection the solvent diffuses away and the polymer precipitates into a depot. Examples: Atrigel (PLA in NMP, Atrix) and Alzamer (poly(ortho ester) in benzyl benzoate, Alza).</details>
+<details><summary>3. What are in situ cross-linked (thermoset) systems, and what are the disadvantages of these injectable implants?</summary>Oligomers of PLA, PDLA or PCL that are chemically cross-linked in the body after injection, using stannous octoate as catalyst and polyols as initiators. Disadvantages (shared with thermoplastic pastes): high injection temperature; slow and incomplete release; burst release before the depot forms; toxicity of the solvent, catalyst, degradation products and residual monomers; and formation of radicals.</details>
+<details><summary>4. Distinguish UCST and LCST behavior, with examples.</summary>UCST: two phases or a gel at low temperature, dissolving into one phase on heating ("thermo-melting"), e.g., gelatin and Na-CMC. LCST: dissolved at low temperature, phase-separating or gelling on heating ("thermo-gelling"), e.g., PNIPAM, HPMC, methyl cellulose and Pluronics. LCST materials are ideal injectable depots: liquid in the syringe, gel at 37 °C.</details>
+<details><summary>5. Define hydrogels and distinguish physical from chemical gels. What is the critical gelation concentration?</summary>Hydrogels are water-soluble polymers that have been cross-linked. They are insoluble, but they absorb water and swell into a 3D network. Physical gels are held by non-covalent interactions (hydrophobic, hydrogen bonding, ionic, dipole–dipole, entanglement); chemical gels by covalent cross-linkers. The critical gelation concentration is the minimum polymer concentration needed for enough interactions to form a gel. It is inversely related to MW, because longer chains entangle more readily.</details>
+<details><summary>6. Explain the mechanism of PNIPAM's sol–gel transition, and give its pros and cons.</summary>Below its LCST (~32 °C), PNIPAM hydrogen-bonds with water and is soluble. Above the LCST these bonds break, the chains become hydrophobic and collapse, and at sufficient concentration they associate by hydrophobic interactions into a physical gel. HPMC behaves the same way. The LCST can be shifted toward 37 °C with salts, surfactants or copolymers. Advantage: sharp transition. Disadvantages: toxicity (e.g., coagulation) and lack of biodegradability. It is used mainly for cell-sheet culture surfaces.</details>
+<details><summary>7. How do Pluronics form gels, and how does this differ from PNIPAM?</summary>Pluronics are PEO–PPO block copolymers (e.g., PEO–PPO–PEO, F127 in PLO gels). With increasing concentration and temperature they first self-assemble into micelles. On further warming, loss of hydration makes the micelles aggregate and pack together (bridging or entangled coronas), forming a gel. So gelation comes from micelle aggregation rather than direct collapse and association of individual chains. They are liquid when refrigerated and gel at room or body temperature, but they aren't biodegradable.</details>
+<details><summary>8. What is ReGel and why was it a breakthrough?</summary>An aqueous solution of the triblock copolymer PLGA–PEG–PLGA containing paclitaxel (Macromed; Jeong, Kim et al., University of Utah, 1997). It is liquid at room temperature and forms a gel at 37 °C. It was the first injectable thermo-gelling system that is also biodegradable, with no melting, organic solvent or catalyst, and nothing to remove.</details>
+<details><summary>9. How do you read a sol–gel phase diagram for PEG–PLGA–PEG?</summary>Gelation is determined at different concentrations and temperatures (e.g., the vial-inversion test, or rheology), and the sol–gel boundary is plotted. The first-generation copolymers (5000–x–5000) gelled above ~10–15% but were gels at lower temperature and solutions at higher temperature (thermo-melting). The second generation (550–2810–550) is sol at low temperature, gel around body temperature (~30–45 °C) at about 15–40 wt%, and sol again at high temperature: thermo-gelling at 37 °C.</details>
+<details><summary>10. Why do some physical gels form on heating while others melt on heating?</summary>Gels held together by hydrophobic interactions (PNIPAM, Pluronic, ReGel) form on heating, because heat breaks polymer–water hydrogen bonds and exposes hydrophobic segments that associate. Gels held together by polymer–polymer hydrogen bonds (gelatin, PVA, PVA/PEO) melt on heating, because heat breaks those cross-linking hydrogen bonds.</details>
+<details><summary>11. Give an example of an ionically cross-linked gel.</summary>Alginate (an anionic polysaccharide) forms stiffer gels with divalent cations such as Ca²⁺ (salt bridges) or with cationic polymers (chitosan, polylysine). The ion is the stimulus.</details>
+<details><summary>12. What factors control drug release from hydrogels, and what models describe it?</summary>Release is triggered by swelling (in response to pH, temperature or ionic strength), and water uptake is driven by the activity gradient and by polar or charged groups. Drug diffusion depends on chain mobility (cross-link density: more cross-links means slower), chain thickness (bulky groups or a bound water layer add friction) and solute size. Models: obstruction (probability of finding openings between chains), hydrodynamic (restricted fluid near chains increases drag) and free volume (chains reduce the free volume of water). No single model is sufficient; a combination applies.</details>
+<details><summary>13. How is hydrogel swelling characterized?</summary>As the degree of swelling, expressed by volume or by weight: the change measured after exposure to water, followed over time until it plateaus at equilibrium swelling.</details>
+<details><summary>14. Describe how anionic and cationic hydrogels respond to pH. Why must you add base to carbomer?</summary>pH-responsive polymers swell or gel in their ionized form, because charged chains hydrate, extend and entangle. Anionic polymers (poly(acrylic acid)/carbomer, PMAA) ionize at high pH, so swelling is maximal at about pH 7–8. Cationic polymers (PDEAEMA, poly(vinylpyridine), poly(vinyl imidazole)) are protonated and swell at low pH. Carbomer in water gives pH ~3–4 and only a thick solution; adding a base such as NaOH raises the pH to ~7–8, ionizes the COOH groups and forms the gel (e.g., hand sanitizer).</details>
+<details><summary>15. Which physiological pH differences can be exploited? Give examples.</summary>Stomach 1–3, upper small intestine 4.8–8.2, colon 7–7.5, blood 7.4, tumor extracellular 6.5–7.2, early endosome 6–6.5, late endosome 4.5–5, inflamed tissue or wounds 5.4–7, vagina 3.8–4.5. Examples: avoiding gastric release and releasing in the intestine; triggering release in acidic tumors; endosomal escape or release for gene delivery; targeting acidic wounds.</details>
+<details><summary>16. Explain the azo-cross-linked anionic hydrogel for colon delivery.</summary>In the stomach (pH 1–3) the COOH groups are un-ionized, so swelling is low and no drug is released. In the small intestine (pH 4.8–8.2) the groups ionize and the gel swells, but azo cross-links hold the network together. In the colon (pH 7–8) the azo bonds are degraded, the network breaks apart, and drug is released, with the soluble remnants excreted. This combines pH-triggered swelling with biodegradation.</details>
+<details><summary>17. How does pH affect the LCST of a dual temperature/pH-responsive polymer?</summary>Such polymers contain both hydrophobic and ionizable groups. For a polyacid, at pH above the pKa the polymer is ionized and more hydrophilic, so the LCST rises; at pH below the pKa it is un-ionized and more hydrophobic, so the LCST falls. Gelation can therefore require both a particular temperature and a particular pH (e.g., gel only at 37 °C and pH 7.4).</details>
+<details><summary>18. Describe three glucose-responsive insulin delivery systems.</summary>(1) pH-sensitive: glucose oxidase converts glucose to gluconic acid at high glucose, lowering pH. Poly(methacrylic acid) chains in membrane pores then collapse (protonated), opening the pores and releasing insulin; at normal glucose (pH 7.4) the chains are extended and block the pores. (2) Con A: concanavalin A (four glucose-binding sites) cross-links a glucose-bearing polymer into a gel. Free glucose competes for Con A, breaking the cross-links (gel to sol) and releasing insulin. (3) Phenylboronic acid–PVA: boronic acid groups cross-link PVA diols into a gel, and glucose competes for the boronic acid, converting the gel to sol.</details>
+<details><summary>19. How can a hydrogel act as a biosensor for an antigen?</summary>An antigen is immobilized on some chains and an antibody on others; antigen–antibody binding acts as the cross-link. Free antigen (the biomarker) competes for the antibody, breaking the cross-links, so the gel swells. This change can be detected (e.g., a colour change).</details>
+<details><summary>20. Describe pH-responsive "schizophrenic" micelles.</summary>An AB diblock copolymer with one acidic block (COOH) and one basic block (morpholino). At low pH the acid block is un-ionized and hydrophobic, forming the core while the protonated base block forms the shell. At high pH the roles reverse and the micelle inverts. When the drug-loaded core becomes the shell, the drug is released.</details>
+</section>
+</div>
+</body>
+</html>
